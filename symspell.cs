@@ -59,8 +59,6 @@ static class SymSpell
         public string term = "";
         public int distance = 0;
 
-
-
         public override bool Equals(object obj)
         {
             return Equals(term, ((editItem)obj).term);
@@ -136,7 +134,6 @@ static class SymSpell
                 suggestion.term = key;
                 suggestion.distance = delete.distance;
 
-
                 dictionaryItem value2;
                 if (dictionary.TryGetValue(language+delete.term, out value2))
                 {
@@ -195,7 +192,6 @@ static class SymSpell
             {
                 editItem delete = new editItem();
                 delete.term=word.Remove(i, 1);
-
                 delete.distance=editDistance;
                 if (!deletes.Contains(delete))
                 {
@@ -217,17 +213,6 @@ static class SymSpell
 
     private static int TrueDistance(editItem dictionaryOriginal, editItem inputDelete, string inputOriginal)
     {
-
-
-
-
-
-
-
-
-
-
-
         //We allow simultaneous edits (deletes) of editDistanceMax on on both the dictionary and the input term. 
         //For replaces and adjacent transposes the resulting edit distance stays <= editDistanceMax.
         //For inserts and deletes the resulting edit distance might exceed editDistanceMax.
@@ -335,7 +320,6 @@ static class SymSpell
         List<suggestItem> suggestions = null;
     
         /*
-
         //Benchmark: 1000 x Lookup
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -346,7 +330,6 @@ static class SymSpell
         stopWatch.Stop();
         Console.WriteLine(stopWatch.ElapsedMilliseconds.ToString());
         */
-
         
         //check in dictionary for existence and frequency; sort by edit distance, then by word frequency
         suggestions = Lookup(input, language, editDistanceMax);
