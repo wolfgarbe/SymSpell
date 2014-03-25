@@ -10,11 +10,17 @@ Transposes + replaces + inserts of the input term are transformed into deletes o
 Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,000 Unicode Han characters!
 
 Copyright (C) 2012 Wolf Garbe, FAROO Limited
+
 Version: 1.5
+
 Author: Wolf Garbe <wolf.garbe@faroo.com>
+
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
+
 URL: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
+
 Description: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
+
 
 License:
 This program is free software; you can redistribute it and/or modify
