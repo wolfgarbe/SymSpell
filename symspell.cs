@@ -7,7 +7,7 @@
 // Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,000 Unicode Han characters!
 //
 // Copyright (C) 2012 Wolf Garbe, FAROO Limited
-// Version: 1.5
+// Version: 1.6
 // Author: Wolf Garbe <wolf.garbe@faroo.com>
 // Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 // URL: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
@@ -31,7 +31,7 @@ using System.Diagnostics;
 
 static class SymSpell
 {
-    private static int editDistanceMax=3;
+    private static int editDistanceMax=2;
     private static int verbose = 0;
     //0: top suggestion
     //1: all suggestions of smallest edit distance 
@@ -59,7 +59,7 @@ static class SymSpell
         public string term = "";
         public int distance = 0;
 
-        //public string positions = "";//neu
+
 
         public override bool Equals(object obj)
         {
@@ -135,7 +135,7 @@ static class SymSpell
                 editItem suggestion = new editItem();
                 suggestion.term = key;
                 suggestion.distance = delete.distance;
-                //suggestion.positions=  delete.positions;//neu
+
 
                 dictionaryItem value2;
                 if (dictionary.TryGetValue(language+delete.term, out value2))
@@ -195,7 +195,7 @@ static class SymSpell
             {
                 editItem delete = new editItem();
                 delete.term=word.Remove(i, 1);
-                //delete.positions+=i.ToString();//neu
+
                 delete.distance=editDistance;
                 if (!deletes.Contains(delete))
                 {
@@ -217,16 +217,16 @@ static class SymSpell
 
     private static int TrueDistance(editItem dictionaryOriginal, editItem inputDelete, string inputOriginal)
     {
-        //neu
-        //if ((dictionaryOriginal.positions == inputDelete.positions) && (dictionaryOriginal.distance == 1) && (inputDelete.distance == 1)) return 1;
-        /*
-        //kann ich für manche fälle die distance bestimmen, ohne die berechnung unten
-        if ((dictionaryOriginal.term != inputOriginal) && (dictionaryOriginal.distance != 0) && (inputDelete.distance != 0))
-        {
-            
-            Trace.WriteLine(dictionaryOriginal.positions+" "+inputDelete.positions+" : "+ dictionaryOriginal.term.Length.ToString() + " " + inputDelete.term.Length.ToString() + " " + inputOriginal.Length.ToString() + " : " + dictionaryOriginal.distance.ToString() + " " + inputDelete.distance.ToString() + " : " + DamerauLevenshteinDistance(dictionaryOriginal.term, inputOriginal).ToString());
-        }
-        */
+
+
+
+
+
+
+
+
+
+
 
         //We allow simultaneous edits (deletes) of editDistanceMax on on both the dictionary and the input term. 
         //For replaces and adjacent transposes the resulting edit distance stays <= editDistanceMax.
@@ -238,7 +238,7 @@ static class SymSpell
         if (dictionaryOriginal.term == inputOriginal) return 0; else
         if (dictionaryOriginal.distance == 0) return inputDelete.distance;
         else if (inputDelete.distance == 0) return dictionaryOriginal.distance;
-        else return DamerauLevenshteinDistance(dictionaryOriginal.term, inputOriginal); //adjust distance, if both distances>0
+        else return DamerauLevenshteinDistance(dictionaryOriginal.term, inputOriginal);//adjust distance, if both distances>0
     }
 
     private static List<suggestItem> Lookup(string input, string language, int editDistanceMax)
@@ -327,14 +327,15 @@ static class SymSpell
         }//end while
 
         sort: suggestions = suggestions.OrderBy(c => c.distance).ThenByDescending(c => c.count).ToList();
-        if ((verbose == 0)&&(suggestions.Count>1)) return suggestions.GetRange(0, 1); else return suggestions;//new
+        if ((verbose == 0)&&(suggestions.Count>1))  return suggestions.GetRange(0, 1); else return suggestions;
     }
 
     private static void Correct(string input, string language)
     {
         List<suggestItem> suggestions = null;
     
-        
+        /*
+
         //Benchmark: 1000 x Lookup
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -344,10 +345,11 @@ static class SymSpell
         }
         stopWatch.Stop();
         Console.WriteLine(stopWatch.ElapsedMilliseconds.ToString());
-        
+        */
+
         
         //check in dictionary for existence and frequency; sort by edit distance, then by word frequency
-        //suggestions = Lookup(input, language, editDistanceMax);
+        suggestions = Lookup(input, language, editDistanceMax);
 
         //display term and frequency
         foreach (var suggestion in suggestions)
@@ -414,7 +416,7 @@ static class SymSpell
                 H[i + 1, j + 1] = Math.Min(H[i + 1, j + 1], H[i1, j1] + (i - i1 - 1) + 1 + (j - j1 - 1));
             }
 
-            sd[source[i - 1]] = i;
+            sd[ source[ i - 1 ]] = i;
         }
         return H[m + 1, n + 1];
     }
