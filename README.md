@@ -3,7 +3,7 @@ SymSpell
 
 SymSpell: 1000x faster through Symmetric Delete spelling correction algorithm
 
-The Symmetric Delete spelling correction algorithm reduces the complexity of edit candidate generation and dictionary lookup for a given Damerau-Levenshtein distance. It is three orders of magnitude faster (than the standard approach with delets + transposes + replaces + inserts) and language independent.
+The Symmetric Delete spelling correction algorithm reduces the complexity of edit candidate generation and dictionary lookup for a given Damerau-Levenshtein distance. It is three orders of magnitude faster (than the standard approach with deletes + transposes + replaces + inserts) and language independent.
 
 Opposite to other algorithms only deletes are required, no transposes + replaces + inserts.
 Transposes + replaces + inserts of the input term are transformed into deletes of the dictionary term.
