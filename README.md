@@ -11,7 +11,7 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 
 ```
 Copyright (C) 2012 Wolf Garbe, FAROO Limited
-Version: 1.5
+Version: 1.6
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
