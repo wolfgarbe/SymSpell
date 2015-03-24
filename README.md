@@ -14,7 +14,7 @@ Copyright (C) 2015 Wolf Garbe
 Version: 2.0
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
-URL: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
+URL: http://blog.faroo.com/2015/03/24/fast-approximatestring-matching-with-large-edit-distances/
 Description: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
 License:
 This program is free software; you can redistribute it and/or modify
