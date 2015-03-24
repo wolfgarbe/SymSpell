@@ -1,13 +1,13 @@
-// SymSpell: 1000x faster through Symmetric Delete spelling correction algorithm
+// SymSpell: 1 million times faster through Symmetric Delete spelling correction algorithm
 //
 // The Symmetric Delete spelling correction algorithm reduces the complexity of edit candidate generation and dictionary lookup 
-// for a given Damerau-Levenshtein distance. It is three orders of magnitude faster and language independent.
+// for a given Damerau-Levenshtein distance. It is six orders of magnitude faster and language independent.
 // Opposite to other algorithms only deletes are required, no transposes + replaces + inserts.
 // Transposes + replaces + inserts of the input term are transformed into deletes of the dictionary term.
 // Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,000 Unicode Han characters!
 //
-// Copyright (C) 2012 Wolf Garbe, FAROO Limited
-// Version: 1.6
+// Copyright (C) 2015 Wolf Garbe
+// Version: 2.0
 // Author: Wolf Garbe <wolf.garbe@faroo.com>
 // Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 // URL: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
@@ -39,35 +39,8 @@ static class SymSpell
 
     private class dictionaryItem
     {
-        public string term = "";
-        public List<editItem> suggestions = new List<editItem>();
+        public List<string> suggestions = new List<string>();
         public int count = 0;
-
-        public override bool Equals(object obj)
-        {
-            return Equals(term, ((dictionaryItem)obj).term);
-        }
-     
-        public override int GetHashCode()
-        {
-            return term.GetHashCode(); 
-        }       
-    }
-
-    private class editItem
-    {
-        public string term = "";
-        public int distance = 0;
-
-        public override bool Equals(object obj)
-        {
-            return Equals(term, ((editItem)obj).term);
-        }
-     
-        public override int GetHashCode()
-        {
-            return term.GetHashCode();
-        }       
     }
 
     private class suggestItem
@@ -93,9 +66,12 @@ static class SymSpell
     //language independent (e.g. works with Chinese characters)
     private static IEnumerable<string> parseWords(string text)
     {
+        // \w Alphanumeric characters (including non-latin characters, umlaut characters and digits) plus "_" 
+        // \d Digits
+        // Provides identical results to Norvigs regex "[a-z]+" for latin characters, while additionally providing compatibility with non-latin characters
         return Regex.Matches(text.ToLower(), @"[\w-[\d_]]+")
                     .Cast<Match>()
-                    .Select(m => m.Value);
+                    .Select(m => m.Value);    
     }
 
     //for every word there all deletes with an edit distance of 1..editDistanceMax created and added to the dictionary
@@ -122,38 +98,35 @@ static class SymSpell
         //edits/suggestions are created only once, no matter how often word occurs
         //edits/suggestions are created only as soon as the word occurs in the corpus, 
         //even if the same term existed before in the dictionary as an edit from another word
-        if (string.IsNullOrEmpty(value.term))
+        //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
+        if (value.count==1)
         {
             result = true;
-            value.term = key;
 
             //create deletes
-            foreach (editItem delete in Edits(key, 0, true))
+            foreach (string delete in Edits(key, 0, new HashSet<string>()))
             {
-                editItem suggestion = new editItem();
-                suggestion.term = key;
-                suggestion.distance = delete.distance;
-
                 dictionaryItem value2;
-                if (dictionary.TryGetValue(language+delete.term, out value2))
+                if (dictionary.TryGetValue(language+delete, out value2))
                 {
                     //already exists:
                     //1. word1==deletes(word2) 
                     //2. deletes(word1)==deletes(word2) 
-                    if (!value2.suggestions.Contains(suggestion)) AddLowestDistance(value2.suggestions, suggestion);
+                    //if (!value2.suggestions.Contains(key)) AddLowestDistance(value2, key, delete.Value);
+                    if (!value2.suggestions.Contains(key)) AddLowestDistance(value2, key, delete);
                 }
                 else
                 {
                     value2 = new dictionaryItem();
-                    value2.suggestions.Add(suggestion);
-                    dictionary.Add(language+delete.term, value2);
+                    value2.suggestions.Add(key);
+                    dictionary.Add(language + delete, value2);
                 }
             }
         }
         return result;
     }
 
-    //create a frequency disctionary from a corpus
+    //create a frequency dictionary from a corpus
     private static void CreateDictionary(string corpus, string language)
     {
         if (!File.Exists(corpus))
@@ -163,122 +136,118 @@ static class SymSpell
         }
 
         Console.Write("Creating dictionary ...");
+        Stopwatch stopWatch = new Stopwatch();
+        stopWatch.Start();
         long wordCount = 0;
         foreach (string key in parseWords(File.ReadAllText(corpus)))
         {
             if (CreateDictionaryEntry(key, language)) wordCount++;
         }
-        Console.WriteLine("\rDictionary created: " + wordCount.ToString("N0") + " words, " + dictionary.Count.ToString("N0") + " entries, for edit distance=" + editDistanceMax.ToString());
+        stopWatch.Stop();
+        Console.WriteLine("\rDictionary created: " + wordCount.ToString("N0") + " words, " + dictionary.Count.ToString("N0") + " entries, edit distance=" + editDistanceMax.ToString() + " in " + stopWatch.ElapsedMilliseconds.ToString()+"ms");
     }
 
     //save some time and space
-    private static void AddLowestDistance(List<editItem> suggestions, editItem suggestion)
+    private static void AddLowestDistance(dictionaryItem item, string suggestion, string delete)
     {
         //remove all existing suggestions of higher distance, if verbose<2
-        if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > suggestion.distance)) suggestions.Clear();
+        if ((verbose < 2) && (item.suggestions.Count > 0) && (item.suggestions[0].Length-delete.Length > suggestion.Length - delete.Length)) item.suggestions.Clear();
         //do not add suggestion of higher distance than existing, if verbose<2
-        if ((verbose == 2) || (suggestions.Count == 0) || (suggestions[0].distance >= suggestion.distance)) suggestions.Add(suggestion);
+        if ((verbose == 2) || (item.suggestions.Count == 0) || (item.suggestions[0].Length-delete.Length >= suggestion.Length - delete.Length)) item.suggestions.Add(suggestion); 
     }
 
     //inexpensive and language independent: only deletes, no transposes + replaces + inserts
     //replaces and inserts are expensive and language dependent (Chinese has 70,000 Unicode Han characters)
-    private static List<editItem> Edits(string word, int editDistance, bool recursion)
+    private static HashSet<string> Edits(string word, int editDistance, HashSet<string> deletes)
     {
         editDistance++;
-        List<editItem> deletes = new List<editItem>();
         if (word.Length > 1)
         {
             for (int i = 0; i < word.Length; i++)
             {
-                editItem delete = new editItem();
-                delete.term=word.Remove(i, 1);
-                delete.distance=editDistance;
-                if (!deletes.Contains(delete))
+                string delete = word.Remove(i, 1);
+                if (deletes.Add(delete))
                 {
-                    deletes.Add(delete);
                     //recursion, if maximum edit distance not yet reached
-                    if (recursion && (editDistance < editDistanceMax)) 
-                    {
-                        foreach (editItem edit1 in Edits(delete.term, editDistance,recursion))
-                        {
-                            if (!deletes.Contains(edit1)) deletes.Add(edit1); 
-                        }
-                    }                   
+                    if (editDistance < editDistanceMax) Edits(delete, editDistance, deletes);
                 }
             }
         }
-
         return deletes;
-    }
-
-    private static int TrueDistance(editItem dictionaryOriginal, editItem inputDelete, string inputOriginal)
-    {
-        //We allow simultaneous edits (deletes) of editDistanceMax on on both the dictionary and the input term. 
-        //For replaces and adjacent transposes the resulting edit distance stays <= editDistanceMax.
-        //For inserts and deletes the resulting edit distance might exceed editDistanceMax.
-        //To prevent suggestions of a higher edit distance, we need to calculate the resulting edit distance, if there are simultaneous edits on both sides.
-        //Example: (bank==bnak and bank==bink, but bank!=kanb and bank!=xban and bank!=baxn for editDistanceMaxe=1)
-        //Two deletes on each side of a pair makes them all equal, but the first two pairs have edit distance=1, the others edit distance=2.
-
-        if (dictionaryOriginal.term == inputOriginal) return 0; else
-        if (dictionaryOriginal.distance == 0) return inputDelete.distance;
-        else if (inputDelete.distance == 0) return dictionaryOriginal.distance;
-        else return DamerauLevenshteinDistance(dictionaryOriginal.term, inputOriginal);//adjust distance, if both distances>0
     }
 
     private static List<suggestItem> Lookup(string input, string language, int editDistanceMax)
     {
-        List<editItem> candidates = new List<editItem>();
-
-        //add original term
-        editItem item = new editItem();
-        item.term = input;
-        item.distance = 0;
-        candidates.Add(item);
+        List<string> candidates = new List<string>();
+        HashSet<string> hashset1 = new HashSet<string>();
  
         List<suggestItem> suggestions = new List<suggestItem>();
+        HashSet<string> hashset2 = new HashSet<string>();
+
         dictionaryItem value;
+
+        //add original term
+        candidates.Add(input);
 
         while (candidates.Count>0)
         {
-            editItem candidate = candidates[0];
+            string candidate = candidates[0];
             candidates.RemoveAt(0);
 
             //save some time
             //early termination
             //suggestion distance=candidate.distance... candidate.distance+editDistanceMax                
             //if canddate distance is already higher than suggestion distance, than there are no better suggestions to be expected
-            if ((verbose < 2)&&(suggestions.Count > 0)&&(candidate.distance > suggestions[0].distance)) goto sort;
-            if (candidate.distance > editDistanceMax) goto sort;  
+            if ((verbose < 2) && (suggestions.Count > 0) && (input.Length-candidate.Length > suggestions[0].distance)) goto sort;
 
-            if (dictionary.TryGetValue(language+candidate.term, out value))
+            //## read candidate entry from dictionary
+            if (dictionary.TryGetValue(language + candidate, out value)) 
             {
-                if (!string.IsNullOrEmpty(value.term))
+                //## if count>0 then candidate entry is correct dictionary term, not only delete item
+                if ((value.count>0) && hashset2.Add(candidate)) 
                 {
-                    //correct term
+                    //add correct dictionary term term to suggestion list
                     suggestItem si = new suggestItem();
-                    si.term = value.term;
+                    si.term = candidate;
                     si.count = value.count;
-                    si.distance = candidate.distance;
-
-                    if (!suggestions.Contains(si))
-                    {
-                        suggestions.Add(si);
-                        //early termination
-                        if ((verbose < 2) && (candidate.distance == 0)) goto sort;     
-                    }
+                    si.distance = input.Length - candidate.Length;
+                    suggestions.Add(si);
+                    //early termination
+                    if ((verbose < 2) && (input.Length - candidate.Length == 0)) goto sort; 
                 }
 
-                //edit term (with suggestions to correct term)
+                //iterate through suggestions (to other correct dictionary items) of delete item and add them to suggestion list
                 dictionaryItem value2;
-                foreach (editItem suggestion in value.suggestions)
+                foreach (string suggestion in value.suggestions)
                 {
                     //save some time 
-                    //skipping double items early
-                    if (suggestions.Find(x => x.term == suggestion.term) == null)
+                    //skipping double items early: different deletes of the input term can lead to the same suggestion
+                    if (hashset2.Add(suggestion))
                     {
-                        int distance = TrueDistance(suggestion, candidate, input);
-                     
+                        //True Damerau-Levenshtein Edit Distance: adjust distance, if both distances>0
+                        //We allow simultaneous edits (deletes) of editDistanceMax on on both the dictionary and the input term. 
+                        //For replaces and adjacent transposes the resulting edit distance stays <= editDistanceMax.
+                        //For inserts and deletes the resulting edit distance might exceed editDistanceMax.
+                        //To prevent suggestions of a higher edit distance, we need to calculate the resulting edit distance, if there are simultaneous edits on both sides.
+                        //Example: (bank==bnak and bank==bink, but bank!=kanb and bank!=xban and bank!=baxn for editDistanceMaxe=1)
+                        //Two deletes on each side of a pair makes them all equal, but the first two pairs have edit distance=1, the others edit distance=2.
+                        int distance = 0;
+                        if (suggestion != input)
+                        {
+                            if (suggestion.Length == candidate.Length) distance = input.Length - candidate.Length;
+                            else if (input.Length == candidate.Length) distance = suggestion.Length - candidate.Length;
+                            else
+                            {                          
+                                //common prefixes and suffixes are ignored, because this speeds up the Damerau-levenshtein-Distance calculation without changing it.
+                                int ii = 0;
+                                int jj = 0;
+                                while ((ii < suggestion.Length) && (ii < input.Length) && (suggestion[ii] == input[ii])) ii++;
+                                while ((jj < suggestion.Length - ii) && (jj < input.Length - ii) && (suggestion[suggestion.Length - jj - 1] == input[input.Length - jj - 1])) jj++;
+                                if ((ii > 0) || (jj > 0)) { distance = DamerauLevenshteinDistance( suggestion.Substring(ii, suggestion.Length - ii - jj),  input.Substring(ii, input.Length - ii - jj)); } else distance = DamerauLevenshteinDistance(suggestion, input);
+                                
+                            }
+                        }
+
                         //save some time.
                         //remove all existing suggestions of higher distance, if verbose<2
                         if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
@@ -287,39 +256,45 @@ static class SymSpell
 
                         if (distance <= editDistanceMax)
                         {
-                            if (dictionary.TryGetValue(language+suggestion.term, out value2))
+                            if (dictionary.TryGetValue(language + suggestion, out value2)) 
                             {
                                 suggestItem si = new suggestItem();
-                                si.term = value2.term;
+                                si.term = suggestion;
                                 si.count = value2.count;
                                 si.distance = distance;
-
                                 suggestions.Add(si);
                             }
                         }
                     }
-                }
-            }//end foreach
-
+                }//end foreach
+            }//end if
+            
             //add edits 
-            if (candidate.distance < editDistanceMax)
+            //derive edits (deletes) from candidate (input) and add them to candidates list
+            //this is a recursive process until the maximum edit distance has been reached
+            if (input.Length - candidate.Length < editDistanceMax)
             {
-                foreach (editItem delete in Edits(candidate.term, candidate.distance,false))
+			    //save some time
+                //do not create edits with edit distance smaller than suggestions already found
+                if ((verbose < 2) && (suggestions.Count > 0) && (input.Length - candidate.Length >= suggestions[0].distance)) continue;
+			
+                for (int i = 0; i < candidate.Length; i++)
                 {
-                    if (!candidates.Contains(delete)) candidates.Add(delete);
+                    string delete = candidate.Remove(i, 1);
+                    if (hashset1.Add(delete)) candidates.Add(delete);
                 }
             }
         }//end while
 
-        sort: suggestions = suggestions.OrderBy(c => c.distance).ThenByDescending(c => c.count).ToList();
-        if ((verbose == 0)&&(suggestions.Count>1))  return suggestions.GetRange(0, 1); else return suggestions;
+        sort: if (verbose < 2) suggestions = suggestions.OrderByDescending(c => c.count).ToList(); else suggestions = suggestions.OrderBy(c => c.distance).ThenByDescending(c => c.count).ToList();
+        if ((verbose == 0)&&(suggestions.Count>1)) return suggestions.GetRange(0, 1); else return suggestions;
     }
 
     private static void Correct(string input, string language)
     {
         List<suggestItem> suggestions = null;
-    
-        /*
+
+		/*
         //Benchmark: 1000 x Lookup
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -329,8 +304,8 @@ static class SymSpell
         }
         stopWatch.Stop();
         Console.WriteLine(stopWatch.ElapsedMilliseconds.ToString());
-        */
-        
+		*/        
+		
         //check in dictionary for existence and frequency; sort by edit distance, then by word frequency
         suggestions = Lookup(input, language, editDistanceMax);
 
@@ -347,19 +322,23 @@ static class SymSpell
         string word;
         while (!string.IsNullOrEmpty(word = (Console.ReadLine() ?? "").Trim()))
         {
-            Correct(word,"en");
+            Correct(word,"");
         }
     }
 
     public static void Main(string[] args)
     {
+        //Create the dictionary from a sample corpus
         //e.g. http://norvig.com/big.txt , or any other large text corpus
-        CreateDictionary("big.txt","en");
+        //The dictionary may contain vocabulary from different languages. 
+        //If you use mixed vocabulary use the language parameter in Correct() and CreateDictionary() accordingly.
+        //You may use CreateDictionaryEntry() to update a (self learning) dictionary incrementally
+        CreateDictionary("big.txt","");
         ReadFromStdIn();
     }
 
     // Damerau–Levenshtein distance algorithm and code 
-    // from http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
+    // from http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance (as retrieved in June 2012)
     public static Int32 DamerauLevenshteinDistance(String source, String target)
     {
         Int32 m = source.Length;
@@ -399,8 +378,9 @@ static class SymSpell
                 H[i + 1, j + 1] = Math.Min(H[i + 1, j + 1], H[i1, j1] + (i - i1 - 1) + 1 + (j - j1 - 1));
             }
 
-            sd[ source[ i - 1 ]] = i;
+            sd[source[i - 1]] = i;
         }
         return H[m + 1, n + 1];
     }
+
 }
