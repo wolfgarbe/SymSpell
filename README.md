@@ -11,7 +11,7 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 
 ```
 Copyright (C) 2015 Wolf Garbe
-Version: 2.0
+Version: 3.0
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/
