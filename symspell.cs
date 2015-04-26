@@ -7,10 +7,10 @@
 // Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,000 Unicode Han characters!
 //
 // Copyright (C) 2015 Wolf Garbe
-// Version: 2.0
+// Version: 3.0
 // Author: Wolf Garbe <wolf.garbe@faroo.com>
 // Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
-// URL: http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/
+// URL: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
 // Description: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
 //
 // License:
@@ -39,15 +39,15 @@ static class SymSpell
 
     private class dictionaryItem
     {
-        public List<string> suggestions = new List<string>();
-        public int count = 0;
+        public List<Int32> suggestions = new List<Int32>();
+        public Int32 count = 0;
     }
 
     private class suggestItem
     {
         public string term = "";
         public int distance = 0;
-        public int count = 0;
+        public Int32 count = 0;
 
         public override bool Equals(object obj)
         {
@@ -60,7 +60,13 @@ static class SymSpell
         }       
     }
 
-    private static Dictionary<string, dictionaryItem> dictionary = new Dictionary<string, dictionaryItem>();
+    //Dictionary that contains both the original words and the deletes derived from them. A term might be both word and delete from another word at the same time.
+    //For space reduction a item might be either of type dictionaryItem or Int. 
+    //A dictionaryItem is used for word, word/delete, and delete with multiple suggestions. Int is used for deletes with a single suggestion (the majority of entries).
+    private static Dictionary<string, object> dictionary = new Dictionary<string, object>(); //initialisierung
+
+    //List of unique words. By using the suggestions (Int) as index for this list they are translated into the original string.
+    private static List<string> wordlist = new List<string>();
 
     //create a non-unique wordlist from sample text
     //language independent (e.g. works with Chinese characters)
@@ -71,8 +77,10 @@ static class SymSpell
         // Provides identical results to Norvigs regex "[a-z]+" for latin characters, while additionally providing compatibility with non-latin characters
         return Regex.Matches(text.ToLower(), @"[\w-[\d_]]+")
                     .Cast<Match>()
-                    .Select(m => m.Value);    
+                    .Select(m => m.Value);
     }
+
+    public static int maxlength = 0;//maximum dictionary term length //neueneu
 
     //for every word there all deletes with an edit distance of 1..editDistanceMax created and added to the dictionary
     //every delete entry has a suggestions list, which points to the original term(s) it was created from
@@ -80,47 +88,75 @@ static class SymSpell
     private static bool CreateDictionaryEntry(string key, string language)
     {
         bool result = false;
-        dictionaryItem value;
-        if (dictionary.TryGetValue(language+key, out value))
+        dictionaryItem value=null;
+        object valueo;
+        if (dictionary.TryGetValue(language+key, out valueo))
         {
+            //int or dictionaryItem? delete existed before word!
+            if (valueo is Int32) { Int32 tmp = (Int32)valueo; value = new dictionaryItem(); value.suggestions.Add(tmp); dictionary[language + key] = value; }
+
             //already exists:
             //1. word appears several times
             //2. word1==deletes(word2) 
-            value.count++;
+            else
+            {
+                value = (valueo as dictionaryItem);
+            }
+
+            //prevent overflow
+            if (value.count < Int32.MaxValue) value.count++;
         }
-        else
+        else if (wordlist.Count < Int32.MaxValue)
         {
             value = new dictionaryItem();
-            value.count++;
-            dictionary.Add(language+key, value);
+            (value as dictionaryItem).count++;
+            dictionary.Add(language + key, value as dictionaryItem);
+
+            if (key.Length > maxlength) maxlength = key.Length;//neuneu
         }
+
 
         //edits/suggestions are created only once, no matter how often word occurs
         //edits/suggestions are created only as soon as the word occurs in the corpus, 
         //even if the same term existed before in the dictionary as an edit from another word
         //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
-        if (value.count==1)
+        if ((value as dictionaryItem).count == 1)
         {
+            //string2int
+            wordlist.Add(key);//was ist mit language???
+            Int32 keyint = (Int32)(wordlist.Count - 1);
+
             result = true;
 
             //create deletes
             foreach (string delete in Edits(key, 0, new HashSet<string>()))
             {
-                dictionaryItem value2;
+                //dictionaryItem value2;
+                object value2;
                 if (dictionary.TryGetValue(language+delete, out value2))
                 {
+                    //neuneu2: Int16 statt int
                     //already exists:
                     //1. word1==deletes(word2) 
                     //2. deletes(word1)==deletes(word2) 
                     //if (!value2.suggestions.Contains(key)) AddLowestDistance(value2, key, delete.Value);
-                    if (!value2.suggestions.Contains(key)) AddLowestDistance(value2, key, delete);
+                    //int or dictionaryItem? single delete existed before
+                    if (value2 is Int32) 
+                    {
+
+                        Int32 tmp = (Int32)value2; dictionaryItem di = new dictionaryItem(); di.suggestions.Add(tmp); dictionary[language + delete] = di;
+                        if (!di.suggestions.Contains(keyint)) AddLowestDistance(di, key, keyint, delete);
+                    }//umwandlung int to dictionaryItem }//neuneu2 kann vereinfacht werden: ohne contains; dict[key]= statt add  
+                    else if (!(value2 as dictionaryItem).suggestions.Contains(keyint)) AddLowestDistance(value2 as dictionaryItem, key, keyint, delete);
                 }
                 else
                 {
-                    value2 = new dictionaryItem();
-                    value2.suggestions.Add(key);
-                    dictionary.Add(language + delete, value2);
+                    //value2 = new dictionaryItem();
+                    //value2.suggestions.Add(keyint);
+                    dictionary.Add(language + delete, keyint);
+                    
                 }
+
             }
         }
         return result;
@@ -139,21 +175,33 @@ static class SymSpell
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
         long wordCount = 0;
-        foreach (string key in parseWords(File.ReadAllText(corpus)))
+
+        using (StreamReader sr = new StreamReader(corpus))
         {
-            if (CreateDictionaryEntry(key, language)) wordCount++;
+            String line;
+            //process a single line at a time only for memory efficiency
+            while ((line = sr.ReadLine()) != null)
+            {
+                foreach (string key in parseWords(line))
+                {
+                   if (CreateDictionaryEntry(key, language)) wordCount++;
+                }
+            }
         }
+
+        wordlist.TrimExcess();
         stopWatch.Stop();
-        Console.WriteLine("\rDictionary created: " + wordCount.ToString("N0") + " words, " + dictionary.Count.ToString("N0") + " entries, edit distance=" + editDistanceMax.ToString() + " in " + stopWatch.ElapsedMilliseconds.ToString()+"ms");
+        Console.WriteLine("\rDictionary: " + wordCount.ToString("N0") + " words, " + dictionary.Count.ToString("N0") + " entries, edit distance=" + editDistanceMax.ToString() + " in " + stopWatch.ElapsedMilliseconds.ToString()+"ms "+ (Process.GetCurrentProcess().PrivateMemorySize64/1000000).ToString("N0")+ " MB");
     }
 
     //save some time and space
-    private static void AddLowestDistance(dictionaryItem item, string suggestion, string delete)
+    private static void AddLowestDistance(dictionaryItem item, string suggestion, Int32 suggestionint, string delete)
     {
         //remove all existing suggestions of higher distance, if verbose<2
-        if ((verbose < 2) && (item.suggestions.Count > 0) && (item.suggestions[0].Length-delete.Length > suggestion.Length - delete.Length)) item.suggestions.Clear();
+        //index2word
+        if ((verbose < 2) && (item.suggestions.Count > 0) && (wordlist[item.suggestions[0]].Length-delete.Length > suggestion.Length - delete.Length)) item.suggestions.Clear();
         //do not add suggestion of higher distance than existing, if verbose<2
-        if ((verbose == 2) || (item.suggestions.Count == 0) || (item.suggestions[0].Length-delete.Length >= suggestion.Length - delete.Length)) item.suggestions.Add(suggestion); 
+        if ((verbose == 2) || (item.suggestions.Count == 0) || (wordlist[item.suggestions[0]].Length-delete.Length >= suggestion.Length - delete.Length)) item.suggestions.Add(suggestionint); 
     }
 
     //inexpensive and language independent: only deletes, no transposes + replaces + inserts
@@ -178,13 +226,17 @@ static class SymSpell
 
     private static List<suggestItem> Lookup(string input, string language, int editDistanceMax)
     {
+        //save some time
+        if (input.Length - editDistanceMax > maxlength) return new List<suggestItem>();//neuneu
+
         List<string> candidates = new List<string>();
         HashSet<string> hashset1 = new HashSet<string>();
  
         List<suggestItem> suggestions = new List<suggestItem>();
         HashSet<string> hashset2 = new HashSet<string>();
 
-        dictionaryItem value;
+        //dictionaryItem value;
+        object valueo;
 
         //add original term
         candidates.Add(input);
@@ -200,11 +252,16 @@ static class SymSpell
             //if canddate distance is already higher than suggestion distance, than there are no better suggestions to be expected
             if ((verbose < 2) && (suggestions.Count > 0) && (input.Length-candidate.Length > suggestions[0].distance)) goto sort;
 
-            //## read candidate entry from dictionary
-            if (dictionary.TryGetValue(language + candidate, out value)) 
+
+                //## read candidate entry from dictionary
+            if (dictionary.TryGetValue(language + candidate, out valueo))
             {
+                dictionaryItem value= new dictionaryItem();
+                if (valueo is Int32) value.suggestions.Add((Int32)valueo); else value = (dictionaryItem)valueo;
+
                 //## if count>0 then candidate entry is correct dictionary term, not only delete item
-                if ((value.count>0) && hashset2.Add(candidate)) 
+                //term2int
+                if ((value.count > 0) && hashset2.Add(candidate))
                 {
                     //add correct dictionary term term to suggestion list
                     suggestItem si = new suggestItem();
@@ -213,15 +270,17 @@ static class SymSpell
                     si.distance = input.Length - candidate.Length;
                     suggestions.Add(si);
                     //early termination
-                    if ((verbose < 2) && (input.Length - candidate.Length == 0)) goto sort; 
+                    if ((verbose < 2) && (input.Length - candidate.Length == 0)) goto sort;
                 }
 
                 //iterate through suggestions (to other correct dictionary items) of delete item and add them to suggestion list
-                dictionaryItem value2;
-                foreach (string suggestion in value.suggestions)
+                object value2;
+                foreach (int suggestionint in value.suggestions)
                 {
                     //save some time 
                     //skipping double items early: different deletes of the input term can lead to the same suggestion
+                    //int2string
+                    string suggestion = wordlist[suggestionint];
                     if (hashset2.Add(suggestion))
                     {
                         //True Damerau-Levenshtein Edit Distance: adjust distance, if both distances>0
@@ -237,14 +296,14 @@ static class SymSpell
                             if (suggestion.Length == candidate.Length) distance = input.Length - candidate.Length;
                             else if (input.Length == candidate.Length) distance = suggestion.Length - candidate.Length;
                             else
-                            {                          
+                            {
                                 //common prefixes and suffixes are ignored, because this speeds up the Damerau-levenshtein-Distance calculation without changing it.
                                 int ii = 0;
                                 int jj = 0;
                                 while ((ii < suggestion.Length) && (ii < input.Length) && (suggestion[ii] == input[ii])) ii++;
                                 while ((jj < suggestion.Length - ii) && (jj < input.Length - ii) && (suggestion[suggestion.Length - jj - 1] == input[input.Length - jj - 1])) jj++;
-                                if ((ii > 0) || (jj > 0)) { distance = DamerauLevenshteinDistance( suggestion.Substring(ii, suggestion.Length - ii - jj),  input.Substring(ii, input.Length - ii - jj)); } else distance = DamerauLevenshteinDistance(suggestion, input);
-                                
+                                if ((ii > 0) || (jj > 0)) { distance = DamerauLevenshteinDistance(suggestion.Substring(ii, suggestion.Length - ii - jj), input.Substring(ii, input.Length - ii - jj)); } else distance = DamerauLevenshteinDistance(suggestion, input);
+
                             }
                         }
 
@@ -256,28 +315,28 @@ static class SymSpell
 
                         if (distance <= editDistanceMax)
                         {
-                            if (dictionary.TryGetValue(language + suggestion, out value2)) 
+                            if (dictionary.TryGetValue(language + suggestion, out value2))
                             {
                                 suggestItem si = new suggestItem();
                                 si.term = suggestion;
-                                si.count = value2.count;
+                                si.count = (value2 as dictionaryItem).count;
                                 si.distance = distance;
                                 suggestions.Add(si);
                             }
                         }
                     }
                 }//end foreach
-            }//end if
+            }//end if         
             
             //add edits 
             //derive edits (deletes) from candidate (input) and add them to candidates list
             //this is a recursive process until the maximum edit distance has been reached
             if (input.Length - candidate.Length < editDistanceMax)
             {
-			    //save some time
+                //save some time
                 //do not create edits with edit distance smaller than suggestions already found
                 if ((verbose < 2) && (suggestions.Count > 0) && (input.Length - candidate.Length >= suggestions[0].distance)) continue;
-			
+
                 for (int i = 0; i < candidate.Length; i++)
                 {
                     string delete = candidate.Remove(i, 1);
@@ -286,7 +345,8 @@ static class SymSpell
             }
         }//end while
 
-        sort: if (verbose < 2) suggestions = suggestions.OrderByDescending(c => c.count).ToList(); else suggestions = suggestions.OrderBy(c => c.distance).ThenByDescending(c => c.count).ToList();
+        //sort by ascending edit distance, then by descending word frequency
+        sort: if (verbose < 2) suggestions.Sort((x, y) => -x.count.CompareTo(y.count)); else suggestions.Sort((x, y) => 2*x.distance.CompareTo(y.distance) - x.count.CompareTo(y.count));
         if ((verbose == 0)&&(suggestions.Count>1)) return suggestions.GetRange(0, 1); else return suggestions;
     }
 
@@ -294,7 +354,7 @@ static class SymSpell
     {
         List<suggestItem> suggestions = null;
 
-		/*
+        /*
         //Benchmark: 1000 x Lookup
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -304,9 +364,10 @@ static class SymSpell
         }
         stopWatch.Stop();
         Console.WriteLine(stopWatch.ElapsedMilliseconds.ToString());
-		*/        
-		
-        //check in dictionary for existence and frequency; sort by edit distance, then by word frequency
+        */
+        
+        
+        //check in dictionary for existence and frequency; sort by ascending edit distance, then by descending word frequency
         suggestions = Lookup(input, language, editDistanceMax);
 
         //display term and frequency
@@ -314,7 +375,7 @@ static class SymSpell
         {
             Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString());
         }
-        if (verbose == 2) Console.WriteLine(suggestions.Count.ToString() + " suggestions");
+        if (verbose !=0) Console.WriteLine(suggestions.Count.ToString() + " suggestions");
     }
 
     private static void ReadFromStdIn()
@@ -328,11 +389,13 @@ static class SymSpell
 
     public static void Main(string[] args)
     {
+
         //Create the dictionary from a sample corpus
         //e.g. http://norvig.com/big.txt , or any other large text corpus
         //The dictionary may contain vocabulary from different languages. 
         //If you use mixed vocabulary use the language parameter in Correct() and CreateDictionary() accordingly.
         //You may use CreateDictionaryEntry() to update a (self learning) dictionary incrementally
+        //To extend spelling correction beyond single words to phrases (e.g. correcting "unitedkingom" to "united kingdom") simply add those phrases with CreateDictionaryEntry().
         CreateDictionary("big.txt","");
         ReadFromStdIn();
     }
