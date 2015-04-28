@@ -80,7 +80,7 @@ static class SymSpell
                     .Select(m => m.Value);
     }
 
-    public static int maxlength = 0;//maximum dictionary term length //neueneu
+    public static int maxlength = 0;//maximum dictionary term length
 
     //for every word there all deletes with an edit distance of 1..editDistanceMax created and added to the dictionary
     //every delete entry has a suggestions list, which points to the original term(s) it was created from
@@ -112,7 +112,7 @@ static class SymSpell
             (value as dictionaryItem).count++;
             dictionary.Add(language + key, value as dictionaryItem);
 
-            if (key.Length > maxlength) maxlength = key.Length;//neuneu
+            if (key.Length > maxlength) maxlength = key.Length;
         }
 
 
@@ -122,8 +122,8 @@ static class SymSpell
         //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
         if ((value as dictionaryItem).count == 1)
         {
-            //string2int
-            wordlist.Add(key);//was ist mit language???
+            //word2index
+            wordlist.Add(key);
             Int32 keyint = (Int32)(wordlist.Count - 1);
 
             result = true;
@@ -131,30 +131,24 @@ static class SymSpell
             //create deletes
             foreach (string delete in Edits(key, 0, new HashSet<string>()))
             {
-                //dictionaryItem value2;
                 object value2;
                 if (dictionary.TryGetValue(language+delete, out value2))
                 {
-                    //neuneu2: Int16 statt int
                     //already exists:
                     //1. word1==deletes(word2) 
                     //2. deletes(word1)==deletes(word2) 
-                    //if (!value2.suggestions.Contains(key)) AddLowestDistance(value2, key, delete.Value);
-                    //int or dictionaryItem? single delete existed before
+                    //int or dictionaryItem? single delete existed before!
                     if (value2 is Int32) 
                     {
-
+                        //transformes int to dictionaryItem
                         Int32 tmp = (Int32)value2; dictionaryItem di = new dictionaryItem(); di.suggestions.Add(tmp); dictionary[language + delete] = di;
                         if (!di.suggestions.Contains(keyint)) AddLowestDistance(di, key, keyint, delete);
-                    }//umwandlung int to dictionaryItem }//neuneu2 kann vereinfacht werden: ohne contains; dict[key]= statt add  
+                    }
                     else if (!(value2 as dictionaryItem).suggestions.Contains(keyint)) AddLowestDistance(value2 as dictionaryItem, key, keyint, delete);
                 }
                 else
                 {
-                    //value2 = new dictionaryItem();
-                    //value2.suggestions.Add(keyint);
-                    dictionary.Add(language + delete, keyint);
-                    
+                    dictionary.Add(language + delete, keyint);         
                 }
 
             }
@@ -227,7 +221,7 @@ static class SymSpell
     private static List<suggestItem> Lookup(string input, string language, int editDistanceMax)
     {
         //save some time
-        if (input.Length - editDistanceMax > maxlength) return new List<suggestItem>();//neuneu
+        if (input.Length - editDistanceMax > maxlength) return new List<suggestItem>();
 
         List<string> candidates = new List<string>();
         HashSet<string> hashset1 = new HashSet<string>();
@@ -235,7 +229,6 @@ static class SymSpell
         List<suggestItem> suggestions = new List<suggestItem>();
         HashSet<string> hashset2 = new HashSet<string>();
 
-        //dictionaryItem value;
         object valueo;
 
         //add original term
@@ -253,14 +246,13 @@ static class SymSpell
             if ((verbose < 2) && (suggestions.Count > 0) && (input.Length-candidate.Length > suggestions[0].distance)) goto sort;
 
 
-                //## read candidate entry from dictionary
+            //read candidate entry from dictionary
             if (dictionary.TryGetValue(language + candidate, out valueo))
             {
                 dictionaryItem value= new dictionaryItem();
                 if (valueo is Int32) value.suggestions.Add((Int32)valueo); else value = (dictionaryItem)valueo;
 
-                //## if count>0 then candidate entry is correct dictionary term, not only delete item
-                //term2int
+                //if count>0 then candidate entry is correct dictionary term, not only delete item
                 if ((value.count > 0) && hashset2.Add(candidate))
                 {
                     //add correct dictionary term term to suggestion list
@@ -279,7 +271,7 @@ static class SymSpell
                 {
                     //save some time 
                     //skipping double items early: different deletes of the input term can lead to the same suggestion
-                    //int2string
+                    //index2word
                     string suggestion = wordlist[suggestionint];
                     if (hashset2.Add(suggestion))
                     {
