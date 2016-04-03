@@ -1,7 +1,7 @@
 SymSpell
 ========
 
-SymSpell: 1 million times faster through Symmetric Delete spelling correction algorithm
+SymSpell: **1 million times faster** through Symmetric Delete spelling correction algorithm
 
 The Symmetric Delete spelling correction algorithm reduces the complexity of edit candidate generation and dictionary lookup for a given Damerau-Levenshtein distance. It is six orders of magnitude faster (than the standard approach with deletes + transposes + replaces + inserts) and language independent.
 
