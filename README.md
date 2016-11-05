@@ -46,7 +46,8 @@ https://github.com/gpranav88/symspell
 **Javascript** (third party port)<br>
 https://github.com/itslenny/SymSpell.js<br>
 https://github.com/dongyuwei/SymSpell<br>
-https://github.com/IceCreamYou/SymSpell
+https://github.com/IceCreamYou/SymSpell<br>
+https://github.com/Yomguithereal/talisman/blob/master/src/structures/symspell.js
 
 **Swift** (third party port)<br>
 https://github.com/Archivus/SymSpell
