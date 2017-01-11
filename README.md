@@ -56,4 +56,7 @@ https://github.com/Archivus/SymSpell
 https://github.com/PhilT/symspell
 
 **Python** (third party port)<br>
-https://github.com/dominedo/spark-n-spell/blob/master/symspell_python.py
+https://github.com/ppgmg/spark-n-spell-1/blob/master/symspell_python.py
+
+**C++** (third party port)<br>
+https://github.com/erhanbaris/SymSpellPlusPlus
