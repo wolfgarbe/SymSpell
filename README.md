@@ -40,6 +40,12 @@ Usage: single word + Enter:  Display spelling suggestions
 The following third party ports to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm:
 
 
+**C++** (third party port)<br>
+https://github.com/erhanbaris/SymSpellPlusPlus
+
+**Go** (third party port)<br>
+https://github.com/heartszhang/symspell
+
 **Java** (third party port)<br>
 https://github.com/gpranav88/symspell
 
@@ -49,14 +55,11 @@ https://github.com/dongyuwei/SymSpell<br>
 https://github.com/IceCreamYou/SymSpell<br>
 https://github.com/Yomguithereal/talisman/blob/master/src/structures/symspell.js
 
-**Swift** (third party port)<br>
-https://github.com/Archivus/SymSpell
+**Python** (third party port)<br>
+https://github.com/ppgmg/spark-n-spell-1/blob/master/symspell_python.py
 
 **Ruby** (third party port)<br>
 https://github.com/PhilT/symspell
 
-**Python** (third party port)<br>
-https://github.com/ppgmg/spark-n-spell-1/blob/master/symspell_python.py
-
-**C++** (third party port)<br>
-https://github.com/erhanbaris/SymSpellPlusPlus
+**Swift** (third party port)<br>
+https://github.com/Archivus/SymSpell
