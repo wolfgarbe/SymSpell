@@ -53,7 +53,7 @@ https://github.com/gpranav88/symspell
 https://github.com/itslenny/SymSpell.js<br>
 https://github.com/dongyuwei/SymSpell<br>
 https://github.com/IceCreamYou/SymSpell<br>
-https://github.com/Yomguithereal/talisman/blob/master/src/structures/symspell.js
+https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 
 **Python** (third party port)<br>
 https://github.com/ppgmg/spark-n-spell-1/blob/master/symspell_python.py
