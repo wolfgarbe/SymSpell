@@ -44,7 +44,7 @@ The following third party ports to other programming languages have not been tes
 https://github.com/erhanbaris/SymSpellPlusPlus
 
 **Go** (third party port)<br>
-https://github.com/heartszhang/symspell
+https://github.com/heartszhang/symspell<br>
 https://github.com/sajari/fuzzy
 
 **Java** (third party port)<br>
