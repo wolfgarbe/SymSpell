@@ -45,6 +45,7 @@ https://github.com/erhanbaris/SymSpellPlusPlus
 
 **Go** (third party port)<br>
 https://github.com/heartszhang/symspell
+https://github.com/sajari/fuzzy
 
 **Java** (third party port)<br>
 https://github.com/gpranav88/symspell
