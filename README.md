@@ -32,7 +32,7 @@ Usage: single word + Enter:  Display spelling suggestions
 <br><br>
 ##### Blog Posts: Algorithm, Benchmarks, Applications
 [1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)<br>
-[1000x Faster Spelling Correction: Source Code released] (http://blog.faroo.com/2012/06/24/1000x-faster-spelling-correction-source-code-released/)<br>
+[1000x Faster Spelling Correction: Source Code released](http://blog.faroo.com/2012/06/24/1000x-faster-spelling-correction-source-code-released/)<br>
 [Fast approximate string matching with large edit distances in Big Data](http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/)<br> 
 [Very fast Data cleaning of product names, company names & street names](http://blog.faroo.com/2015/09/29/how-to-correct-company-names-street-names-product-names/) 
 <br><br>
