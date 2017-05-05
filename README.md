@@ -31,7 +31,7 @@ Usage: single word + Enter:  Display spelling suggestions
 
 <br><br>
 __UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)__
-<br>
+<br><br>
 ##### Blog Posts: Algorithm, Benchmarks, Applications
 [1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)<br>
 [1000x Faster Spelling Correction: Source Code released](http://blog.faroo.com/2012/06/24/1000x-faster-spelling-correction-source-code-released/)<br>
