@@ -32,6 +32,12 @@ Usage: single word + Enter:  Display spelling suggestions
 <br><br>
 __UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)__
 <br><br>
+#### Frequency dictionary
+
+The [word frequency list](https://github.com/wolfgarbe/SymSpellCompound/blob/master/wordfrequency_en.txt) was created by intersecting the two lists mentioned below. By reciprocally filtering only those words which appear in both lists are used. Additional filters were applied and the resulting list truncated to &#8776; 80,000 most frequent words.
+* [Google Books Ngram data](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)   [(License)](https://creativecommons.org/licenses/by/3.0/) : Provides representative word frequencies
+* [SCOWL - Spell Checker Oriented Word Lists](http://wordlist.aspell.net/)   [(License)](http://wordlist.aspell.net/scowl-readme/) : Ensures genuine English vocabulary    
+<br><br>
 ##### Blog Posts: Algorithm, Benchmarks, Applications
 [1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)<br>
 [1000x Faster Spelling Correction: Source Code released](http://blog.faroo.com/2012/06/24/1000x-faster-spelling-correction-source-code-released/)<br>
@@ -69,7 +75,7 @@ https://github.com/Archivus/SymSpell
 
 ---
 
-**Changes in v4.0**
+#### Changes in v4.0
 1. Fix: previously not always all suggestions within edit distance (verbose=1) or the best suggestion (verbose=0) were returned : e.g. "elove" did not return "love"
 2. Regex will not anymore split words at apostrophes
 3. Dictionary<string, object> dictionary = new Dictionary<string, object>(); changed to Dictionary<string, Int32> dictionary = new Dictionary<string, Int32>();
