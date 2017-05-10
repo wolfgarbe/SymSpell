@@ -32,6 +32,14 @@ Usage: single word + Enter:  Display spelling suggestions
 <br><br>
 __UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)__
 <br><br>
+#### Performance
+
+0.000033 seconds (edit distance 2) and 0.000180 seconds (edit distance 3) (single core on 2012 Macbook Pro)
+
+#### Applications
+
+Query correction, OCR post-processing, orthographic quality assessment, agent & chat bot conversation.
+
 #### Frequency dictionary
 The [word frequency list](https://github.com/wolfgarbe/symspell/blob/master/wordfrequency_en.txt) was created by intersecting the two lists mentioned below. By reciprocally filtering only those words which appear in both lists are used. Additional filters were applied and the resulting list truncated to &#8776; 80,000 most frequent words.
 * [Google Books Ngram data](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)   [(License)](https://creativecommons.org/licenses/by/3.0/) : Provides representative word frequencies
