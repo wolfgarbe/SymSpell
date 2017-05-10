@@ -39,7 +39,10 @@ __UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompo
 
 #### Applications
 
-Query correction, OCR post-processing, orthographic quality assessment, agent & chat bot conversation.
+* Query correction (10–15% of queries contain misspelled terms),
+* Chatbots,
+* OCR post-processing,
+* Automated proofreading.
 
 #### Frequency dictionary
 The [word frequency list](https://github.com/wolfgarbe/symspell/blob/master/wordfrequency_en.txt) was created by intersecting the two lists mentioned below. By reciprocally filtering only those words which appear in both lists are used. Additional filters were applied and the resulting list truncated to &#8776; 80,000 most frequent words.
