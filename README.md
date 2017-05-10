@@ -34,7 +34,7 @@ __UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompo
 <br><br>
 #### Performance
 
-0.000033 seconds (edit distance 2) and 0.000180 seconds (edit distance 3) (single core on 2012 Macbook Pro)
+0.000033 seconds (edit distance 2) and 0.000180 seconds (edit distance 3) (single core on 2012 Macbook Pro)<br>
 [More Benchmarks](http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/)
 
 #### Applications
