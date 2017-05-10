@@ -12,8 +12,8 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 The speed comes from pre-calculation. An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3, but with SymSpell you need to pre-calculate & store **only 25 deletes** to cover them all. Magic!
 
 ```
-Copyright (C) 2015 Wolf Garbe
-Version: 3.0
+Copyright (C) 2017 Wolf Garbe
+Version: 4.0
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/
