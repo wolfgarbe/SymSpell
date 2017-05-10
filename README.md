@@ -67,6 +67,7 @@ https://github.com/PhilT/symspell
 **Swift** (third party port)<br>
 https://github.com/Archivus/SymSpell
 
+---
 
 **Changes in v4.0**
 1. Fix: previously not always all suggestions within edit distance (verbose=1) or the best suggestion (verbose=0) were returned : e.g. "elove" did not return "love"
