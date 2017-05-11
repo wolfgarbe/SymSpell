@@ -89,8 +89,8 @@ https://github.com/Archivus/SymSpell
 #### Changes in v4.0
 1. Fix: previously not always all suggestions within edit distance (verbose=1) or the best suggestion (verbose=0) were returned : e.g. "elove" did not return "love"
 2. Regex will not anymore split words at apostrophes
-3. Dictionary<string, object> dictionary = new Dictionary<string, object>(); changed to Dictionary<string, Int32> dictionary = new Dictionary<string, Int32>();
-4. LoadDictionary() added to load a Frequency dictionary. CreateDictionary remains and can be used alternatively to create a dictionary from a large text corpus.
+3. Dictionary<string, object> dictionary   changed to   Dictionary<string, Int32> dictionary
+4. LoadDictionary() added to load a frequency dictionary. CreateDictionary remains and can be used alternatively to create a dictionary from a large text corpus.
 5. English word frequency dictionary added (wordfrequency_en.txt). Dictionary quality is paramount for correction quality. In order to achieve this two data sources were combined by intersection:
    Google Books Ngram data which provides representative word frequencies (but contains many entries with spelling errors) and SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies required for ranking of suggestions within the same edit distance).
 6. dictionaryItem.count was changed from Int32 to Int64 for compatibility with dictionaries derived from Google Ngram data.
