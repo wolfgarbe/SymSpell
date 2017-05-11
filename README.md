@@ -76,7 +76,7 @@ https://github.com/IceCreamYou/SymSpell<br>
 https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 
 **Python** (third party port)<br>
-https://github.com/ppgmg/spark-n-spell-1/blob/master/symspell_python.py
+https://github.com/ppgmg/github_public/blob/master/spell/symspell_python.py
 
 **Ruby** (third party port)<br>
 https://github.com/PhilT/symspell
