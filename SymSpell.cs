@@ -177,8 +177,6 @@ static class SymSpell
         return result;
     }
 
-    public static Dictionary<string,Int64> bigrams = new Dictionary<string, Int64>();
-
     //load a frequency dictionary
     private static void LoadDictionary(string corpus, string language, int termIndex, int countIndex)
     {
