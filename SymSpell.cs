@@ -30,7 +30,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 
-static class SymSpell
+public static class SymSpell
 {
     private static int editDistanceMax=2;
 
@@ -178,7 +178,7 @@ static class SymSpell
     }
 
     //load a frequency dictionary
-    private static void LoadDictionary(string corpus, string language, int termIndex, int countIndex)
+    public static void LoadDictionary(string corpus, string language, int termIndex, int countIndex)
     {
         //frequency dictionary
         if (!File.Exists(corpus))
@@ -192,7 +192,7 @@ static class SymSpell
         stopWatch.Start();
         long wordCount = 0;
 
-        using (StreamReader sr = new StreamReader(corpus))
+        using (StreamReader sr = new StreamReader(File.OpenRead(corpus)))
         {
             String line;
 
@@ -215,7 +215,7 @@ static class SymSpell
 
         wordlist.TrimExcess();
         stopWatch.Stop();
-        Console.WriteLine("\rDictionary: " + wordCount.ToString("N0") + " words, " + dictionary.Count.ToString("N0") + " entries, edit distance=" + editDistanceMax.ToString() + " in " + stopWatch.ElapsedMilliseconds.ToString() + "ms " + (Process.GetCurrentProcess().PrivateMemorySize64 / 1000000).ToString("N0") + " MB");
+        Console.WriteLine("\rDictionary: " + wordCount.ToString("N0") + " words, " + dictionary.Count.ToString("N0") + " entries, edit distance=" + editDistanceMax.ToString() + " in " + stopWatch.ElapsedMilliseconds.ToString() + "ms "/* + (Process.GetCurrentProcess().PrivateMemorySize64 / 1000000).ToString("N0") + " MB"*/);
     }
 
     //create a frequency dictionary from a corpus
@@ -232,7 +232,7 @@ static class SymSpell
         stopWatch.Start();
         long wordCount = 0;
 
-        using (StreamReader sr = new StreamReader(corpus))
+        using (StreamReader sr = new StreamReader(File.OpenRead(corpus)))
         {
             String line;
             //process a single line at a time only for memory efficiency
@@ -247,7 +247,7 @@ static class SymSpell
 
         wordlist.TrimExcess();
         stopWatch.Stop();
-        Console.WriteLine("\rDictionary: " + wordCount.ToString("N0") + " words, " + dictionary.Count.ToString("N0") + " entries, edit distance=" + editDistanceMax.ToString() + " in " + stopWatch.ElapsedMilliseconds.ToString()+"ms "+ (Process.GetCurrentProcess().PrivateMemorySize64/1000000).ToString("N0")+ " MB");
+        Console.WriteLine("\rDictionary: " + wordCount.ToString("N0") + " words, " + dictionary.Count.ToString("N0") + " entries, edit distance=" + editDistanceMax.ToString() + " in " + stopWatch.ElapsedMilliseconds.ToString()+"ms "/*+ (Process.GetCurrentProcess().PrivateMemorySize64/1000000).ToString("N0")+ " MB"*/);
     }
 
     //save some time and space
@@ -417,7 +417,7 @@ static class SymSpell
         if ((verbose == 0)&&(suggestions.Count>1)) return suggestions.GetRange(0, 1); else return suggestions;
     }
 
-    private static void Correct(string input, string language)
+    public static void Correct(string input, string language)
     {
         List<suggestItem> suggestions = null;
 
