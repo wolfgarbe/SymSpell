@@ -30,7 +30,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 
-static class SymSpell
+public static class SymSpell
 {
     private static int editDistanceMax=2;
 
