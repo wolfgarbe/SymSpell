@@ -17,4 +17,14 @@
     <Version>4.0</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="wordfrequency_en.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wordfrequency_en.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
