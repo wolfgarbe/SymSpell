@@ -178,7 +178,7 @@ static class SymSpell
     }
 
     //load a frequency dictionary
-    private static void LoadDictionary(string corpus, string language, int termIndex, int countIndex)
+    public static void LoadDictionary(string corpus, string language, int termIndex, int countIndex)
     {
         //frequency dictionary
         if (!File.Exists(corpus))
@@ -417,7 +417,7 @@ static class SymSpell
         if ((verbose == 0)&&(suggestions.Count>1)) return suggestions.GetRange(0, 1); else return suggestions;
     }
 
-    private static void Correct(string input, string language)
+    public static void Correct(string input, string language)
     {
         List<suggestItem> suggestions = null;
 
