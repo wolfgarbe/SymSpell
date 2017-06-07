@@ -88,7 +88,7 @@ https://github.com/Archivus/SymSpell
 ---
 
 #### Changes in v4.1
-1. symspell.csproj Generates a SymSpell NuGet package (which can be added to your project)
+1. symspell.csproj Generates a [SymSpell NuGet package](https://www.nuget.org/packages/symspell) (which can be added to your project)
 2. symspelldemo.csproj Shows how SymSpell can be used in your project (by using symspell.cs directly or by adding the SymSpell NuGet package)
 
 #### Changes in v4.0
