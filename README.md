@@ -89,7 +89,7 @@ https://github.com/Archivus/SymSpell
 
 #### Changes in v4.1
 1. symspell.csproj Generates a [SymSpell NuGet package](https://www.nuget.org/packages/symspell) (which can be added to your project)
-2. symspelldemo.csproj Shows how SymSpell can be used in your project (by using symspell.cs directly or by adding the SymSpell NuGet package)
+2. symspelldemo.csproj Shows how SymSpell can be used in your project (by using symspell.cs directly or by adding the [SymSpell NuGet package](https://www.nuget.org/packages/symspell) )
 
 #### Changes in v4.0
 1. Fix: previously not always all suggestions within edit distance (verbose=1) or the best suggestion (verbose=0) were returned : e.g. "elove" did not return "love"
