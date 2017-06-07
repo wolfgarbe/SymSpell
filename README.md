@@ -13,7 +13,7 @@ The speed comes from pre-calculation. An average 5 letter word has about **3 mil
 
 ```
 Copyright (C) 2017 Wolf Garbe
-Version: 4.0
+Version: 4.1
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -86,6 +86,10 @@ https://github.com/PhilT/symspell
 https://github.com/Archivus/SymSpell
 
 ---
+
+#### Changes in v4.1
+1. symspell.csproj Generates a SymSpell NuGet package (which can be added to your project)
+2. symspelldemo.csproj Shows how SymSpell can be used in your project (by using symspell.cs directly or by adding the SymSpell NuGet package)
 
 #### Changes in v4.0
 1. Fix: previously not always all suggestions within edit distance (verbose=1) or the best suggestion (verbose=0) were returned : e.g. "elove" did not return "love"
