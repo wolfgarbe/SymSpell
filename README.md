@@ -31,7 +31,7 @@ Enter without input:  Terminate the program
 
 
 <br><br>
-## UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)
+### UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)
 <br><br>
 #### Performance
 
