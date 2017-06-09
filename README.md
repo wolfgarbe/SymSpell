@@ -11,7 +11,6 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 
 The speed comes from pre-calculation. An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3, but with SymSpell you need to pre-calculate & store **only 25 deletes** to cover them all. Magic!
 
-<br>
 
 ### UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)
 
