@@ -61,7 +61,7 @@ The [word frequency list](https://github.com/wolfgarbe/symspell/blob/master/word
 https://github.com/wolfgarbe/symspell
 
 **.NET** (NuGet package)<br>
-https://www.nuget.org/packages/symspell/4.1.0
+https://www.nuget.org/packages/symspell
 
 #### Ports
 The following third party ports to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm:
