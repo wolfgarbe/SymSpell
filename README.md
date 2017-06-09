@@ -11,9 +11,9 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 
 The speed comes from pre-calculation. An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3, but with SymSpell you need to pre-calculate & store **only 25 deletes** to cover them all. Magic!
 
-<br>
-### UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)
 <br><br>
+### UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)
+<br>
 
 ```
 Copyright (C) 2017 Wolf Garbe
@@ -106,4 +106,3 @@ https://github.com/Archivus/SymSpell
 5. English word frequency dictionary added (wordfrequency_en.txt). Dictionary quality is paramount for correction quality. In order to achieve this two data sources were combined by intersection:
    Google Books Ngram data which provides representative word frequencies (but contains many entries with spelling errors) and SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies required for ranking of suggestions within the same edit distance).
 6. dictionaryItem.count was changed from Int32 to Int64 for compatibility with dictionaries derived from Google Ngram data.
-
