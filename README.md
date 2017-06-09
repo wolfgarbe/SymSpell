@@ -56,6 +56,13 @@ The [word frequency list](https://github.com/wolfgarbe/symspell/blob/master/word
 [Very fast Data cleaning of product names, company names & street names](http://blog.faroo.com/2015/09/29/how-to-correct-company-names-street-names-product-names/)<br>
 [Sub-millisecond compound aware automatic spelling correction](https://medium.com/@wolfgarbe/symspellcompound-10ec8f467c9b)
 <br><br>
+
+**C#** (original source code)<br>
+https://github.com/wolfgarbe/symspell
+
+**.NET** (NuGet package)<br>
+https://www.nuget.org/packages/symspell/4.1.0
+
 #### Ports
 The following third party ports to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm:
 
