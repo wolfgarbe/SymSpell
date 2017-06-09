@@ -11,6 +11,10 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 
 The speed comes from pre-calculation. An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3, but with SymSpell you need to pre-calculate & store **only 25 deletes** to cover them all. Magic!
 
+<br><br>
+### UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)
+<br><br>
+
 ```
 Copyright (C) 2017 Wolf Garbe
 Version: 4.1
@@ -28,11 +32,6 @@ http://www.opensource.org/licenses/LGPL-3.0
 single word + Enter:  Display spelling suggestions<br>
 Enter without input:  Terminate the program
 
-
-
-<br><br>
-### UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)
-<br><br>
 #### Performance
 
 0.000033 seconds/word (edit distance 2) and 0.000180 seconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
