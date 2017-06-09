@@ -24,7 +24,7 @@ it under the terms of the GNU Lesser General Public License,
 version 3.0 (LGPL-3.0) as published by the Free Software Foundation.
 http://www.opensource.org/licenses/LGPL-3.0
 ```
-Usage: single word + Enter:  Display spelling suggestions
+Usage: single word + Enter:  Display spelling suggestions<br>
        Enter without input:  Terminate the program
 
 
