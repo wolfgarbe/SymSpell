@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
 using System.Diagnostics;
 
 // uses SymSpell.cs 
-// *alternatively* use SymSpell as NuGet package:
-// 1. build NuGet package "SymSpell" from project "symspell"
-// 2. add   NuGet package "SymSpell" to   project "symspelldemo" (or to your own project where you want to use symspell)
-// 3. build and run project "symspelldemo"
+// *alternatively* use SymSpell as NuGet package from https://www.nuget.org/packages/symspell
 
 // Usage: single word + Enter:  Display spelling suggestions
 //        Enter without input:  Terminate the program
@@ -61,9 +55,9 @@ namespace symspelldemo
             //wordfrequency_en.txt  ensures high correction quality by combining two data sources: 
             //Google Books Ngram data  provides representative word frequencies (but contains many entries with spelling errors)  
             //SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies)
-            //SymSpell.LoadDictionary("../../wordfrequency_en.txt", "", 0, 1);           //path when using symspell nuget package (wordfrequency_en.txt is included in nuget package)
-            string path = "../../../symspell/wordfrequency_en.txt";
-            if (!SymSpell.LoadDictionary(path, "", 0, 1)) Console.Error.WriteLine("File not found: " + Path.GetFullPath(path)); //path when using symspell.cs
+            //string path = "../../wordfrequency_en.txt";           //path when using symspell nuget package (wordfrequency_en.txt is included in nuget package)
+            string path = "../../../symspell/wordfrequency_en.txt"; //path when using symspell.cs
+            if (!SymSpell.LoadDictionary(path, "", 0, 1)) Console.Error.WriteLine("File not found: " + Path.GetFullPath(path)); 
 
             //Alternatively Create the dictionary from a text corpus (e.g. http://norvig.com/big.txt ) 
             //Make sure the corpus does not contain spelling errors, invalid terms and the word frequency is representative to increase the precision of the spelling correction.
