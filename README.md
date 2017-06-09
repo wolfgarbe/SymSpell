@@ -30,9 +30,9 @@ Enter without input:  Terminate the program
 
 
 
-<br><br>
+<br>
 ### UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound)
-<br><br>
+<br>
 #### Performance
 
 0.000033 seconds/word (edit distance 2) and 0.000180 seconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
