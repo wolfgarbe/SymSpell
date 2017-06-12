@@ -1,4 +1,4 @@
-SymSpell
+SymSpell<br>
 [![NuGet version](https://badge.fury.io/nu/symspell.svg)](https://badge.fury.io/nu/symspell)
 ========
 
