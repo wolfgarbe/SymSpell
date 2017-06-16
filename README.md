@@ -78,6 +78,7 @@ https://github.com/sajari/fuzzy
 
 **Java** (third party port)<br>
 https://github.com/gpranav88/symspell
+https://github.com/searchhub/preDict
 
 **Javascript** (third party port)<br>
 https://github.com/itslenny/SymSpell.js<br>
