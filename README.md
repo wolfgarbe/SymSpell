@@ -37,7 +37,8 @@ Enter without input:  Terminate the program
 #### Performance
 
 0.000033 seconds/word (edit distance 2) and 0.000180 seconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
-[More Benchmarks](http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/)
+[Benchmark 1](http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/)<br>
+[Benchmark 2](https://medium.com/@wolfgarbe/symspell-vs-bk-tree-100x-faster-fuzzy-string-search-spell-checking-c4f10d80a078)
 
 #### Applications
 
