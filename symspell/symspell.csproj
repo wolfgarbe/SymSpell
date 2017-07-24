@@ -26,12 +26,12 @@
     <DefineConstants>NETSTANDARD1_3</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="wordfrequency_en.txt" />
+ <ItemGroup>
+    <None Remove="frequency_dictionary_en_82_765.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wordfrequency_en.txt">
+    <Content Include="frequency_dictionary_en_82_765.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

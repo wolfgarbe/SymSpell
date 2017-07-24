@@ -37,21 +37,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\symspell\DamerauLevenshtein\DamerauLevenshtein.cs">
+      <Link>DamerauLevenshtein.cs</Link>
+    </Compile>
     <Compile Include="..\symspell\SymSpell.cs">
       <Link>SymSpell.cs</Link>
     </Compile>
-    <Compile Include="symspelldemo.cs" />
+    <Compile Include="SymSpellDemo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

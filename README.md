@@ -19,7 +19,7 @@ The speed comes from pre-calculation. An average 5 letter word has about **3 mil
 
 ```
 Copyright (C) 2017 Wolf Garbe
-Version: 4.1
+Version: 5.0
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -96,6 +96,19 @@ https://github.com/PhilT/symspell
 https://github.com/Archivus/SymSpell
 
 ---
+
+#### Changes in v5.0
+1. FIX: Suggestions were not always complete for input.Length <= editDistanceMax.
+2. FIX: Suggestions were not always complete/best for verbose < 2.
+3. IMPROVEMENT: Prefix indexing implemented: more than 90% memory reduction, depending on prefix length and edit distance.
+   The discriminatory power of additional chars is decreasing with word length. 
+   By restricting the delete candidate generation to the prefix, we can save space, without sacrificing filter efficiency too much. 
+   Longer prefix length means higher search speed at the cost of higher index size.
+4. IMPROVEMENT: Algorithm for DamerauLevenshteinDistance() changed for a faster one.
+5. ParseWords() without LINQ
+6. CreateDictionaryEntry simplified, AddLowestDistance() removed.
+7. Lookup() improved.
+8. Benchmark() added: Lookup of 1000 terms with random spelling errors.
 
 #### Changes in v4.1
 1. symspell.csproj Generates a [SymSpell NuGet package](https://www.nuget.org/packages/symspell) (which can be added to your project)
