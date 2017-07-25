@@ -260,8 +260,6 @@ public static class SymSpell
         return Edits(key.Length <= lp ? key : key.Substring(0, lp), 0, hashSet);
     }
 
-    public static Dictionary<string, long> dictionaryLinear = new Dictionary<string, long>();
-
     public static List<SuggestItem> Lookup(string input, string language, int editDistanceMax)
     {
         //save some time
