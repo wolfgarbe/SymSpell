@@ -72,7 +72,7 @@ https://github.com/wolfgarbe/symspell
 https://www.nuget.org/packages/symspell
 
 #### Ports
-The following third party ports to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm:
+The following third party ports to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. Most of the ports target **SymSpell algorithm version 3.0** or earlier:
 
 
 **C++** (third party port)<br>
