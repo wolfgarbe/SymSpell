@@ -3,7 +3,7 @@ SymSpell<br>
 ========
 
 Spelling correction & Fuzzy search: **1 million times faster** through Symmetric Delete spelling correction algorithm
-
+ 
 The Symmetric Delete spelling correction algorithm reduces the complexity of edit candidate generation and dictionary lookup for a given Damerau-Levenshtein distance. It is six orders of magnitude faster ([than the standard approach with deletes + transposes + replaces + inserts](http://norvig.com/spell-correct.html)) and language independent.
 
 Opposite to other algorithms only deletes are required, no transposes + replaces + inserts.
