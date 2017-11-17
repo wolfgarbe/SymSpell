@@ -122,7 +122,7 @@ public static class SymSpell
 
             countPrevious = value.count;
             //summarizes multiple frequency entries of a word (prevents overflow)
-            value.count = Math.Min(Int64.MaxValue, value.count + count);
+            value.count = (Int64.MaxValue - value.count > count) ? value.count + count : Int64.MaxValue;
         }
         else 
         {
@@ -200,7 +200,7 @@ public static class SymSpell
                     //Int64 count;
                     if (Int64.TryParse(lineParts[countIndex], out Int64 count))
                     {
-                        CreateDictionaryEntry(key, language, Math.Min(Int64.MaxValue, count));
+                        CreateDictionaryEntry(key, language, count);
                     }
                 }
             }
