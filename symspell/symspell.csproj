@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>True</Optimize>
+    <Optimize>false</Optimize>
     <DefineConstants>NETSTANDARD1_3</DefineConstants>
   </PropertyGroup>
 
