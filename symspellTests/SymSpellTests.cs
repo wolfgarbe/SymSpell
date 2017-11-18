@@ -11,14 +11,15 @@ namespace symspellTests
         [Test]
         public void AddAdditionCountsShouldNotOverflow()
         {
-            var word = "***************";
-            SymSpell.CreateDictionaryEntry(word, "", long.MaxValue - 10);
-            var result = SymSpell.Lookup(word, "", 0);
+            var symSpell = new SymSpell();
+            var word = "hello";
+            symSpell.CreateDictionaryEntry(word, "", long.MaxValue - 10);
+            var result = symSpell.Lookup(word, "", 0);
             long count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(long.MaxValue - 10, count);
-            SymSpell.CreateDictionaryEntry(word, "", 11);
-            result = SymSpell.Lookup(word, "", 0);
+            symSpell.CreateDictionaryEntry(word, "", 11);
+            result = symSpell.Lookup(word, "", 0);
             count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(long.MaxValue, count);
@@ -27,11 +28,12 @@ namespace symspellTests
         public void ShouldReplicateNoisyResults()
         {
             var dir = AppDomain.CurrentDomain.BaseDirectory;
-            SymSpell.lp = 7;
-            SymSpell.maxlength = 2;
-            SymSpell.verbose = 1;
+            const int editDistanceMax = 2;
+            const int prefixLength = 7;
+            const int verbose = 1;
+            var symSpell = new SymSpell(editDistanceMax, prefixLength);
             string path = dir + "../../../symspell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
-            SymSpell.LoadDictionary(path, "", 0, 1);
+            symSpell.LoadDictionary(path, "", 0, 1);
 
             int resultSum = 0;
             string[] testList = new string[1000];
@@ -55,7 +57,7 @@ namespace symspellTests
             }
             for (i = 0; i < testList.Length; i++)
             {
-                suggestions = SymSpell.Lookup(testList[i], "", SymSpell.editDistanceMax);
+                suggestions = symSpell.Lookup(testList[i], "", symSpell.EditDistanceMax, verbose);
                 resultSum += suggestions.Count;
             }
             Assert.AreEqual(4945, resultSum);
