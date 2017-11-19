@@ -108,8 +108,8 @@ https://github.com/Archivus/SymSpell
 1. IMPROVEMENT: SymSpell has been refactored from static to instantiated class by [Steve Hatchett](https://github.com/softwx).
 2. IMPROVEMENT: Added benchmarking project. 
 3. IMPROVEMENT: Added unit test project.
-4. IMPROVEMENT:	Different editDistanceMax for building dictionary, and Lookup. Added validation to ensure max edit distance specified for Lookup is <= max dictionary edit distance.
-5. CHANGE: 	Removed language feature (not needed, as separate SymSpell instances can be made instead)
+4. IMPROVEMENT:	Different maxEditDistance for building dictionary and for Lookup. Added validation to ensure max lookup edit distance specified <= max dictionary edit distance.
+5. CHANGE: 	Removed language feature (not needed, as separate SymSpell instances can be made instead).
 6. FIX: count overflow protection fixed.
 
 #### Changes in v5.0
