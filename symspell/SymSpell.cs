@@ -7,7 +7,7 @@
 // Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,000 Unicode Han characters!
 //
 // Copyright (C) 2017 Wolf Garbe
-// Version: 5.0
+// Version: 5.1
 // Author: Wolf Garbe <wolf.garbe@faroo.com>
 // Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 // URL: https://github.com/wolfgarbe/symspell
@@ -33,7 +33,7 @@ public class SymSpell
 
     private int maxDictionaryEditDistance;
     private int maxLength; //maximum dictionary term length
-    private int lp; //prefix length  5..7
+    private int prefixLength; //prefix length  5..7
 
     //Dictionary that contains both the original words and the deletes derived from them. A term might be both word and delete from another word at the same time.
     //For space reduction a item might be either of type dictionaryItem or Int. 
@@ -69,7 +69,7 @@ public class SymSpell
     }
 
     public int MaxDictionaryEditDistance { get { return this.maxDictionaryEditDistance; } }
-    public int PrefixLenth { get { return this.lp; } }
+    public int PrefixLength { get { return this.prefixLength; } }
     /// <summary>Length of longest word in the dictionary.</summary>
     public int MaxLength { get { return this.maxLength; } }
 
@@ -93,7 +93,7 @@ public class SymSpell
 
     public SymSpell(int maxDictionaryEditDistance = defaultMaxEditDistance, int prefixLength = defaultPrefixLength) {
         this.maxDictionaryEditDistance = maxDictionaryEditDistance;
-        this.lp = prefixLength;
+        this.prefixLength = prefixLength;
     }
 
     public void Clear()
@@ -273,7 +273,7 @@ public class SymSpell
         while (candidatePointer < candidates.Count)
         {
             string candidate = candidates[candidatePointer++];
-            int lengthDiff = Math.Min(input.Length, lp) - candidate.Length;
+            int lengthDiff = Math.Min(input.Length, prefixLength) - candidate.Length;
 
             //save some time
             //early termination
@@ -350,14 +350,14 @@ public class SymSpell
                         else
                         //number of edits in prefix ==maxediddistance  AND no identic suffix, then editdistance>maxEditDistance and no need for Levenshtein calculation  
                         //                                                 (input.Length >= lp) && (suggestion.Length >= lp) 
-                        if ((lp - maxEditDistance == candidate.Length) && (((min = Math.Min(input.Length, suggestion.Length) - lp) > 1) && (input.Substring(input.Length + 1 - min) != suggestion.Substring(suggestion.Length + 1 - min))) || ((min > 0) && (input[input.Length - min] != suggestion[suggestion.Length - min]) && ((input[input.Length - min - 1] != suggestion[suggestion.Length - min]) || (input[input.Length - min] != suggestion[suggestion.Length - min - 1]))))
+                        if ((prefixLength - maxEditDistance == candidate.Length) && (((min = Math.Min(input.Length, suggestion.Length) - prefixLength) > 1) && (input.Substring(input.Length + 1 - min) != suggestion.Substring(suggestion.Length + 1 - min))) || ((min > 0) && (input[input.Length - min] != suggestion[suggestion.Length - min]) && ((input[input.Length - min - 1] != suggestion[suggestion.Length - min]) || (input[input.Length - min] != suggestion[suggestion.Length - min - 1]))))
                         {
                             continue;
                         }
                         else
                         //edit distance of remaining string (after prefix)
-                        if ((suggestion.Length == candidate.Length) && (input.Length <= lp)) { if (!hashset2.Add(suggestion)) continue; distance = input.Length - candidate.Length; }
-                        else if ((input.Length == candidate.Length) && (suggestion.Length <= lp)) { if (!hashset2.Add(suggestion)) continue; distance = suggestion.Length - candidate.Length; }
+                        if ((suggestion.Length == candidate.Length) && (input.Length <= prefixLength)) { if (!hashset2.Add(suggestion)) continue; distance = input.Length - candidate.Length; }
+                        else if ((input.Length == candidate.Length) && (suggestion.Length <= prefixLength)) { if (!hashset2.Add(suggestion)) continue; distance = suggestion.Length - candidate.Length; }
                         else if (hashset2.Add(suggestion))
                         {
                             distance = EditDistance.DamerauLevenshteinDistance(input, suggestion, maxEditDistance2); if (distance < 0) distance = maxEditDistance + 1;
@@ -405,7 +405,7 @@ public class SymSpell
                 //if ((verbose < 2) && (suggestions.Count > 0) && (input.Length - candidate.Length >= suggestions[0].distance)) continue;
                 if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;//!?!
 
-                if (candidate.Length > lp) candidate = candidate.Substring(0, lp); //just the input entry might be > lp
+                if (candidate.Length > prefixLength) candidate = candidate.Substring(0, prefixLength); //just the input entry might be > lp
                 for (int i = 0; i < candidate.Length; i++)
                 {
                     string delete = candidate.Remove(i, 1);
@@ -462,6 +462,6 @@ public class SymSpell
         HashSet<string> hashSet = new HashSet<string>();
         if (key.Length <= maxDictionaryEditDistance) hashSet.Add(""); //Fix: add ""-delete
 
-        return Edits(key.Length <= lp ? key : key.Substring(0, lp), 0, hashSet);
+        return Edits(key.Length <= prefixLength ? key : key.Substring(0, prefixLength), 0, hashSet);
     }
 }
