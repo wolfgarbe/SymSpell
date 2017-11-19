@@ -1,6 +1,5 @@
-﻿using SoftWx.Diagnostics;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace symspell.Benchmark
@@ -8,137 +7,18 @@ namespace symspell.Benchmark
     class Benchmark
     {
         static readonly string Path = AppDomain.CurrentDomain.BaseDirectory;
-        static readonly string Dict82k = Path+"../../../symspell/frequency_dictionary_en_82_765.txt";
-        static readonly string Dict500k = Path+"../../../symspelldemo/test_data/frequency_dictionary_en_500_000.txt";
-        static readonly string Dict30k = Path+"../../../symspelldemo/test_data/frequency_dictionary_en_30_000.txt";
         static readonly string Query1k = Path+"../../../symspelldemo/test_data/noisy_query_en_1000.txt";
-        static string timeResults;
-        static string sizeResults;
 
-        static void Main(string[] args)
-        {
-            //benchmark time
-            BenchTime();
-            Console.WriteLine();
+        static readonly string[] DictionaryPath = {
+            Path+"../../../symspelldemo/test_data/frequency_dictionary_en_30_000.txt",
+            Path+"../../../symspell/frequency_dictionary_en_82_765.txt",
+            Path+"../../../symspelldemo/test_data/frequency_dictionary_en_500_000.txt" };
 
-            //benchmark size
-            BenchSize();
-            Console.WriteLine();
+        static readonly string[] DictionaryName = {
+            "30k",
+            "82k",
+            "500k" };
 
-            Console.Write("complete, press any key...");
-            Console.ReadKey();
-        }
-        private class TimeTest
-        {
-            public string Name;
-            public Action TestAction;
-            public int MinRuns;
-            public TimeTest(string name, Action testAction, int minRuns = 3)
-            {
-                Name = name;
-                TestAction = testAction;
-                MinRuns = minRuns;
-            }
-        }
-        static void BenchTime()
-        {
-            string[] query1k = BuildQuery1K();
-
-            // Build Test suite
-            var tests = new List<TimeTest>();
-
-            tests.Add(new TimeTest("current LoadDictionary 82k dist=1 prefixLen=5",
-                new Action(() => (new SymSpell(1, 5)).LoadDictionary(Dict82k, 0, 1))));
-            tests.Add(new TimeTest("original LoadDictionary 82k dist=1 prefixLen=5",
-                new Action(() => (new Original.SymSpell(1, 5)).LoadDictionary(Dict82k, "", 0, 1))));
-
-            tests.Add(new TimeTest("current LoadDictionary 82k dist=1 prefixLen=7",
-                new Action(() => (new SymSpell(1, 7)).LoadDictionary(Dict82k, 0, 1))));
-            tests.Add(new TimeTest("original LoadDictionary 82k dist=1 prefixLen=7",
-                new Action(() => (new Original.SymSpell(1, 7)).LoadDictionary(Dict82k, "", 0, 1))));
-
-            tests.Add(new TimeTest("current LoadDictionary 82k dist=2 prefixLen=5",
-                new Action(() => (new SymSpell(2, 5)).LoadDictionary(Dict82k, 0, 1))));
-            tests.Add(new TimeTest("original LoadDictionary 82k dist=2 prefixLen=5",
-                new Action(() => (new Original.SymSpell(2, 5)).LoadDictionary(Dict82k, "", 0, 1))));
-
-            tests.Add(new TimeTest("current LoadDictionary 82k dist=2 prefixLen=7",
-                new Action(() => (new SymSpell(2, 7)).LoadDictionary(Dict82k, 0, 1))));
-            tests.Add(new TimeTest("original LoadDictionary 82k dist=2 prefixLen=7",
-                new Action(() => (new Original.SymSpell(2, 7)).LoadDictionary(Dict82k, "", 0, 1))));
-
-            SymSpell dict = new SymSpell(2, 7);
-            dict.LoadDictionary(Dict82k, 0, 1);
-            Original.SymSpell dictOrig = new Original.SymSpell(2, 7);
-            dictOrig.LoadDictionary(Dict82k, "", 0, 1);
-
-            tests.Add(new TimeTest("current Lookup exact 82k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dict.Lookup("different", 2, 0))));
-            tests.Add(new TimeTest("original Lookup exact 82k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dictOrig.Lookup("different", "", 2, 0))));
-
-            tests.Add(new TimeTest("current Lookup non-exact 82k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dict.Lookup("hockie", 2, 0))));
-            tests.Add(new TimeTest("original Lookup non-exact 82k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dictOrig.Lookup("hockie", "", 2, 0))));
-
-            tests.Add(new TimeTest("current Lookup exact 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dict.Lookup("different", 2, 1))));
-            tests.Add(new TimeTest("original Lookup exact 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dictOrig.Lookup("different", "", 2, 1))));
-
-            tests.Add(new TimeTest("current Lookup non-exact 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dict.Lookup("hockie", 2, 1))));
-            tests.Add(new TimeTest("original Lookup non-exact 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dictOrig.Lookup("hockie", "", 2, 1))));
-
-            tests.Add(new TimeTest("current Query1000 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => { foreach (var word in query1k) dict.Lookup(word, 2, 1); })));
-            tests.Add(new TimeTest("original Query1000 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => { foreach (var word in query1k) dictOrig.Lookup(word, "", 2, 1); })));
-
-            tests.Add(new TimeTest("current LoadDictionary 500k dist=2 prefixLen=7",
-                new Action(() => (dict = new SymSpell(2, 7)).LoadDictionary(Dict500k, 0, 1)), 1));
-            tests.Add(new TimeTest("original LoadDictionary 500k dist=2 prefixLen=7",
-                new Action(() => (dictOrig = new Original.SymSpell(2, 7)).LoadDictionary(Dict500k, "", 0, 1)), 1));
-
-            tests.Add(new TimeTest("current Lookup exact 500k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dict.Lookup("different", 2, 0))));
-            tests.Add(new TimeTest("original Lookup exact 500k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dictOrig.Lookup("different", "", 2, 0))));
-
-            tests.Add(new TimeTest("current Lookup non-exact 500k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dict.Lookup("hockie", 2, 0))));
-            tests.Add(new TimeTest("original Lookup non-exact 500k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dictOrig.Lookup("hockie", "", 2, 0))));
-
-            tests.Add(new TimeTest("current Lookup exact 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dict.Lookup("different", 2, 1))));
-            tests.Add(new TimeTest("original Lookup exact 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dictOrig.Lookup("different", "", 2, 1))));
-
-            tests.Add(new TimeTest("current Lookup non-exact 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dict.Lookup("hockie", 2, 1))));
-            tests.Add(new TimeTest("original Lookup non-exact 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dictOrig.Lookup("hockie", "", 2, 1))));
-
-            tests.Add(new TimeTest("current Query1000 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => { foreach (var word in query1k) dict.Lookup(word, 2, 1); })));
-            tests.Add(new TimeTest("original Query1000 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => { foreach (var word in query1k) dictOrig.Lookup(word, "", 2, 1); })));
-
-            //run tests
-            var bench = new Bench(3, 1000, false);
-            Bench.TimeResult result;
-            timeResults = "ms per op, test description" + Environment.NewLine;
-            Console.Write(timeResults);
-            foreach(var test in tests)
-            {
-                bench.MinIterations = test.MinRuns;
-                result = bench.Time(test.Name, test.TestAction);
-                LogTime(result.MillisecondsPerOperation, test.Name);
-            }
-        }
         static string[] BuildQuery1K()
         {
             string[] testList = new string[1000];
@@ -160,83 +40,96 @@ namespace symspell.Benchmark
             }
             return testList;
         }
-        static void LogTime(double milliseconds, string name)
+
+        static void Main(string[] args)
         {
-            string txt = milliseconds.ToString("0.000000") + "," + name;
-            Console.WriteLine(txt);
-            sizeResults += txt + Environment.NewLine;
+            Console.BufferHeight = 10000;
+
+            BenchPrecalculation();
+
+            Console.WriteLine();
+            Console.Write("complete, press any key...");
+            Console.ReadKey();
         }
-        private class SizeTest
+
+        static void BenchPrecalculation()
         {
-            public string Name;
-            public Func<object> TestFunc;
-            public int MinRuns;
-            public SizeTest(string name, Func<object> testFunc, int minRuns = 3)
+            string[] query1k = BuildQuery1K();
+            int resultNumber = 0;
+            int repetitions = 1000;
+
+            Stopwatch stopWatch = new Stopwatch();
+            for (int maxEditDistance=1; maxEditDistance <=3; maxEditDistance++)
             {
-                Name = name;
-                TestFunc = testFunc;
-                MinRuns = minRuns;
+                for (int prefixLength = 5; prefixLength <= 7; prefixLength++)
+                {
+                    SymSpell dict = new SymSpell(maxEditDistance, prefixLength);
+                    Original.SymSpell dictOrig = new Original.SymSpell(maxEditDistance, prefixLength);
+
+                    //benchmark dictionary precalculation size and time 
+                    //maxEditDistance=1/2/3; prefixLength=5/6/7;  dictionary=30k/82k/500k; class=instantiated/static
+                    for (int i=0;i< DictionaryPath.Length;i++)
+                    {
+                        //instantiated dictionary                      
+                        long memSize = GC.GetTotalMemory(true);
+                        stopWatch.Restart();
+                        dict.LoadDictionary(DictionaryPath[i], 0, 1);
+                        stopWatch.Stop();
+                        long memDelta = GC.GetTotalMemory(true) - memSize;
+                        Console.WriteLine("Precalculation instance "+stopWatch.Elapsed.TotalSeconds.ToString("N1")+"s "+(memDelta/1024/1024).ToString("N0")+ "MB " +" MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
+
+                        //static dictionary 
+                        memSize = GC.GetTotalMemory(true);
+                        stopWatch.Restart();
+                        dictOrig.LoadDictionary(DictionaryPath[i], "", 0, 1);
+                        stopWatch.Stop();
+                        memDelta = GC.GetTotalMemory(true) - memSize;
+                        Console.WriteLine("Precalculation static   " + stopWatch.Elapsed.TotalSeconds.ToString("N1") + "s " + (memDelta / 1024 / 1024).ToString("N0") + "MB " + " MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
+
+                        //benchmark lookup result number and time
+                        //maxEditDistance=1/2/3; prefixLength=5/6/7; dictionary=30k/82k/500k; verbose=0/1/2; query=exact/non-exact/mix; class=instantiated/static
+                        for (int verbose=0; verbose <= 2; verbose++)
+                        {
+                            //instantiated exact
+                            stopWatch.Restart();
+                            for (int round=0;round<repetitions;round++) resultNumber=dict.Lookup("different", maxEditDistance, verbose).Count;
+                            stopWatch.Stop();             
+                            Console.WriteLine("Lookup instance "+resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds/(double)repetitions).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=exact");
+                            //static exact
+                            stopWatch.Restart();
+                            for (int round = 0; round < repetitions; round++) resultNumber = dictOrig.Lookup("different", "", maxEditDistance, verbose).Count;
+                            stopWatch.Stop();
+                            Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds / (double)repetitions).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=exact");
+                            Console.WriteLine();
+
+                            //instantiated non-exact
+                            stopWatch.Restart();
+                            for (int round = 0; round < repetitions; round++) resultNumber = dict.Lookup("hockie", maxEditDistance, verbose).Count;
+                            stopWatch.Stop();
+                            Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds / (double)repetitions).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=non-exact");
+                            //static non-exact
+                            stopWatch.Restart();
+                            for (int round = 0; round < repetitions; round++) resultNumber = dictOrig.Lookup("hockie", "", maxEditDistance, verbose).Count;
+                            stopWatch.Stop();
+                            Console.WriteLine("Lookup static   "+resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds / (double)repetitions).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=non-exact");
+                            Console.WriteLine();
+
+                            //instantiated mix                           
+                            stopWatch.Restart();
+                            resultNumber = 0; foreach (var word in query1k) resultNumber+=dict.Lookup(word, maxEditDistance, verbose).Count;
+                            stopWatch.Stop();
+                            Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds/(double)query1k.Length).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=mix");
+                            //static mix                           
+                            stopWatch.Restart();
+                            resultNumber = 0; foreach (var word in query1k) resultNumber += dictOrig.Lookup(word, "", maxEditDistance, verbose).Count;
+                            stopWatch.Stop();
+                            Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds / (double)query1k.Length).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=mix");
+                            Console.WriteLine();
+                        }
+                        Console.WriteLine();
+                    }
+                }
             }
-        }
-        static void BenchSize()
-        {
-            // Build Test suite
-            var tests = new List<SizeTest>();
-
-            tests.Add(new SizeTest("current 82k dist=1 prefixLen=5", new Func<object>(() =>
-            {
-                var d = new SymSpell(1, 5);
-                d.LoadDictionary(Dict82k, 0, 1);
-                return d;
-            })));
-            tests.Add(new SizeTest("original 82k dist=1 prefixLen=5", new Func<object>(() =>
-            {
-                var d = new Original.SymSpell(1, 5);
-                d.LoadDictionary(Dict82k, "", 0, 1);
-                return d;
-            })));
-
-            tests.Add(new SizeTest("current 82k dist=2 prefixLen=7", new Func<object>(() =>
-            {
-                var d = new SymSpell(2, 7);
-                d.LoadDictionary(Dict82k, 0, 1);
-                return d;
-            })));
-            tests.Add(new SizeTest("original 82k dist=2 prefixLen=7", new Func<object>(() =>
-            {
-                var d = new Original.SymSpell(2, 7);
-                d.LoadDictionary(Dict82k, "", 0, 1);
-                return d;
-            })));
-
-            tests.Add(new SizeTest("current 500k dist=2 prefixLen=7", new Func<object>(() =>
-            {
-                var d = new SymSpell(2, 7);
-                d.LoadDictionary(Dict500k, 0, 1);
-                return d;
-            }), 1));
-            tests.Add(new SizeTest("original 500k dist=2 prefixLen=7", new Func<object>(() =>
-            {
-                var d = new Original.SymSpell(2, 7);
-                d.LoadDictionary(Dict500k, "", 0, 1);
-                return d;
-            }), 1));
-
-            //run tests
-            var bench = new Bench(3, 1000, false);
-            timeResults = "size in megabytes, test description" + Environment.NewLine;
-            Console.Write(timeResults);
-            foreach (var test in tests)
-            {
-                bench.MinIterations = test.MinRuns;
-                LogSize(bench.ByteSize(test.TestFunc), test.Name);
-            }
-        }
-        static void LogSize(long bytes, string name)
-        {
-            string txt = (bytes/(1024*1024.0)).ToString("0.000") + "," + name;
-            Console.WriteLine(txt);
-            sizeResults += txt + Environment.NewLine;
         }
     }
 }
