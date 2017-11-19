@@ -19,7 +19,7 @@ The speed comes from pre-calculation. An average 5 letter word has about **3 mil
 
 ```
 Copyright (C) 2017 Wolf Garbe
-Version: 5.0
+Version: 5.1
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -102,6 +102,10 @@ https://github.com/PhilT/symspell
 https://github.com/Archivus/SymSpell
 
 ---
+
+#### Changes in v5.1
+
+SymSpell has been refactored from static to instantiated class by [Steve Hatchett](https://github.com/softwx).
 
 #### Changes in v5.0
 1. FIX: Suggestions were not always complete for input.Length <= editDistanceMax.
