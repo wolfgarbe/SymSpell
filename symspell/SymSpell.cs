@@ -26,12 +26,12 @@ using System.Text.RegularExpressions;
 
 public class SymSpell
 {
-    const int defaultEditDistanceMax = 2;
+    const int defaultMaxEditDistance = 2;
     const int defaultPrefixLength = 7;
 
     private int defaultVerbose = 0;
 
-    private int editDistanceMax;
+    private int maxDictionaryEditDistance;
     private int maxLength; //maximum dictionary term length
     private int lp; //prefix length  5..7
 
@@ -68,14 +68,14 @@ public class SymSpell
         }
     }
 
-    public int EditDistanceMax { get { return this.editDistanceMax; } }
+    public int MaxDictionaryEditDistance { get { return this.maxDictionaryEditDistance; } }
     public int PrefixLenth { get { return this.lp; } }
     /// <summary>Length of longest word in the dictionary.</summary>
     public int MaxLength { get { return this.maxLength; } }
 
     //0: top suggestion
     //1: all suggestions of smallest edit distance   
-    //2: all suggestions <= editDistanceMax (slower, no early termination)
+    //2: all suggestions <= maxEditDistance (slower, no early termination)
     public int DefaultVerbose
     {
         get { return this.defaultVerbose; }
@@ -91,8 +91,8 @@ public class SymSpell
     /// <summary>Number of words and intermediate word deletes encoded in the dictionary.</summary>
     public int EntryCount { get { return this.dictionary.Count; } }
 
-    public SymSpell(int editDistanceMax = defaultEditDistanceMax, int prefixLength = defaultPrefixLength) {
-        this.editDistanceMax = editDistanceMax;
+    public SymSpell(int maxDictionaryEditDistance = defaultMaxEditDistance, int prefixLength = defaultPrefixLength) {
+        this.maxDictionaryEditDistance = maxDictionaryEditDistance;
         this.lp = prefixLength;
     }
 
@@ -104,7 +104,7 @@ public class SymSpell
         this.maxLength = 0;
     }
 
-    //for every word there all deletes with an edit distance of 1..editDistanceMax created and added to the dictionary
+    //for every word there all deletes with an edit distance of 1..maxEditDistance created and added to the dictionary
     //every delete entry has a suggestions list, which points to the original term(s) it was created from
     //The dictionary may be dynamically updated (word frequency and new words) at any time by calling createDictionaryEntry
     public bool CreateDictionaryEntry(string key, Int64 count) 
@@ -243,19 +243,19 @@ public class SymSpell
         return true;
     }
 
-    public List<SuggestItem> Lookup(string input, int editDistanceMax)
+    public List<SuggestItem> Lookup(string input, int maxEditDistance)
     {
-        return Lookup(input, editDistanceMax, this.defaultVerbose);
+        return Lookup(input, maxEditDistance, this.defaultVerbose);
     }
 
-    public List<SuggestItem> Lookup(string input, int editDistanceMax, int verbose)
+    public List<SuggestItem> Lookup(string input, int maxEditDistance, int verbose)
     {
-        // editDistanceMax used in Lookup can't be bigger than the editDistanceMax use to construct
-        // the underlying dictionary structure.
-        //if (editDistanceMax > this.editDistanceMax) throw new ArgumentOutOfRangeException();
+        // maxEditDistance used in Lookup can't be bigger than the maxDictionaryEditDistance
+        // used to construct the underlying dictionary structure.
+        if (maxEditDistance > MaxDictionaryEditDistance) throw new ArgumentOutOfRangeException(nameof(maxEditDistance));
         
         //save some time
-        if (input.Length - editDistanceMax > maxLength) return new List<SuggestItem>();
+        if (input.Length - maxEditDistance > maxLength) return new List<SuggestItem>();
 
         List<string> candidates = new List<string>();
         HashSet<string> hashset1 = new HashSet<string>();
@@ -263,7 +263,7 @@ public class SymSpell
         List<SuggestItem> suggestions = new List<SuggestItem>();
         HashSet<string> hashset2 = new HashSet<string>();
 
-        int editDistanceMax2 = editDistanceMax;
+        int maxEditDistance2 = maxEditDistance;
 
         int candidatePointer = 0;
 
@@ -277,7 +277,7 @@ public class SymSpell
 
             //save some time
             //early termination
-            //suggestion distance=candidate.distance... candidate.distance+editDistanceMax                
+            //suggestion distance=candidate.distance... candidate.distance+maxEditDistance                
             //if canddate distance is already higher than suggestion distance, than there are no better suggestions to be expected
             if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff > suggestions[0].distance)) goto sort;
 
@@ -294,11 +294,11 @@ public class SymSpell
 
                     //save some time
                     //do not process higher distances than those already found, if verbose<2      
-                    if ((distance <= editDistanceMax)
+                    if ((distance <= maxEditDistance)
                     && ((verbose == 2) || (suggestions.Count == 0) || (distance <= suggestions[0].distance))
                     && (hashset2.Add(candidate)))
                     {
-                        //Fix: previously not allways all suggestons within editdistance (verbose=1) or the best suggestion (verbose=0) were returned : e.g. elove did not return love
+                        //Fix: previously not allways all suggestons within maxEditDistance (verbose=1) or the best suggestion (verbose=0) were returned : e.g. elove did not return love
                         //suggestions.Clear() was not executed in this branch, if a suggestion with lower edit distance was added here (for verbose<2). 
                         //Then possibly suggestions with higher edit distance remained on top, the suggestion with lower edit distance were added to the end. 
                         //All of them where deleted later once a suggestion with a lower distance than the first item in the list was later added in the other branch. 
@@ -328,29 +328,29 @@ public class SymSpell
                     string suggestion = wordlist[suggestionint];
 
                     //True Damerau-Levenshtein Edit Distance: adjust distance, if both distances>0
-                    //We allow simultaneous edits (deletes) of editDistanceMax on on both the dictionary and the input term. 
-                    //For replaces and adjacent transposes the resulting edit distance stays <= editDistanceMax.
-                    //For inserts and deletes the resulting edit distance might exceed editDistanceMax.
+                    //We allow simultaneous edits (deletes) of maxEditDistance on on both the dictionary and the input term. 
+                    //For replaces and adjacent transposes the resulting edit distance stays <= maxEditDistance.
+                    //For inserts and deletes the resulting edit distance might exceed maxEditDistance.
                     //To prevent suggestions of a higher edit distance, we need to calculate the resulting edit distance, if there are simultaneous edits on both sides.
-                    //Example: (bank==bnak and bank==bink, but bank!=kanb and bank!=xban and bank!=baxn for editDistanceMaxe=1)
+                    //Example: (bank==bnak and bank==bink, but bank!=kanb and bank!=xban and bank!=baxn for maxEditDistance=1)
                     //Two deletes on each side of a pair makes them all equal, but the first two pairs have edit distance=1, the others edit distance=2.
-                    int distance = 0;// editDistanceMax+1;
+                    int distance = 0;// maxEditDistance+1;
                     if (suggestion != input)
                     {
                         int min = 0;
-                        if (Math.Abs(suggestion.Length - input.Length) > editDistanceMax2)
+                        if (Math.Abs(suggestion.Length - input.Length) > maxEditDistance2)
                         {
                             continue;
                         }
                         else if (candidate.Length == 0)
                         {
-                            //suggestions which have no common chars with input (input.length<=editDistanceMax && suggestion.length<=editDistanceMax)
+                            //suggestions which have no common chars with input (input.length<=maxEditDistance && suggestion.length<=maxEditDistance)
                             if (!hashset2.Add(suggestion)) continue; distance = Math.Max(input.Length, suggestion.Length);
                         }
                         else
-                        //number of edits in prefix ==maxediddistance  AND no identic suffix, then editdistance>editdistancemax and no need for Levenshtein calculation  
+                        //number of edits in prefix ==maxediddistance  AND no identic suffix, then editdistance>maxEditDistance and no need for Levenshtein calculation  
                         //                                                 (input.Length >= lp) && (suggestion.Length >= lp) 
-                        if ((lp - editDistanceMax == candidate.Length) && (((min = Math.Min(input.Length, suggestion.Length) - lp) > 1) && (input.Substring(input.Length + 1 - min) != suggestion.Substring(suggestion.Length + 1 - min))) || ((min > 0) && (input[input.Length - min] != suggestion[suggestion.Length - min]) && ((input[input.Length - min - 1] != suggestion[suggestion.Length - min]) || (input[input.Length - min] != suggestion[suggestion.Length - min - 1]))))
+                        if ((lp - maxEditDistance == candidate.Length) && (((min = Math.Min(input.Length, suggestion.Length) - lp) > 1) && (input.Substring(input.Length + 1 - min) != suggestion.Substring(suggestion.Length + 1 - min))) || ((min > 0) && (input[input.Length - min] != suggestion[suggestion.Length - min]) && ((input[input.Length - min - 1] != suggestion[suggestion.Length - min]) || (input[input.Length - min] != suggestion[suggestion.Length - min - 1]))))
                         {
                             continue;
                         }
@@ -360,7 +360,7 @@ public class SymSpell
                         else if ((input.Length == candidate.Length) && (suggestion.Length <= lp)) { if (!hashset2.Add(suggestion)) continue; distance = suggestion.Length - candidate.Length; }
                         else if (hashset2.Add(suggestion))
                         {
-                            distance = EditDistance.DamerauLevenshteinDistance(input, suggestion, editDistanceMax2); if (distance < 0) distance = editDistanceMax + 1;
+                            distance = EditDistance.DamerauLevenshteinDistance(input, suggestion, maxEditDistance2); if (distance < 0) distance = maxEditDistance + 1;
                         }
                         else
                         {
@@ -372,7 +372,7 @@ public class SymSpell
                     //save some time
                     //do not process higher distances than those already found, if verbose<2
                     if ((verbose < 2) && (suggestions.Count > 0) && (distance > suggestions[0].distance)) continue;
-                    if (distance <= editDistanceMax)
+                    if (distance <= maxEditDistance)
                     {
                         if (dictionary.TryGetValue(suggestion, out int value2))
                         {
@@ -384,7 +384,7 @@ public class SymSpell
                             };
 
                             //we will calculate DamLev distance only to the smallest found distance sof far
-                            if (verbose < 2) editDistanceMax2 = distance;
+                            if (verbose < 2) maxEditDistance2 = distance;
 
                             //remove all existing suggestions of higher distance, if verbose<2
                             if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
@@ -398,7 +398,7 @@ public class SymSpell
             //add edits 
             //derive edits (deletes) from candidate (input) and add them to candidates list
             //this is a recursive process until the maximum edit distance has been reached
-            if (lengthDiff < editDistanceMax)
+            if (lengthDiff < maxEditDistance)
             {
                 //save some time
                 //do not create edits with edit distance smaller than suggestions already found
@@ -450,7 +450,7 @@ public class SymSpell
                 if (deletes.Add(delete))
                 {
                     //recursion, if maximum edit distance not yet reached
-                    if (editDistance < editDistanceMax) Edits(delete, editDistance, deletes);
+                    if (editDistance < maxDictionaryEditDistance) Edits(delete, editDistance, deletes);
                 }
             }
         }
@@ -460,7 +460,7 @@ public class SymSpell
     private HashSet<string> EditsPrefix(string key) 
     {
         HashSet<string> hashSet = new HashSet<string>();
-        if (key.Length <= editDistanceMax) hashSet.Add(""); //Fix: add ""-delete
+        if (key.Length <= maxDictionaryEditDistance) hashSet.Add(""); //Fix: add ""-delete
 
         return Edits(key.Length <= lp ? key : key.Substring(0, lp), 0, hashSet);
     }

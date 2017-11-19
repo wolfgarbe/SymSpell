@@ -47,7 +47,7 @@ namespace symspelldemo
 
             stopWatch.Stop();
             Console.WriteLine("\rDictionary: " + symSpell.Count.ToString("N0") + " words, "
-                + symSpell.EntryCount.ToString("N0") + " entries, edit distance=" + symSpell.EditDistanceMax.ToString()
+                + symSpell.EntryCount.ToString("N0") + " entries, edit distance=" + symSpell.MaxDictionaryEditDistance.ToString()
                 + " in " + stopWatch.ElapsedMilliseconds.ToString() + "ms "
                 + (Process.GetCurrentProcess().PrivateMemorySize64 / 1000000).ToString("N0") + " MB");
 
@@ -95,7 +95,7 @@ namespace symspelldemo
                 //spellcheck strings
                 for (i = 0; i < testNumber; i++)
                 {
-                    suggestions = symSpell.Lookup(testList[i], symSpell.EditDistanceMax); 
+                    suggestions = symSpell.Lookup(testList[i], symSpell.MaxDictionaryEditDistance); 
                     resultSum += suggestions.Count;
                 }
             }

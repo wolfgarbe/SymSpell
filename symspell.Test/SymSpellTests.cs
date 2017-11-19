@@ -57,7 +57,7 @@ namespace symspell.Test
             }
             for (i = 0; i < testList.Length; i++)
             {
-                suggestions = symSpell.Lookup(testList[i], symSpell.EditDistanceMax, verbose);
+                suggestions = symSpell.Lookup(testList[i], symSpell.MaxDictionaryEditDistance, verbose);
                 resultSum += suggestions.Count;
             }
             Assert.AreEqual(4945, resultSum);
