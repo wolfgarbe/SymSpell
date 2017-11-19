@@ -36,16 +36,14 @@ namespace symspelldemo
             //string path = "../../../symspelldemo/test_data/frequency_dictionary_en_500_000.txt"; //for benchmark only (contains also non-genuine English words)
             string path = "../../../symspell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
                                                                                      //string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
-            if (!symSpell.LoadDictionary(path, "", 0, 1)) Console.Error.WriteLine("File not found: " + Path.GetFullPath(path)); //path when using symspell.cs
+            if (!symSpell.LoadDictionary(path, 0, 1)) Console.Error.WriteLine("File not found: " + Path.GetFullPath(path)); //path when using symspell.cs
 
             //Alternatively Create the dictionary from a text corpus (e.g. http://norvig.com/big.txt ) 
             //Make sure the corpus does not contain spelling errors, invalid terms and the word frequency is representative to increase the precision of the spelling correction.
-            //The dictionary may contain vocabulary from different languages. 
-            //If you use mixed vocabulary use the language parameter in Correct() and CreateDictionary() accordingly.
             //You may use SymSpell.CreateDictionaryEntry() to update a (self learning) dictionary incrementally
             //To extend spelling correction beyond single words to phrases (e.g. correcting "unitedkingom" to "united kingdom") simply add those phrases with CreateDictionaryEntry(). or use  https://github.com/wolfgarbe/SymSpellCompound
             //string path = "big.txt";
-            //if (!symSpell.CreateDictionary(path,"")) Console.Error.WriteLine("File not found: " + Path.GetFullPath(path));
+            //if (!symSpell.CreateDictionary(path)) Console.Error.WriteLine("File not found: " + Path.GetFullPath(path));
 
             stopWatch.Stop();
             Console.WriteLine("\rDictionary: " + symSpell.Count.ToString("N0") + " words, "
@@ -58,7 +56,7 @@ namespace symspelldemo
             string input;
             while (!string.IsNullOrEmpty(input = (Console.ReadLine() ?? "").Trim()))
             {
-                Correct(input, "", symSpell);
+                Correct(input, symSpell);
             }
         }
 
@@ -97,7 +95,7 @@ namespace symspelldemo
                 //spellcheck strings
                 for (i = 0; i < testNumber; i++)
                 {
-                    suggestions = symSpell.Lookup(testList[i], "", symSpell.EditDistanceMax); 
+                    suggestions = symSpell.Lookup(testList[i], symSpell.EditDistanceMax); 
                     resultSum += suggestions.Count;
                 }
             }
@@ -105,7 +103,7 @@ namespace symspelldemo
             Console.WriteLine(resultSum.ToString("N0")+" results in "+(stopWatch.ElapsedMilliseconds/rounds).ToString() + " ms");
         }
 
-        public static void Correct(string input, string language, SymSpell symSpell)
+        public static void Correct(string input, SymSpell symSpell)
         {
             List<SymSpell.SuggestItem> suggestions = null;
 
@@ -113,7 +111,7 @@ namespace symspelldemo
             stopWatch.Start();
 
             //check if input term or similar terms within edit-distance are in dictionary, return results sorted by ascending edit distance, then by descending word frequency     
-            suggestions = symSpell.Lookup(input, language, 2);// symSpell.EditDistanceMax);
+            suggestions = symSpell.Lookup(input, 2);// symSpell.EditDistanceMax);
 
             stopWatch.Stop();
             Console.WriteLine(stopWatch.ElapsedMilliseconds.ToString()+" ms");

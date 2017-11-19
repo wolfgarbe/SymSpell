@@ -24,9 +24,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using System.Collections;
-using System.Collections.Specialized;
-
 public class SymSpell
 {
     const int defaultEditDistanceMax = 2;
@@ -110,7 +107,7 @@ public class SymSpell
     //for every word there all deletes with an edit distance of 1..editDistanceMax created and added to the dictionary
     //every delete entry has a suggestions list, which points to the original term(s) it was created from
     //The dictionary may be dynamically updated (word frequency and new words) at any time by calling createDictionaryEntry
-    public bool CreateDictionaryEntry(string key, string language, Int64 count) 
+    public bool CreateDictionaryEntry(string key, Int64 count) 
     {
         //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
         int countTreshold = 1;
@@ -118,7 +115,7 @@ public class SymSpell
         bool result = false;
         DictionaryItem value = null;
         //Int32 valueo;
-        if (dictionary.TryGetValue(language+key, out int valueo))
+        if (dictionary.TryGetValue(key, out int valueo))
         {           
             //new word, but identical single delete existed before
             //+ = single delete = index auf worlist 
@@ -129,7 +126,7 @@ public class SymSpell
                 value = new DictionaryItem();
                 value.suggestions.Add(tmp); 
                 itemlist.Add(value);
-                dictionary[language + key] = -itemlist.Count;
+                dictionary[key] = -itemlist.Count;
             }
             //existing word (word appears several times)
             else
@@ -149,7 +146,7 @@ public class SymSpell
                 count = count
             };
             itemlist.Add(value); 
-            dictionary[language + key] = -itemlist.Count;
+            dictionary[key] = -itemlist.Count;
 
             if (key.Length > maxLength) maxLength = key.Length;
         }
@@ -170,7 +167,7 @@ public class SymSpell
             {
                 //Int32 value2;
                 DictionaryItem di;
-                if (dictionary.TryGetValue(language+delete, out int value2))
+                if (dictionary.TryGetValue(delete, out int value2))
                 {
                     //already exists:
                     //1. word1==deletes(word2) 
@@ -179,7 +176,7 @@ public class SymSpell
                     if (value2 >= 0)
                     {
                         //transformes int to dictionaryItem
-                        di = new DictionaryItem(); di.suggestions.Add(value2); itemlist.Add(di); dictionary[language + delete] = -itemlist.Count;
+                        di = new DictionaryItem(); di.suggestions.Add(value2); itemlist.Add(di); dictionary[delete] = -itemlist.Count;
                         if (!di.suggestions.Contains(keyint)) di.suggestions.Add(keyint);
                     }
                     else
@@ -190,7 +187,7 @@ public class SymSpell
                 }
                 else
                 {
-                    dictionary.Add(language + delete, keyint);         
+                    dictionary.Add(delete, keyint);         
                 }
 
             }
@@ -199,7 +196,7 @@ public class SymSpell
     }
 
     //load a frequency dictionary (merges with any dictionary data already loaded)
-    public bool LoadDictionary(string corpus, string language, int termIndex, int countIndex)
+    public bool LoadDictionary(string corpus, int termIndex, int countIndex)
     {
         if (!File.Exists(corpus)) return false;
         
@@ -217,7 +214,7 @@ public class SymSpell
                     //Int64 count;
                     if (Int64.TryParse(lineParts[countIndex], out Int64 count))
                     {
-                        CreateDictionaryEntry(key, language, count);
+                        CreateDictionaryEntry(key, count);
                     }
                 }
             }
@@ -226,7 +223,7 @@ public class SymSpell
     }
 
     //create a frequency dictionary from a corpus (merges with any dictionary data already loaded) 
-    public bool CreateDictionary(string corpus, string language)
+    public bool CreateDictionary(string corpus)
     {
         if (!File.Exists(corpus)) return false;
         
@@ -238,7 +235,7 @@ public class SymSpell
             {
                 foreach (string key in ParseWords(line))
                 {
-                    CreateDictionaryEntry(key, language, 1);
+                    CreateDictionaryEntry(key, 1);
                 }
             }
         }
@@ -246,12 +243,12 @@ public class SymSpell
         return true;
     }
 
-    public List<SuggestItem> Lookup(string input, string language, int editDistanceMax)
+    public List<SuggestItem> Lookup(string input, int editDistanceMax)
     {
-        return Lookup(input, language, editDistanceMax, this.defaultVerbose);
+        return Lookup(input, editDistanceMax, this.defaultVerbose);
     }
 
-    public List<SuggestItem> Lookup(string input, string language, int editDistanceMax, int verbose)
+    public List<SuggestItem> Lookup(string input, int editDistanceMax, int verbose)
     {
         // editDistanceMax used in Lookup can't be bigger than the editDistanceMax use to construct
         // the underlying dictionary structure.
@@ -285,7 +282,7 @@ public class SymSpell
             if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff > suggestions[0].distance)) goto sort;
 
             //read candidate entry from dictionary
-            if (dictionary.TryGetValue(language + candidate, out int valueo))
+            if (dictionary.TryGetValue(candidate, out int valueo))
             {
                 DictionaryItem value = new DictionaryItem();
                 if (valueo >= 0) value.suggestions.Add((Int32)valueo); else value = itemlist[-valueo - 1];
@@ -377,7 +374,7 @@ public class SymSpell
                     if ((verbose < 2) && (suggestions.Count > 0) && (distance > suggestions[0].distance)) continue;
                     if (distance <= editDistanceMax)
                     {
-                        if (dictionary.TryGetValue(language + suggestion, out int value2))
+                        if (dictionary.TryGetValue(suggestion, out int value2))
                         {
                             SuggestItem si = new SuggestItem()
                             {

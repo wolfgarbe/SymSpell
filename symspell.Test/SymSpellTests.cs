@@ -13,13 +13,13 @@ namespace symspell.Test
         {
             var symSpell = new SymSpell();
             var word = "hello";
-            symSpell.CreateDictionaryEntry(word, "", long.MaxValue - 10);
-            var result = symSpell.Lookup(word, "", 0);
+            symSpell.CreateDictionaryEntry(word, long.MaxValue - 10);
+            var result = symSpell.Lookup(word, 0);
             long count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(long.MaxValue - 10, count);
-            symSpell.CreateDictionaryEntry(word, "", 11);
-            result = symSpell.Lookup(word, "", 0);
+            symSpell.CreateDictionaryEntry(word, 11);
+            result = symSpell.Lookup(word, 0);
             count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(long.MaxValue, count);
@@ -33,7 +33,7 @@ namespace symspell.Test
             const int verbose = 1;
             var symSpell = new SymSpell(editDistanceMax, prefixLength);
             string path = dir + "../../../symspell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
-            symSpell.LoadDictionary(path, "", 0, 1);
+            symSpell.LoadDictionary(path, 0, 1);
 
             int resultSum = 0;
             string[] testList = new string[1000];
@@ -57,7 +57,7 @@ namespace symspell.Test
             }
             for (i = 0; i < testList.Length; i++)
             {
-                suggestions = symSpell.Lookup(testList[i], "", symSpell.EditDistanceMax, verbose);
+                suggestions = symSpell.Lookup(testList[i], symSpell.EditDistanceMax, verbose);
                 resultSum += suggestions.Count;
             }
             Assert.AreEqual(4945, resultSum);

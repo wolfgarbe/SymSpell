@@ -45,6 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\symspell\DamerauLevenshtein\DamerauLevenshtein.cs">
+      <Link>DamerauLevenshtein.cs</Link>
+    </Compile>
+    <Compile Include="..\symspell\SymSpell.cs">
+      <Link>SymSpell.cs</Link>
+    </Compile>
     <Compile Include="Benchmark.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SymSpell.Original.cs" />
@@ -52,12 +58,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\symspell\symspell.csproj">
-      <Project>{e3dbea24-5cbc-46b3-8931-9505145c9809}</Project>
-      <Name>symspell</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

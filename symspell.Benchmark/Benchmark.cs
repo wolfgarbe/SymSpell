@@ -48,82 +48,82 @@ namespace symspell.Benchmark
             var tests = new List<TimeTest>();
 
             tests.Add(new TimeTest("current LoadDictionary 82k dist=1 prefixLen=5",
-                new Action(() => (new SymSpell(1, 5)).LoadDictionary(Dict82k, "", 0, 1))));
+                new Action(() => (new SymSpell(1, 5)).LoadDictionary(Dict82k, 0, 1))));
             tests.Add(new TimeTest("original LoadDictionary 82k dist=1 prefixLen=5",
                 new Action(() => (new Original.SymSpell(1, 5)).LoadDictionary(Dict82k, "", 0, 1))));
 
             tests.Add(new TimeTest("current LoadDictionary 82k dist=1 prefixLen=7",
-                new Action(() => (new SymSpell(1, 7)).LoadDictionary(Dict82k, "", 0, 1))));
+                new Action(() => (new SymSpell(1, 7)).LoadDictionary(Dict82k, 0, 1))));
             tests.Add(new TimeTest("original LoadDictionary 82k dist=1 prefixLen=7",
                 new Action(() => (new Original.SymSpell(1, 7)).LoadDictionary(Dict82k, "", 0, 1))));
 
             tests.Add(new TimeTest("current LoadDictionary 82k dist=2 prefixLen=5",
-                new Action(() => (new SymSpell(2, 5)).LoadDictionary(Dict82k, "", 0, 1))));
+                new Action(() => (new SymSpell(2, 5)).LoadDictionary(Dict82k, 0, 1))));
             tests.Add(new TimeTest("original LoadDictionary 82k dist=2 prefixLen=5",
                 new Action(() => (new Original.SymSpell(2, 5)).LoadDictionary(Dict82k, "", 0, 1))));
 
             tests.Add(new TimeTest("current LoadDictionary 82k dist=2 prefixLen=7",
-                new Action(() => (new SymSpell(2, 7)).LoadDictionary(Dict82k, "", 0, 1))));
+                new Action(() => (new SymSpell(2, 7)).LoadDictionary(Dict82k, 0, 1))));
             tests.Add(new TimeTest("original LoadDictionary 82k dist=2 prefixLen=7",
                 new Action(() => (new Original.SymSpell(2, 7)).LoadDictionary(Dict82k, "", 0, 1))));
 
             SymSpell dict = new SymSpell(2, 7);
-            dict.LoadDictionary(Dict82k, "", 0, 1);
+            dict.LoadDictionary(Dict82k, 0, 1);
             Original.SymSpell dictOrig = new Original.SymSpell(2, 7);
             dictOrig.LoadDictionary(Dict82k, "", 0, 1);
 
             tests.Add(new TimeTest("current Lookup exact 82k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dict.Lookup("different", "", 2, 0))));
+                new Action(() => dict.Lookup("different", 2, 0))));
             tests.Add(new TimeTest("original Lookup exact 82k dist=2 prefixLen=7 verbose=0",
                 new Action(() => dictOrig.Lookup("different", "", 2, 0))));
 
             tests.Add(new TimeTest("current Lookup non-exact 82k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dict.Lookup("hockie", "", 2, 0))));
+                new Action(() => dict.Lookup("hockie", 2, 0))));
             tests.Add(new TimeTest("original Lookup non-exact 82k dist=2 prefixLen=7 verbose=0",
                 new Action(() => dictOrig.Lookup("hockie", "", 2, 0))));
 
             tests.Add(new TimeTest("current Lookup exact 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dict.Lookup("different", "", 2, 1))));
+                new Action(() => dict.Lookup("different", 2, 1))));
             tests.Add(new TimeTest("original Lookup exact 82k dist=2 prefixLen=7 verbose=1",
                 new Action(() => dictOrig.Lookup("different", "", 2, 1))));
 
             tests.Add(new TimeTest("current Lookup non-exact 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dict.Lookup("hockie", "", 2, 1))));
+                new Action(() => dict.Lookup("hockie", 2, 1))));
             tests.Add(new TimeTest("original Lookup non-exact 82k dist=2 prefixLen=7 verbose=1",
                 new Action(() => dictOrig.Lookup("hockie", "", 2, 1))));
 
             tests.Add(new TimeTest("current Query1000 82k dist=2 prefixLen=7 verbose=1",
-                new Action(() => { foreach (var word in query1k) dict.Lookup(word, "", 2, 1); })));
+                new Action(() => { foreach (var word in query1k) dict.Lookup(word, 2, 1); })));
             tests.Add(new TimeTest("original Query1000 82k dist=2 prefixLen=7 verbose=1",
                 new Action(() => { foreach (var word in query1k) dictOrig.Lookup(word, "", 2, 1); })));
 
             tests.Add(new TimeTest("current LoadDictionary 500k dist=2 prefixLen=7",
-                new Action(() => (dict = new SymSpell(2, 7)).LoadDictionary(Dict500k, "", 0, 1)), 1));
+                new Action(() => (dict = new SymSpell(2, 7)).LoadDictionary(Dict500k, 0, 1)), 1));
             tests.Add(new TimeTest("original LoadDictionary 500k dist=2 prefixLen=7",
                 new Action(() => (dictOrig = new Original.SymSpell(2, 7)).LoadDictionary(Dict500k, "", 0, 1)), 1));
 
             tests.Add(new TimeTest("current Lookup exact 500k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dict.Lookup("different", "", 2, 0))));
+                new Action(() => dict.Lookup("different", 2, 0))));
             tests.Add(new TimeTest("original Lookup exact 500k dist=2 prefixLen=7 verbose=0",
                 new Action(() => dictOrig.Lookup("different", "", 2, 0))));
 
             tests.Add(new TimeTest("current Lookup non-exact 500k dist=2 prefixLen=7 verbose=0",
-                new Action(() => dict.Lookup("hockie", "", 2, 0))));
+                new Action(() => dict.Lookup("hockie", 2, 0))));
             tests.Add(new TimeTest("original Lookup non-exact 500k dist=2 prefixLen=7 verbose=0",
                 new Action(() => dictOrig.Lookup("hockie", "", 2, 0))));
 
             tests.Add(new TimeTest("current Lookup exact 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dict.Lookup("different", "", 2, 1))));
+                new Action(() => dict.Lookup("different", 2, 1))));
             tests.Add(new TimeTest("original Lookup exact 500k dist=2 prefixLen=7 verbose=1",
                 new Action(() => dictOrig.Lookup("different", "", 2, 1))));
 
             tests.Add(new TimeTest("current Lookup non-exact 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => dict.Lookup("hockie", "", 2, 1))));
+                new Action(() => dict.Lookup("hockie", 2, 1))));
             tests.Add(new TimeTest("original Lookup non-exact 500k dist=2 prefixLen=7 verbose=1",
                 new Action(() => dictOrig.Lookup("hockie", "", 2, 1))));
 
             tests.Add(new TimeTest("current Query1000 500k dist=2 prefixLen=7 verbose=1",
-                new Action(() => { foreach (var word in query1k) dict.Lookup(word, "", 2, 1); })));
+                new Action(() => { foreach (var word in query1k) dict.Lookup(word, 2, 1); })));
             tests.Add(new TimeTest("original Query1000 500k dist=2 prefixLen=7 verbose=1",
                 new Action(() => { foreach (var word in query1k) dictOrig.Lookup(word, "", 2, 1); })));
 
@@ -186,7 +186,7 @@ namespace symspell.Benchmark
             tests.Add(new SizeTest("current 82k dist=1 prefixLen=5", new Func<object>(() =>
             {
                 var d = new SymSpell(1, 5);
-                d.LoadDictionary(Dict82k, "", 0, 1);
+                d.LoadDictionary(Dict82k, 0, 1);
                 return d;
             })));
             tests.Add(new SizeTest("original 82k dist=1 prefixLen=5", new Func<object>(() =>
@@ -199,7 +199,7 @@ namespace symspell.Benchmark
             tests.Add(new SizeTest("current 82k dist=2 prefixLen=7", new Func<object>(() =>
             {
                 var d = new SymSpell(2, 7);
-                d.LoadDictionary(Dict82k, "", 0, 1);
+                d.LoadDictionary(Dict82k, 0, 1);
                 return d;
             })));
             tests.Add(new SizeTest("original 82k dist=2 prefixLen=7", new Func<object>(() =>
@@ -212,7 +212,7 @@ namespace symspell.Benchmark
             tests.Add(new SizeTest("current 500k dist=2 prefixLen=7", new Func<object>(() =>
             {
                 var d = new SymSpell(2, 7);
-                d.LoadDictionary(Dict500k, "", 0, 1);
+                d.LoadDictionary(Dict500k, 0, 1);
                 return d;
             }), 1));
             tests.Add(new SizeTest("original 500k dist=2 prefixLen=7", new Func<object>(() =>
