@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Content Include="frequency_dictionary_en_82_765.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

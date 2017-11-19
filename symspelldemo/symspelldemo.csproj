@@ -53,5 +53,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="test_data\frequency_dictionary_en_30_000.txt" />
+    <Content Include="test_data\frequency_dictionary_en_500_000.txt" />
+    <Content Include="test_data\noisy_query_en_1000.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
