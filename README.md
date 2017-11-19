@@ -105,7 +105,8 @@ https://github.com/Archivus/SymSpell
 
 #### Changes in v5.1
 
-1. SymSpell has been refactored from static to instantiated class by [Steve Hatchett](https://github.com/softwx).
+1. IMPROVEMENT: SymSpell has been refactored from static to instantiated class by [Steve Hatchett](https://github.com/softwx).
+2. FIX: count overflow protection fixed.
 
 #### Changes in v5.0
 1. FIX: Suggestions were not always complete for input.Length <= editDistanceMax.
