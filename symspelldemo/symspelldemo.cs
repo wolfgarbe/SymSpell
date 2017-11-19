@@ -48,7 +48,7 @@ namespace symspelldemo
             stopWatch.Stop();
             Console.WriteLine("\rDictionary: " + symSpell.Count.ToString("N0") + " words, "
                 + symSpell.EntryCount.ToString("N0") + " entries, edit distance=" + symSpell.MaxDictionaryEditDistance.ToString()
-                + " in " + stopWatch.ElapsedMilliseconds.ToString() + "ms "
+                + " in " + stopWatch.Elapsed.TotalMilliseconds.ToString("0.0") + "ms "
                 + (Process.GetCurrentProcess().PrivateMemorySize64 / 1000000).ToString("N0") + " MB");
 
             Benchmark("../../../symspelldemo/test_data/noisy_query_en_1000.txt", 1000, symSpell);
@@ -100,7 +100,7 @@ namespace symspelldemo
                 }
             }
             stopWatch.Stop();
-            Console.WriteLine(resultSum.ToString("N0")+" results in "+(stopWatch.ElapsedMilliseconds/rounds).ToString() + " ms");
+            Console.WriteLine(resultSum.ToString("N0")+" results in "+(stopWatch.Elapsed.TotalMilliseconds/rounds).ToString("0.000") + " ms");
         }
 
         public static void Correct(string input, SymSpell symSpell)
@@ -114,7 +114,7 @@ namespace symspelldemo
             suggestions = symSpell.Lookup(input, 2);// symSpell.EditDistanceMax);
 
             stopWatch.Stop();
-            Console.WriteLine(stopWatch.ElapsedMilliseconds.ToString()+" ms");
+            Console.WriteLine(stopWatch.Elapsed.TotalMilliseconds.ToString("0.000")+" ms");
 
             //display term and frequency
             foreach (var suggestion in suggestions)
