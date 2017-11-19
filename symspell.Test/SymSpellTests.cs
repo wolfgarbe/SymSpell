@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace symspellTests
+namespace symspell.Test
 {
     [TestFixture]
     public class SymSpellTests
