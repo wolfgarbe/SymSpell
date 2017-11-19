@@ -9,7 +9,33 @@ namespace symspell.Test
     public class SymSpellTests
     {
         [Test]
-        public void AddAdditionCountsShouldNotOverflow()
+        public void AddAdditionalCountsShouldNotAddWordAgain()
+        {
+            var symSpell = new SymSpell();
+            var word = "hello";
+            symSpell.CreateDictionaryEntry(word, 11);
+            Assert.AreEqual(1, symSpell.Count);
+            symSpell.CreateDictionaryEntry(word, 3);
+            Assert.AreEqual(1, symSpell.Count);
+        }
+        [Test]
+        public void AddAdditionalCountsShouldIncreaseCount()
+        {
+            var symSpell = new SymSpell();
+            var word = "hello";
+            symSpell.CreateDictionaryEntry(word, 11);
+            var result = symSpell.Lookup(word, 0);
+            long count = 0;
+            if (result.Count == 1) count = result[0].count;
+            Assert.AreEqual(11, count);
+            symSpell.CreateDictionaryEntry(word, 3);
+            result = symSpell.Lookup(word, 0);
+            count = 0;
+            if (result.Count == 1) count = result[0].count;
+            Assert.AreEqual(11 + 3, count);
+        }
+        [Test]
+        public void AddAdditionalCountsShouldNotOverflow()
         {
             var symSpell = new SymSpell();
             var word = "hello";
@@ -23,6 +49,43 @@ namespace symspell.Test
             count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(long.MaxValue, count);
+        }
+        [Test]
+        public void VerboseShouldControlLookupResults()
+        {
+            var symSpell = new SymSpell();
+            symSpell.CreateDictionaryEntry("steam", 1);
+            symSpell.CreateDictionaryEntry("steams", 2);
+            symSpell.CreateDictionaryEntry("steem", 3);
+            var result = symSpell.Lookup("steems", 2, 0);
+            Assert.AreEqual(1, result.Count);
+            result = symSpell.Lookup("steems", 2, 1);
+            Assert.AreEqual(2, result.Count);
+            result = symSpell.Lookup("steems", 2, 2);
+            Assert.AreEqual(3, result.Count);
+        }
+        [Test]
+        public void LookupShouldReturnMostFrequent()
+        {
+            var symSpell = new SymSpell();
+            symSpell.CreateDictionaryEntry("steama", 4);
+            symSpell.CreateDictionaryEntry("steamb", 6);
+            symSpell.CreateDictionaryEntry("steamc", 2);
+            var result = symSpell.Lookup("steam", 2, 0);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("steamb", result[0].term);
+            Assert.AreEqual(6, result[0].count);
+        }
+        [Test]
+        public void LookupShouldFindExactMatch()
+        {
+            var symSpell = new SymSpell();
+            symSpell.CreateDictionaryEntry("steama", 4);
+            symSpell.CreateDictionaryEntry("steamb", 6);
+            symSpell.CreateDictionaryEntry("steamc", 2);
+            var result = symSpell.Lookup("steama", 2, 0);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("steama", result[0].term);
         }
         [Test]
         public void ShouldReplicateNoisyResults()
