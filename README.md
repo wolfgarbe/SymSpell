@@ -55,7 +55,7 @@ List<SymSpell.SuggestItem> suggestions = symSpell.Lookup(inputTerm, maxEditDista
 //display suggestion, edit distance and term frequency
 foreach (var suggestion in suggestions)
 { 
- Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString("N0"));
+  Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString());
 }
 ```
 #### Performance
