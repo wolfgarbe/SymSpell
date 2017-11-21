@@ -30,9 +30,27 @@ it under the terms of the GNU Lesser General Public License,
 version 3.0 (LGPL-3.0) as published by the Free Software Foundation.
 http://www.opensource.org/licenses/LGPL-3.0
 ```
-#### Usage
+#### Usage SymSpell Demo
 single word + Enter:  Display spelling suggestions<br>
 Enter without input:  Terminate the program
+
+#### Usage SymSpell Library
+
+//create object
+int maxEditDistanceDictionary = 2; //maximum edit distance per dictionary
+var symSpell = new SymSpell(editDistanceMax);
+      
+//load dictionary
+string dictionaryPath="../../frequency_dictionary_en_82_765.txt";        
+int termIndex = 0; //row of the term in the dictionary text file
+int countIndex = 1; //row of the term frequency in the dictionary text file
+symSpell.LoadDictionary(path, termIndex, countIndex);
+
+//lookup suggestions
+string inputTerm="house";
+int maxEditDistanceLookup = 1;//maximum edit distance per lookup (maxEditDistanceLookup<=maxEditDistanceDictionary)
+int verbose=1; //verbosity of suggestion 0=top; 1=all of best edit distance; 2=all within maximum edit distance
+List<SymSpell.SuggestItem> suggestions = symSpell.Lookup(inputTerm, maxEditDistanceLookup, verbose); 
 
 #### Performance
 
