@@ -37,7 +37,7 @@ Enter without input:  Terminate the program
 #### Usage SymSpell Library
 ```csharp
 //create object
-int maxEditDistanceDictionary = 2; //maximum edit distance per dictionary
+int maxEditDistanceDictionary = 2; //maximum edit distance per dictionary precalculation
 var symSpell = new SymSpell(maxEditDistanceDictionary);
       
 //load dictionary
