@@ -46,6 +46,7 @@ Enter without input:  Terminate the program
 
 #### Applications
 
+* Spelling correction
 * Query correction (10–15% of queries contain misspelled terms),
 * Chatbots,
 * OCR post-processing,
