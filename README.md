@@ -35,7 +35,7 @@ single word + Enter:  Display spelling suggestions<br>
 Enter without input:  Terminate the program
 
 #### Usage SymSpell Library
-
+```csharp
 //create object
 int maxEditDistanceDictionary = 2; //maximum edit distance per dictionary
 var symSpell = new SymSpell(editDistanceMax);
@@ -51,7 +51,7 @@ string inputTerm="house";
 int maxEditDistanceLookup = 1;//maximum edit distance per lookup (maxEditDistanceLookup<=maxEditDistanceDictionary)
 int verbose=1; //verbosity of suggestion 0=top; 1=all of best edit distance; 2=all within maximum edit distance
 List<SymSpell.SuggestItem> suggestions = symSpell.Lookup(inputTerm, maxEditDistanceLookup, verbose); 
-
+```
 #### Performance
 
 0.000033 seconds/word (edit distance 2) and 0.000180 seconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
