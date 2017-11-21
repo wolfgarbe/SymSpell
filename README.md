@@ -97,7 +97,7 @@ https://github.com/wolfgarbe/symspell
 https://www.nuget.org/packages/symspell
 
 #### Ports
-The following third party ports to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. Most of the ports target **SymSpell algorithm version 3.0** or earlier:
+The following third party ports or reimplementations to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. Most of the ports target **SymSpell algorithm version 3.0** or earlier:
 
 
 **C++** (third party port)<br>
@@ -119,9 +119,13 @@ https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 
 **Python** (third party port)<br>
 https://github.com/ppgmg/github_public/blob/master/spell/symspell_python.py
+https://github.com/rcourivaud/symspellcompound
 
 **Ruby** (third party port)<br>
 https://github.com/PhilT/symspell
+
+**Scala** (third party reimplementation)<br>
+https://github.com/semkath/symspell
 
 **Swift** (third party port)<br>
 https://github.com/Archivus/SymSpell
