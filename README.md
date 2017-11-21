@@ -38,19 +38,19 @@ Enter without input:  Terminate the program
 ```csharp
 //create object
 int maxEditDistanceDictionary = 2; //maximum edit distance per dictionary
-var symSpell = new SymSpell(editDistanceMax);
+var symSpell = new SymSpell(maxEditDistanceDictionary);
       
 //load dictionary
 string dictionaryPath="../../frequency_dictionary_en_82_765.txt";        
 int termIndex = 0; //row of the term in the dictionary text file
 int countIndex = 1; //row of the term frequency in the dictionary text file
-symSpell.LoadDictionary(path, termIndex, countIndex);
+symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex);
 
 //lookup suggestions
 string inputTerm="house";
 int maxEditDistanceLookup = 1;//max edit distance per lookup (maxEditDistanceLookup<=maxEditDistanceDictionary)
-int verbose=1; //verbosity of suggestion 0=top; 1=all of best edit distance; 2=all within maximum edit distance
-List<SymSpell.SuggestItem> suggestions = symSpell.Lookup(inputTerm, maxEditDistanceLookup, verbose); 
+int suggestionVerbosity=1; //verbosity of suggestion 0=top; 1=all of best edit distance; 2=all within maximum edit distance
+List<SymSpell.SuggestItem> suggestions = symSpell.Lookup(inputTerm, maxEditDistanceLookup, suggestionVerbosity); 
 ```
 #### Performance
 
