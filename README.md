@@ -30,10 +30,34 @@ it under the terms of the GNU Lesser General Public License,
 version 3.0 (LGPL-3.0) as published by the Free Software Foundation.
 http://www.opensource.org/licenses/LGPL-3.0
 ```
-#### Usage
+#### Usage SymSpell Demo
 single word + Enter:  Display spelling suggestions<br>
 Enter without input:  Terminate the program
 
+#### Usage SymSpell Library
+```csharp
+//create object
+int maxEditDistanceDictionary = 2; //maximum edit distance per dictionary precalculation
+var symSpell = new SymSpell(maxEditDistanceDictionary);
+      
+//load dictionary
+string dictionaryPath="../../frequency_dictionary_en_82_765.txt";        
+int termIndex = 0; //row of the term in the dictionary text file
+int countIndex = 1; //row of the term frequency in the dictionary text file
+symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex);
+
+//lookup suggestions
+string inputTerm="house";
+int maxEditDistanceLookup = 1; //max edit distance per lookup (maxEditDistanceLookup<=maxEditDistanceDictionary)
+int suggestionVerbosity=1; //0=top suggestion; 1=all of best edit distance; 2=all within maximum edit distance
+List<SymSpell.SuggestItem> suggestions = symSpell.Lookup(inputTerm, maxEditDistanceLookup, suggestionVerbosity); 
+
+//display suggestions, edit distance and term frequency
+foreach (var suggestion in suggestions)
+{ 
+  Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString());
+}
+```
 #### Performance
 
 0.000033 seconds/word (edit distance 2) and 0.000180 seconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
@@ -46,6 +70,7 @@ Enter without input:  Terminate the program
 
 #### Applications
 
+* Spelling correction
 * Query correction (10–15% of queries contain misspelled terms),
 * Chatbots,
 * OCR post-processing,
@@ -72,7 +97,7 @@ https://github.com/wolfgarbe/symspell
 https://www.nuget.org/packages/symspell
 
 #### Ports
-The following third party ports to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. Most of the ports target **SymSpell algorithm version 3.0** or earlier:
+The following third party ports or reimplementations to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. Most of the ports target **SymSpell algorithm version 3.0** or earlier:
 
 
 **C++** (third party port)<br>
@@ -94,9 +119,13 @@ https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 
 **Python** (third party port)<br>
 https://github.com/ppgmg/github_public/blob/master/spell/symspell_python.py
+https://github.com/rcourivaud/symspellcompound
 
 **Ruby** (third party port)<br>
 https://github.com/PhilT/symspell
+
+**Scala** (third party reimplementation)<br>
+https://github.com/semkath/symspell
 
 **Swift** (third party port)<br>
 https://github.com/Archivus/SymSpell
@@ -108,7 +137,7 @@ https://github.com/Archivus/SymSpell
 1. IMPROVEMENT: SymSpell has been refactored from static to instantiated class by [Steve Hatchett](https://github.com/softwx).
 2. IMPROVEMENT: Added benchmarking project. 
 3. IMPROVEMENT: Added unit test project.
-4. IMPROVEMENT:	Different maxEditDistance for building dictionary and for Lookup. Added validation to ensure max lookup edit distance specified <= max dictionary edit distance.
+4. IMPROVEMENT:	Different maxEditDistance for dictionary precalculation and for Lookup. Added validation to ensure max lookup edit distance specified <= max dictionary edit distance.
 5. CHANGE: 	Removed language feature (not needed, as separate SymSpell instances can be made instead).
 6. FIX: count overflow protection fixed.
 
