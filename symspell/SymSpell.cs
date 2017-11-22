@@ -29,8 +29,6 @@ public class SymSpell
     const int defaultMaxEditDistance = 2;
     const int defaultPrefixLength = 7;
 
-    private int defaultVerbose = 0;
-
     private int maxDictionaryEditDistance;
     private int maxLength; //maximum dictionary term length
     private int prefixLength; //prefix length  5..7
@@ -68,25 +66,17 @@ public class SymSpell
         }
     }
 
+    /// <summary>Maximum edit distance for dictionary precalculation.</summary>
     public int MaxDictionaryEditDistance { get { return this.maxDictionaryEditDistance; } }
+
+    /// <summary>Length of prefix, from which deletes are generated.</summary>
     public int PrefixLength { get { return this.prefixLength; } }
+
     /// <summary>Length of longest word in the dictionary.</summary>
     public int MaxLength { get { return this.maxLength; } }
 
-    //0: top suggestion
-    //1: all suggestions of smallest edit distance   
-    //2: all suggestions <= maxEditDistance (slower, no early termination)
-    public int DefaultVerbose
-    {
-        get { return this.defaultVerbose; }
-        set {
-            if (value < 0 || value > 2) throw new ArgumentOutOfRangeException();
-            this.defaultVerbose = value;
-        }
-    }
-
     /// <summary>Number of unique words in the dictionary.</summary>
-    public int Count { get { return this.wordlist.Count; } }
+    public int WordCount { get { return this.wordlist.Count; } }
 
     /// <summary>Number of words and intermediate word deletes encoded in the dictionary.</summary>
     public int EntryCount { get { return this.dictionary.Count; } }
@@ -243,13 +233,18 @@ public class SymSpell
         return true;
     }
 
-    public List<SuggestItem> Lookup(string input, int maxEditDistance)
+    public List<SuggestItem> Lookup(string input, int verbose)
     {
-        return Lookup(input, maxEditDistance, this.defaultVerbose);
+        return Lookup(input, verbose, this.maxDictionaryEditDistance);
     }
 
-    public List<SuggestItem> Lookup(string input, int maxEditDistance, int verbose)
+    public List<SuggestItem> Lookup(string input, int verbose, int maxEditDistance)
     {
+        //verbose=0: top suggestion
+        //verbose=1: all suggestions of smallest edit distance   
+        //verbose=2: all suggestions <= maxEditDistance (slower, no early termination)
+        if (verbose < 0 || verbose > 2) throw new ArgumentOutOfRangeException();
+
         // maxEditDistance used in Lookup can't be bigger than the maxDictionaryEditDistance
         // used to construct the underlying dictionary structure.
         if (maxEditDistance > MaxDictionaryEditDistance) throw new ArgumentOutOfRangeException(nameof(maxEditDistance));

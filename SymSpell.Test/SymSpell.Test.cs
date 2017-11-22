@@ -14,9 +14,9 @@ namespace symspell.Test
             var symSpell = new SymSpell();
             var word = "hello";
             symSpell.CreateDictionaryEntry(word, 11);
-            Assert.AreEqual(1, symSpell.Count);
+            Assert.AreEqual(1, symSpell.WordCount);
             symSpell.CreateDictionaryEntry(word, 3);
-            Assert.AreEqual(1, symSpell.Count);
+            Assert.AreEqual(1, symSpell.WordCount);
         }
         [Test]
         public void AddAdditionalCountsShouldIncreaseCount()
@@ -57,9 +57,9 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steam", 1);
             symSpell.CreateDictionaryEntry("steams", 2);
             symSpell.CreateDictionaryEntry("steem", 3);
-            var result = symSpell.Lookup("steems", 2, 0);
+            var result = symSpell.Lookup("steems",0, 2);
             Assert.AreEqual(1, result.Count);
-            result = symSpell.Lookup("steems", 2, 1);
+            result = symSpell.Lookup("steems", 1, 2);
             Assert.AreEqual(2, result.Count);
             result = symSpell.Lookup("steems", 2, 2);
             Assert.AreEqual(3, result.Count);
@@ -71,7 +71,7 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steama", 4);
             symSpell.CreateDictionaryEntry("steamb", 6);
             symSpell.CreateDictionaryEntry("steamc", 2);
-            var result = symSpell.Lookup("steam", 2, 0);
+            var result = symSpell.Lookup("steam", 0, 2);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("steamb", result[0].term);
             Assert.AreEqual(6, result[0].count);
@@ -83,7 +83,7 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steama", 4);
             symSpell.CreateDictionaryEntry("steamb", 6);
             symSpell.CreateDictionaryEntry("steamc", 2);
-            var result = symSpell.Lookup("steama", 2, 0);
+            var result = symSpell.Lookup("steama", 0, 2);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("steama", result[0].term);
         }
@@ -91,20 +91,19 @@ namespace symspell.Test
         public void ShouldReplicateNoisyResults()
         {
             var dir = AppDomain.CurrentDomain.BaseDirectory;
+
             const int editDistanceMax = 2;
             const int prefixLength = 7;
             const int verbose = 1;
             var symSpell = new SymSpell(editDistanceMax, prefixLength);
-            string path = dir + "../../../symspell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
+            string path = dir + "../../../SymSpell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
+
             symSpell.LoadDictionary(path, 0, 1);
 
-            int resultSum = 0;
-            string[] testList = new string[1000];
-            List<SymSpell.SuggestItem> suggestions = null;
-
             //load 1000 terms with random spelling errors
+            string[] testList = new string[1000];
             int i = 0;
-            using (StreamReader sr = new StreamReader(File.OpenRead(dir + "../../../symspelldemo/test_data/noisy_query_en_1000.txt")))
+            using (StreamReader sr = new StreamReader(File.OpenRead(dir + "../../../SymSpell.Demo/test_data/noisy_query_en_1000.txt")))
             {
                 String line;
                 //process a single line at a time only for memory efficiency
@@ -113,17 +112,17 @@ namespace symspell.Test
                     string[] lineParts = line.Split(null);
                     if (lineParts.Length >= 2)
                     {
-                        string key = lineParts[0];
-                        testList[i++] = key;
+                        testList[i++] = lineParts[0];
                     }
                 }
             }
+
+            int resultSum = 0;
             for (i = 0; i < testList.Length; i++)
             {
-                suggestions = symSpell.Lookup(testList[i], symSpell.MaxDictionaryEditDistance, verbose);
-                resultSum += suggestions.Count;
+                resultSum += symSpell.Lookup(testList[i], verbose, symSpell.MaxDictionaryEditDistance ).Count;
             }
-            Assert.AreEqual(4945, resultSum);
+            Assert.AreEqual( 4945 , resultSum);
         }
     }
 }

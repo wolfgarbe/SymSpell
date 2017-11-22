@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "symspelldemo", "symspelldemo\symspelldemo.csproj", "{06186930-69C1-4E8F-87BC-97439F08AD6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "symspelldemo", "symspell.Demo\symspell.Demo.csproj", "{06186930-69C1-4E8F-87BC-97439F08AD6D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "symspell", "symspell\symspell.csproj", "{E3DBEA24-5CBC-46B3-8931-9505145C9809}"
 EndProject

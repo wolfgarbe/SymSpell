@@ -7,22 +7,22 @@ namespace symspell.Benchmark
     class Benchmark
     {
         static readonly string Path = AppDomain.CurrentDomain.BaseDirectory;
-        static readonly string Query1k = Path+"../../../symspelldemo/test_data/noisy_query_en_1000.txt";
+        static readonly string Query1k = Path+ "../../../SymSpell.Demo/test_data/noisy_query_en_1000.txt";
 
         static readonly string[] DictionaryPath = {
-            Path+"../../../symspelldemo/test_data/frequency_dictionary_en_30_000.txt",
-            Path+"../../../symspell/frequency_dictionary_en_82_765.txt",
-            Path+"../../../symspelldemo/test_data/frequency_dictionary_en_500_000.txt" };
+            Path+"../../../SymSpell.Demo/test_data/frequency_dictionary_en_30_000.txt",
+            Path+"../../../SymSpell/frequency_dictionary_en_82_765.txt",
+            Path+"../../../SymSpell.Demo/test_data/frequency_dictionary_en_500_000.txt" };
 
         static readonly string[] DictionaryName = {
             "30k",
             "82k",
             "500k" };
 
+        //load 1000 terms with random spelling errors
         static string[] BuildQuery1K()
         {
             string[] testList = new string[1000];
-            //load 1000 terms with random spelling errors
             int i = 0;
             using (StreamReader sr = new StreamReader(File.OpenRead(Query1k)))
             {
@@ -45,14 +45,14 @@ namespace symspell.Benchmark
         {
             Console.BufferHeight = 10000;
 
-            BenchPrecalculation();
+            BenchmarkPrecalculationLookup();
 
             Console.WriteLine();
             Console.Write("complete, press any key...");
             Console.ReadKey();
         }
 
-        static void BenchPrecalculation()
+        static void BenchmarkPrecalculationLookup()
         {
             string[] query1k = BuildQuery1K();
             int resultNumber = 0;
@@ -63,16 +63,15 @@ namespace symspell.Benchmark
             {
                 for (int prefixLength = 5; prefixLength <= 7; prefixLength++)
                 {
-                    SymSpell dict = new SymSpell(maxEditDistance, prefixLength);
-                    Original.SymSpell dictOrig = new Original.SymSpell(maxEditDistance, prefixLength);
 
                     //benchmark dictionary precalculation size and time 
                     //maxEditDistance=1/2/3; prefixLength=5/6/7;  dictionary=30k/82k/500k; class=instantiated/static
                     for (int i=0;i< DictionaryPath.Length;i++)
-                    {
+                    {                                             
                         //instantiated dictionary                      
                         long memSize = GC.GetTotalMemory(true);
                         stopWatch.Restart();
+                        SymSpell dict = new SymSpell(maxEditDistance, prefixLength);
                         dict.LoadDictionary(DictionaryPath[i], 0, 1);
                         stopWatch.Stop();
                         long memDelta = GC.GetTotalMemory(true) - memSize;
@@ -81,6 +80,7 @@ namespace symspell.Benchmark
                         //static dictionary 
                         memSize = GC.GetTotalMemory(true);
                         stopWatch.Restart();
+                        Original.SymSpell dictOrig = new Original.SymSpell(maxEditDistance, prefixLength);
                         dictOrig.LoadDictionary(DictionaryPath[i], "", 0, 1);
                         stopWatch.Stop();
                         memDelta = GC.GetTotalMemory(true) - memSize;
@@ -92,7 +92,7 @@ namespace symspell.Benchmark
                         {
                             //instantiated exact
                             stopWatch.Restart();
-                            for (int round=0;round<repetitions;round++) resultNumber=dict.Lookup("different", maxEditDistance, verbose).Count;
+                            for (int round=0;round<repetitions;round++) resultNumber=dict.Lookup("different", verbose, maxEditDistance).Count;
                             stopWatch.Stop();             
                             Console.WriteLine("Lookup instance "+resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds/(double)repetitions).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=exact");
                             //static exact
@@ -104,7 +104,7 @@ namespace symspell.Benchmark
 
                             //instantiated non-exact
                             stopWatch.Restart();
-                            for (int round = 0; round < repetitions; round++) resultNumber = dict.Lookup("hockie", maxEditDistance, verbose).Count;
+                            for (int round = 0; round < repetitions; round++) resultNumber = dict.Lookup("hockie", verbose, maxEditDistance ).Count;
                             stopWatch.Stop();
                             Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds / (double)repetitions).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=non-exact");
                             //static non-exact
@@ -116,7 +116,7 @@ namespace symspell.Benchmark
 
                             //instantiated mix                           
                             stopWatch.Restart();
-                            resultNumber = 0; foreach (var word in query1k) resultNumber+=dict.Lookup(word, maxEditDistance, verbose).Count;
+                            resultNumber = 0; foreach (var word in query1k) resultNumber+=dict.Lookup(word, verbose, maxEditDistance).Count;
                             stopWatch.Stop();
                             Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + ((double)stopWatch.ElapsedMilliseconds/(double)query1k.Length).ToString("N3") + "ms/op verbose=" + verbose.ToString() + " query=mix");
                             //static mix                           

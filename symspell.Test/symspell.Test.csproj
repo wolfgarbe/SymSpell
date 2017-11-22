@@ -7,8 +7,8 @@
     <ProjectGuid>{8C183129-D6FF-49E3-AC91-0ABDB378449A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>symspellTests</RootNamespace>
-    <AssemblyName>symspellTests</AssemblyName>
+    <RootNamespace>symspellTest</RootNamespace>
+    <AssemblyName>symspellTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SymSpellTests.cs" />
+    <Compile Include="SymSpell.Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\symspell\symspell.csproj">
