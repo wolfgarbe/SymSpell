@@ -42,15 +42,15 @@ var symSpell = new SymSpell(maxEditDistanceDictionary);
       
 //load dictionary
 string dictionaryPath="../../frequency_dictionary_en_82_765.txt";        
-int termIndex = 0; //row of the term in the dictionary text file
-int countIndex = 1; //row of the term frequency in the dictionary text file
+int termIndex = 0; //column of the term in the dictionary text file
+int countIndex = 1; //column of the term frequency in the dictionary text file
 symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex);
 
 //lookup suggestions
 string inputTerm="house";
 int maxEditDistanceLookup = 1; //max edit distance per lookup (maxEditDistanceLookup<=maxEditDistanceDictionary)
 int suggestionVerbosity=1; //0=top suggestion; 1=all of best edit distance; 2=all within maximum edit distance
-List<SymSpell.SuggestItem> suggestions = symSpell.Lookup(inputTerm, suggestionVerbosity, maxEditDistanceLookup); 
+var suggestions = symSpell.Lookup(inputTerm, suggestionVerbosity, maxEditDistanceLookup); 
 
 //display suggestions, edit distance and term frequency
 foreach (var suggestion in suggestions)
