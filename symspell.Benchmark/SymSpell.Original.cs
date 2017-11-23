@@ -276,6 +276,9 @@ namespace Original
             //add original term
             candidates.Add(input);
 
+            //add original prefix
+            if (input.Length > lp) candidates.Add(input.Substring(0, lp));
+
             while (candidatePointer < candidates.Count)
             {
                 string candidate = candidates[candidatePointer++];
@@ -310,7 +313,7 @@ namespace Original
                             //All of them where deleted later once a suggestion with a lower distance than the first item in the list was later added in the other branch. 
                             //Therefore returned suggestions were not always complete for verbose<2.
                             //remove all existing suggestions of higher distance, if verbose<2
-                            if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear(); //!!!
+                            if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear(); 
 
                             //add correct dictionary term term to suggestion list
                             SuggestItem si = new SuggestItem()
@@ -404,14 +407,12 @@ namespace Original
                 //add edits 
                 //derive edits (deletes) from candidate (input) and add them to candidates list
                 //this is a recursive process until the maximum edit distance has been reached
-                if (lengthDiff < editDistanceMax)
+                if ((lengthDiff < editDistanceMax) && (candidate.Length <= lp))
                 {
                     //save some time
                     //do not create edits with edit distance smaller than suggestions already found
-                    //if ((verbose < 2) && (suggestions.Count > 0) && (input.Length - candidate.Length >= suggestions[0].distance)) continue;
-                    if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;//!?!
+                    if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;
 
-                    if (candidate.Length > lp) candidate = candidate.Substring(0, lp); //just the input entry might be > lp
                     for (int i = 0; i < candidate.Length; i++)
                     {
                         string delete = candidate.Remove(i, 1);
@@ -466,9 +467,17 @@ namespace Original
         private HashSet<string> EditsPrefix(string key)
         {
             HashSet<string> hashSet = new HashSet<string>();
-            if (key.Length <= editDistanceMax) hashSet.Add(""); //Fix: add ""-delete
+            if (key.Length <= editDistanceMax) hashSet.Add("");
 
-            return Edits(key.Length <= lp ? key : key.Substring(0, lp), 0, hashSet);
+            if (key.Length > lp)
+            {
+                hashSet.Add(key.Substring(0, lp));
+                return Edits(key.Substring(0, lp), 0, hashSet);
+            }
+            else
+            {
+                return Edits(key, 0, hashSet);
+            }
         }
     }
 }

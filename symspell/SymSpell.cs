@@ -265,6 +265,9 @@ public class SymSpell
         //add original term
         candidates.Add(input);
 
+        //add original prefix
+        if (input.Length > prefixLength) candidates.Add(input.Substring(0, prefixLength));
+
         while (candidatePointer < candidates.Count)
         {
             string candidate = candidates[candidatePointer++];
@@ -299,7 +302,7 @@ public class SymSpell
                         //All of them where deleted later once a suggestion with a lower distance than the first item in the list was later added in the other branch. 
                         //Therefore returned suggestions were not always complete for verbose<2.
                         //remove all existing suggestions of higher distance, if verbose<2
-                        if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear(); //!!!
+                        if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
 
                         //add correct dictionary term term to suggestion list
                         SuggestItem si = new SuggestItem()
@@ -344,7 +347,7 @@ public class SymSpell
                         }
                         else
                         //number of edits in prefix ==maxediddistance  AND no identic suffix, then editdistance>maxEditDistance and no need for Levenshtein calculation  
-                        //                                                 (input.Length >= lp) && (suggestion.Length >= lp) 
+                        //                                                 (input.Length >= prefixLength) && (suggestion.Length >= prefixLength) 
                         if ((prefixLength - maxEditDistance == candidate.Length) && (((min = Math.Min(input.Length, suggestion.Length) - prefixLength) > 1) && (input.Substring(input.Length + 1 - min) != suggestion.Substring(suggestion.Length + 1 - min))) || ((min > 0) && (input[input.Length - min] != suggestion[suggestion.Length - min]) && ((input[input.Length - min - 1] != suggestion[suggestion.Length - min]) || (input[input.Length - min] != suggestion[suggestion.Length - min - 1]))))
                         {
                             continue;
@@ -393,14 +396,12 @@ public class SymSpell
             //add edits 
             //derive edits (deletes) from candidate (input) and add them to candidates list
             //this is a recursive process until the maximum edit distance has been reached
-            if (lengthDiff < maxEditDistance)
+            if ((lengthDiff < maxEditDistance) && (candidate.Length <= prefixLength))
             {
                 //save some time
                 //do not create edits with edit distance smaller than suggestions already found
-                //if ((verbose < 2) && (suggestions.Count > 0) && (input.Length - candidate.Length >= suggestions[0].distance)) continue;
-                if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;//!?!
+                if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;
 
-                if (candidate.Length > prefixLength) candidate = candidate.Substring(0, prefixLength); //just the input entry might be > lp
                 for (int i = 0; i < candidate.Length; i++)
                 {
                     string delete = candidate.Remove(i, 1);
@@ -452,11 +453,19 @@ public class SymSpell
         return deletes;
     }
 
-    private HashSet<string> EditsPrefix(string key) 
+    private HashSet<string> EditsPrefix(string key)
     {
         HashSet<string> hashSet = new HashSet<string>();
-        if (key.Length <= maxDictionaryEditDistance) hashSet.Add(""); //Fix: add ""-delete
+        if (key.Length <= maxDictionaryEditDistance) hashSet.Add("");
 
-        return Edits(key.Length <= prefixLength ? key : key.Substring(0, prefixLength), 0, hashSet);
+        if (key.Length > prefixLength)
+        {
+            hashSet.Add(key.Substring(0, prefixLength));
+            return Edits(key.Substring(0, prefixLength), 0, hashSet);
+        }
+        else
+        {
+            return Edits(key, 0, hashSet);
+        }
     }
 }
