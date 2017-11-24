@@ -63,8 +63,8 @@ namespace symspell.Demo
             stopWatch.Start();
 
             //check if input term or similar terms within edit-distance are in dictionary, return results sorted by ascending edit distance, then by descending word frequency     
-            const int verbose = 1;
-            suggestions = symSpell.Lookup(input, verbose);
+            const SymSpell.Verbosity verbosity = SymSpell.Verbosity.Closest;
+            suggestions = symSpell.Lookup(input, verbosity);
 
             stopWatch.Stop();
             Console.WriteLine(stopWatch.Elapsed.TotalMilliseconds.ToString("0.000")+" ms");
@@ -74,7 +74,7 @@ namespace symspell.Demo
             {
                 Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString("N0"));
             }
-            if (verbose != 0) Console.WriteLine(suggestions.Count.ToString() + " suggestions");
+            if (verbosity != SymSpell.Verbosity.Top) Console.WriteLine(suggestions.Count.ToString() + " suggestions");
         }
     }
 }

@@ -26,6 +26,13 @@ using System.Text.RegularExpressions;
 
 public class SymSpell
 {
+    public enum Verbosity
+    {
+        Top,        //the suggestion with the highest term frequency of the suggestions of smallest edit distance found
+        Closest,    //all suggestions of smallest edit distance found, the suggestions are ordered by term frequency
+        All         //all suggestions <= maxEditDistance, the suggestions are ordered by edit distance, then by term frequency (slower, no early termination)
+    };
+
     const int defaultMaxEditDistance = 2;
     const int defaultPrefixLength = 7;
 
@@ -233,17 +240,16 @@ public class SymSpell
         return true;
     }
 
-    public List<SuggestItem> Lookup(string input, int verbose)
+    public List<SuggestItem> Lookup(string input, Verbosity verbosity)
     {
-        return Lookup(input, verbose, this.maxDictionaryEditDistance);
+        return Lookup(input, verbosity, this.maxDictionaryEditDistance);
     }
 
-    public List<SuggestItem> Lookup(string input, int verbose, int maxEditDistance)
+    public List<SuggestItem> Lookup(string input, Verbosity verbosity, int maxEditDistance)
     {
-        //verbose=0: top suggestion
-        //verbose=1: all suggestions of smallest edit distance   
-        //verbose=2: all suggestions <= maxEditDistance (slower, no early termination)
-        if (verbose < 0 || verbose > 2) throw new ArgumentOutOfRangeException();
+        //verbosity=Top: the suggestion with the highest term frequency of the suggestions of smallest edit distance found
+        //verbosity=Closest: all suggestions of smallest edit distance found, the suggestions are ordered by term frequency 
+        //verbosity=All: all suggestions <= maxEditDistance, the suggestions are ordered by edit distance, then by term frequency (slower, no early termination)
 
         // maxEditDistance used in Lookup can't be bigger than the maxDictionaryEditDistance
         // used to construct the underlying dictionary structure.
@@ -277,7 +283,7 @@ public class SymSpell
             //early termination
             //suggestion distance=candidate.distance... candidate.distance+maxEditDistance                
             //if canddate distance is already higher than suggestion distance, than there are no better suggestions to be expected
-            if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff > suggestions[0].distance)) goto sort;
+            if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (lengthDiff > suggestions[0].distance)) goto sort;
 
             //read candidate entry from dictionary
             if (dictionary.TryGetValue(candidate, out int valueo))
@@ -291,18 +297,18 @@ public class SymSpell
                     int distance = input.Length - candidate.Length;
 
                     //save some time
-                    //do not process higher distances than those already found, if verbose<2      
+                    //do not process higher distances than those already found, if verbosity<2      
                     if ((distance <= maxEditDistance)
-                    && ((verbose == 2) || (suggestions.Count == 0) || (distance <= suggestions[0].distance))
+                    && ((verbosity == Verbosity.All) || (suggestions.Count == 0) || (distance <= suggestions[0].distance))
                     && (hashset2.Add(candidate)))
                     {
-                        //Fix: previously not allways all suggestons within maxEditDistance (verbose=1) or the best suggestion (verbose=0) were returned : e.g. elove did not return love
-                        //suggestions.Clear() was not executed in this branch, if a suggestion with lower edit distance was added here (for verbose<2). 
+                        //Fix: previously not allways all suggestons within maxEditDistance (verbosity=1) or the best suggestion (verbosity=0) were returned : e.g. elove did not return love
+                        //suggestions.Clear() was not executed in this branch, if a suggestion with lower edit distance was added here (for verbosity<2). 
                         //Then possibly suggestions with higher edit distance remained on top, the suggestion with lower edit distance were added to the end. 
                         //All of them where deleted later once a suggestion with a lower distance than the first item in the list was later added in the other branch. 
-                        //Therefore returned suggestions were not always complete for verbose<2.
-                        //remove all existing suggestions of higher distance, if verbose<2
-                        if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
+                        //Therefore returned suggestions were not always complete for verbosity<2.
+                        //remove all existing suggestions of higher distance, if verbosity<2
+                        if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
 
                         //add correct dictionary term term to suggestion list
                         SuggestItem si = new SuggestItem()
@@ -313,7 +319,7 @@ public class SymSpell
                         };
                         suggestions.Add(si);
                         //early termination
-                        if ((verbose < 2) && (distance == 0)) goto sort;
+                        if ((verbosity < Verbosity.All) && (distance == 0)) goto sort;
                     }
                 }
 
@@ -368,8 +374,8 @@ public class SymSpell
                     else if (!hashset2.Add(suggestion)) continue;
 
                     //save some time
-                    //do not process higher distances than those already found, if verbose<2
-                    if ((verbose < 2) && (suggestions.Count > 0) && (distance > suggestions[0].distance)) continue;
+                    //do not process higher distances than those already found, if verbosity<2
+                    if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (distance > suggestions[0].distance)) continue;
                     if (distance <= maxEditDistance)
                     {
                         if (dictionary.TryGetValue(suggestion, out int value2))
@@ -382,10 +388,10 @@ public class SymSpell
                             };
 
                             //we will calculate DamLev distance only to the smallest found distance sof far
-                            if (verbose < 2) maxEditDistance2 = distance;
+                            if (verbosity < Verbosity.All) maxEditDistance2 = distance;
 
-                            //remove all existing suggestions of higher distance, if verbose<2
-                            if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
+                            //remove all existing suggestions of higher distance, if verbosity<2
+                            if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
                             suggestions.Add(si);
                         }
                     }
@@ -400,7 +406,7 @@ public class SymSpell
             {
                 //save some time
                 //do not create edits with edit distance smaller than suggestions already found
-                if ((verbose < 2) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;
+                if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;
 
                 for (int i = 0; i < candidate.Length; i++)
                 {
@@ -412,8 +418,8 @@ public class SymSpell
         }//end while
 
         //sort by ascending edit distance, then by descending word frequency
-        sort: if (verbose < 2) suggestions.Sort((x, y) => -x.count.CompareTo(y.count)); else suggestions.Sort((x, y) => 2 * x.distance.CompareTo(y.distance) - x.count.CompareTo(y.count));
-        if ((verbose == 0) && (suggestions.Count > 1)) return suggestions.GetRange(0, 1); else return suggestions;
+        sort: if (verbosity < Verbosity.All) suggestions.Sort((x, y) => -x.count.CompareTo(y.count)); else suggestions.Sort((x, y) => 2 * x.distance.CompareTo(y.distance) - x.count.CompareTo(y.count));
+        if ((verbosity == 0) && (suggestions.Count > 1)) return suggestions.GetRange(0, 1); else return suggestions;
     }
 
     //create a non-unique wordlist from sample text

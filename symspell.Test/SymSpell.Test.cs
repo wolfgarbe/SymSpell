@@ -51,7 +51,7 @@ namespace symspell.Test
             Assert.AreEqual(long.MaxValue, count);
         }
         [Test]
-        public void VerboseShouldControlLookupResults()
+        public void VerbosityShouldControlLookupResults()
         {
             var symSpell = new SymSpell();
             symSpell.CreateDictionaryEntry("steam", 1);
@@ -59,9 +59,9 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steem", 3);
             var result = symSpell.Lookup("steems",0, 2);
             Assert.AreEqual(1, result.Count);
-            result = symSpell.Lookup("steems", 1, 2);
+            result = symSpell.Lookup("steems", SymSpell.Verbosity.Closest, 2);
             Assert.AreEqual(2, result.Count);
-            result = symSpell.Lookup("steems", 2, 2);
+            result = symSpell.Lookup("steems", SymSpell.Verbosity.All, 2);
             Assert.AreEqual(3, result.Count);
         }
         [Test]
@@ -94,7 +94,7 @@ namespace symspell.Test
 
             const int editDistanceMax = 2;
             const int prefixLength = 7;
-            const int verbose = 1;
+            const SymSpell.Verbosity verbosity = SymSpell.Verbosity.Closest;
             var symSpell = new SymSpell(editDistanceMax, prefixLength);
             string path = dir + "../../../SymSpell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
 
@@ -120,7 +120,7 @@ namespace symspell.Test
             int resultSum = 0;
             for (i = 0; i < testList.Length; i++)
             {
-                resultSum += symSpell.Lookup(testList[i], verbose, symSpell.MaxDictionaryEditDistance ).Count;
+                resultSum += symSpell.Lookup(testList[i], verbosity, symSpell.MaxDictionaryEditDistance ).Count;
             }
             Assert.AreEqual( 4945 , resultSum);
         }
