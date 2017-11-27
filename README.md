@@ -137,9 +137,11 @@ https://github.com/Archivus/SymSpell
 1. IMPROVEMENT: SymSpell has been refactored from static to instantiated class by [Steve Hatchett](https://github.com/softwx).
 2. IMPROVEMENT: Added benchmarking project. 
 3. IMPROVEMENT: Added unit test project.
-4. IMPROVEMENT:	Different maxEditDistance for dictionary precalculation and for Lookup. Added validation to ensure max lookup edit distance specified <= max dictionary edit distance.
-5. CHANGE: 	Removed language feature (not needed, as separate SymSpell instances can be made instead).
-6. FIX: count overflow protection fixed.
+4. IMPROVEMENT:	Different maxEditDistance for dictionary precalculation and for Lookup. 
+5. CHANGE: Removed language feature (use separate SymSpell instances instead).
+6. CHANGE: Verbosity parameter changed fom Int to Enum
+7. FIX: Incomplete lookup results, if maxEditDistance=1 AND input.Length>prefixLength.
+8. FIX: count overflow protection fixed.
 
 #### Changes in v5.0
 1. FIX: Suggestions were not always complete for input.Length <= editDistanceMax.
