@@ -49,8 +49,8 @@ symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex);
 //lookup suggestions
 string inputTerm="house";
 int maxEditDistanceLookup = 1; //max edit distance per lookup (maxEditDistanceLookup<=maxEditDistanceDictionary)
-var suggestionVerbosity =SymSpell.Verbosity.Closest; //Top, Closest, All
-var suggestions = symSpell1.Lookup(inputTerm, suggestionVerbosity, maxEditDistanceLookup);
+var suggestionVerbosity = SymSpell.Verbosity.Closest; //Top, Closest, All
+var suggestions = symSpell.Lookup(inputTerm, suggestionVerbosity, maxEditDistanceLookup);
 
 //display suggestions, edit distance and term frequency
 foreach (var suggestion in suggestions)
