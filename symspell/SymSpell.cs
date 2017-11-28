@@ -26,11 +26,19 @@ using System.Text.RegularExpressions;
 
 public class SymSpell
 {
-    public enum Verbosity
-    {
-        Top,        //the suggestion with the highest term frequency of the suggestions of smallest edit distance found
-        Closest,    //all suggestions of smallest edit distance found, the suggestions are ordered by term frequency
-        All         //all suggestions <= maxEditDistance, the suggestions are ordered by edit distance, then by term frequency (slower, no early termination)
+    public enum Verbosity {
+        /// <summary>
+        /// Top suggestion with the highest term frequency of the suggestions of smallest edit distance found.
+        /// </summary>
+        Top,        
+        /// <summary>
+        /// All suggestions of smallest edit distance found, suggestions ordered by term frequency.
+        /// </summary>
+        Closest,    
+        /// <summary>
+        /// //all suggestions within maxEditDistance, suggestions ordered by edit distance, then by term frequency (slower, no early termination).
+        /// </summary>
+        All
     };
 
     const int defaultMaxEditDistance = 2;
