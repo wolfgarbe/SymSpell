@@ -132,6 +132,15 @@ namespace symspell.Test
             Assert.AreEqual(0, result.Count);
         }
         [Test]
+        public void LookupShouldNotReturnLowCountWordThatsAlsoDeleteWord()
+        {
+            var symSpell = new SymSpell(16, 2, 7, 10);
+            symSpell.CreateDictionaryEntry("flame", 20);
+            symSpell.CreateDictionaryEntry("flam", 1);
+            var result = symSpell.Lookup("flam", SymSpell.Verbosity.Top, 0);
+            Assert.AreEqual(0, result.Count);
+        }
+        [Test]
         public void ShouldReplicateNoisyResults()
         {
             var dir = AppDomain.CurrentDomain.BaseDirectory;

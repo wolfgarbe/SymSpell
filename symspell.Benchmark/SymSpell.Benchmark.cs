@@ -8,7 +8,7 @@ namespace symspell.Benchmark
     class Benchmark
     {
         static readonly string Path = AppDomain.CurrentDomain.BaseDirectory;
-        static readonly string Query1k = Path+ "../../../SymSpell.Demo/test_data/noisy_query_en_1000.txt";
+        static readonly string Query1k = Path + "../../../SymSpell.Demo/test_data/noisy_query_en_1000.txt";
 
         static readonly string[] DictionaryPath = {
             Path+"../../../SymSpell.Demo/test_data/frequency_dictionary_en_30_000.txt",
@@ -80,17 +80,24 @@ namespace symspell.Benchmark
             string[] query1k = BuildQuery1K();
             int resultNumber = 0;
             int repetitions = 1000;
+            int totalLoopCount = 0;
+            long totalMatches = 0;
+            long totalOrigMatches = 0;
+            double totalLoadTime, totalMem, totalLookupTime, totalOrigLoadTime, totalOrigMem, totalOrigLookupTime;
+            totalLoadTime = totalMem = totalLookupTime = totalOrigLoadTime = totalOrigMem = totalOrigLookupTime = 0;
 
             Stopwatch stopWatch = new Stopwatch();
-            for (int maxEditDistance=1; maxEditDistance <=3; maxEditDistance++)
+            for (int maxEditDistance = 1; maxEditDistance <= 3; maxEditDistance++)
             {
                 for (int prefixLength = 5; prefixLength <= 7; prefixLength++)
                 {
 
                     //benchmark dictionary precalculation size and time 
                     //maxEditDistance=1/2/3; prefixLength=5/6/7;  dictionary=30k/82k/500k; class=instantiated/static
-                    for (int i=0;i< DictionaryPath.Length;i++)
+                    for (int i = 0; i < DictionaryPath.Length; i++)
                     {
+                        totalLoopCount++;
+
                         //instantiated dictionary        
                         long memSize = GC.GetTotalMemory(true);
                         stopWatch.Restart();
@@ -98,7 +105,9 @@ namespace symspell.Benchmark
                         dict.LoadDictionary(DictionaryPath[i], 0, 1);
                         stopWatch.Stop();
                         long memDelta = GC.GetTotalMemory(true) - memSize;
-                        Console.WriteLine("Precalculation instance "+stopWatch.Elapsed.TotalSeconds.ToString("N3")+"s "+(memDelta/1024/1024.0).ToString("N1")+ "MB " + dict.WordCount.ToString("N0") + " words " + dict.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
+                        totalLoadTime += stopWatch.Elapsed.TotalSeconds;
+                        totalMem += memDelta / 1024.0 / 1024.0;
+                        Console.WriteLine("Precalculation instance " + stopWatch.Elapsed.TotalSeconds.ToString("N3") + "s " + (memDelta / 1024.0 / 1024.0).ToString("N1") + "MB " + dict.WordCount.ToString("N0") + " words " + dict.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
 
                         //static dictionary 
                         memSize = GC.GetTotalMemory(true);
@@ -107,6 +116,8 @@ namespace symspell.Benchmark
                         dictOrig.LoadDictionary(DictionaryPath[i], "", 0, 1);
                         stopWatch.Stop();
                         memDelta = GC.GetTotalMemory(true) - memSize;
+                        totalOrigLoadTime += stopWatch.Elapsed.TotalSeconds;
+                        totalOrigMem += memDelta / 1024.0 / 1024.0;
                         Console.WriteLine("Precalculation static   " + stopWatch.Elapsed.TotalSeconds.ToString("N3") + "s " + (memDelta / 1024 / 1024.0).ToString("N1") + "MB " + dict.WordCount.ToString("N0") + " words " + dict.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
 
                         //benchmark lookup result number and time
@@ -115,37 +126,49 @@ namespace symspell.Benchmark
                         {
                             //instantiated exact
                             stopWatch.Restart();
-                            for (int round=0;round<repetitions;round++) resultNumber=dict.Lookup("different", verbosity, maxEditDistance).Count;
-                            stopWatch.Stop();             
-                            Console.WriteLine("Lookup instance "+resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds /repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=exact");
+                            for (int round = 0; round < repetitions; round++) resultNumber = dict.Lookup("different", verbosity, maxEditDistance).Count;
+                            stopWatch.Stop();
+                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalMatches += resultNumber;
+                            Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=exact");
                             //static exact
                             stopWatch.Restart();
                             for (int round = 0; round < repetitions; round++) resultNumber = dictOrig.Lookup("different", "", maxEditDistance, (int)verbosity).Count;
                             stopWatch.Stop();
+                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalOrigMatches += resultNumber;
                             Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=exact");
                             Console.WriteLine();
 
                             //instantiated non-exact
                             stopWatch.Restart();
-                            for (int round = 0; round < repetitions; round++) resultNumber = dict.Lookup("hockie", verbosity, maxEditDistance ).Count;
+                            for (int round = 0; round < repetitions; round++) resultNumber = dict.Lookup("hockie", verbosity, maxEditDistance).Count;
                             stopWatch.Stop();
+                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalMatches += resultNumber;
                             Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=non-exact");
                             //static non-exact
                             stopWatch.Restart();
                             for (int round = 0; round < repetitions; round++) resultNumber = dictOrig.Lookup("hockie", "", maxEditDistance, (int)verbosity).Count;
                             stopWatch.Stop();
-                            Console.WriteLine("Lookup static   "+resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=non-exact");
+                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalOrigMatches += resultNumber;
+                            Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=non-exact");
                             Console.WriteLine();
 
                             //instantiated mix                           
                             stopWatch.Restart();
-                            resultNumber = 0; foreach (var word in query1k) resultNumber+=dict.Lookup(word, verbosity, maxEditDistance).Count;
+                            resultNumber = 0; foreach (var word in query1k) resultNumber += dict.Lookup(word, verbosity, maxEditDistance).Count;
                             stopWatch.Stop();
+                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalMatches += resultNumber;
                             Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / query1k.Length).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=mix");
                             //static mix                           
                             stopWatch.Restart();
                             resultNumber = 0; foreach (var word in query1k) resultNumber += dictOrig.Lookup(word, "", maxEditDistance, (int)verbosity).Count;
                             stopWatch.Stop();
+                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalOrigMatches += resultNumber;
                             Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / query1k.Length).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=mix");
                             Console.WriteLine();
                         }
@@ -153,6 +176,14 @@ namespace symspell.Benchmark
                     }
                 }
             }
+            Console.WriteLine("Average Precalculation time instance " + (totalLoadTime / totalLoopCount).ToString("N3") + "s");
+            Console.WriteLine("Average Precalculation time static   " + (totalOrigLoadTime / totalLoopCount).ToString("N3") + "s");
+            Console.WriteLine("Average Precalculation memory instance " + (totalMem / totalLoopCount).ToString("N1") + "MB");
+            Console.WriteLine("Average Precalculation memory static   " + (totalOrigMem / totalLoopCount).ToString("N1") + "MB");
+            Console.WriteLine("Average Lookup time instance " + (totalLookupTime / totalLoopCount / 3).ToString("N3") + "ms");
+            Console.WriteLine("Average Lookup time static   " + (totalOrigLookupTime / totalLoopCount / 3).ToString("N3") + "ms");
+            Console.WriteLine("Total Lookup results instance " + totalMatches.ToString("N0"));
+            Console.WriteLine("Total Lookup results static   " + totalOrigMatches.ToString("N0"));
         }
     }
 }
