@@ -26,42 +26,50 @@ using System.Text.RegularExpressions;
 
 public class SymSpell
 {
-    public enum Verbosity {
-        /// <summary>
-        /// Top suggestion with the highest term frequency of the suggestions of smallest edit distance found.
-        /// </summary>
-        Top,        
-        /// <summary>
-        /// All suggestions of smallest edit distance found, suggestions ordered by term frequency.
-        /// </summary>
-        Closest,    
-        /// <summary>
-        /// //all suggestions within maxEditDistance, suggestions ordered by edit distance, then by term frequency (slower, no early termination).
-        /// </summary>
+    public enum Verbosity
+    {
+        /// <summary>Top suggestion with the highest term frequency of the suggestions of smallest edit distance found.</summary>
+        Top,
+        /// <summary>All suggestions of smallest edit distance found, suggestions ordered by term frequency.</summary>
+        Closest,
+        /// <summary>All suggestions within maxEditDistance, suggestions ordered by edit distance
+        /// , then by term frequency (slower, no early termination).</summary>
         All
     };
 
     const int defaultMaxEditDistance = 2;
     const int defaultPrefixLength = 7;
+    const int defaultCountThreshold = 1;
+    const int defaultInitialCapacity = 16;
 
     private int maxDictionaryEditDistance;
     private int maxLength; //maximum dictionary term length
     private int prefixLength; //prefix length  5..7
+    private Int64 countThreshold; //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
 
-    //Dictionary that contains both the original words and the deletes derived from them. A term might be both word and delete from another word at the same time.
-    //For space reduction a item might be either of type dictionaryItem or Int. 
-    //A dictionaryItem is used for word, word/delete, and delete with multiple suggestions. Int is used for deletes with a single suggestion (the majority of entries).
-    //A Dictionary with fixed value type (int) requires less memory than a Dictionary with variable value type (object)
-    //To support two types with a Dictionary with fixed type (int), positive number point to one list of type 1 (string), and negative numbers point to a secondary list of type 2 (dictionaryEntry)
-    private Dictionary<string, Int32> dictionary = new Dictionary<string, Int32>(); //initialisierung
+    public Dictionary<string, DictionaryItem> dictionary;
     //List of unique words. By using the suggestions (Int) as index for this list they are translated into the original string.
-    private List<string> wordlist = new List<string>();
-    private List<DictionaryItem> itemlist = new List<DictionaryItem>();
+    private List<string> wordlist;
 
-    private class DictionaryItem
+    // if item has no suggestions, Suggestion = -1, and Suggestions = null
+    // if item has one suggestion, Suggestion = wordList index, and Suggestions = null
+    // if item has more than one suggestion, Suggestion = wordList index of first suggestion, and Suggestions = list of all suggestions (including first)
+    public class DictionaryItem
     {
-        public List<Int32> suggestions = new List<Int32>(2);
-        public Int64 count = 0;
+        public static DictionaryItem Empty = new DictionaryItem(-1, null, -1);
+        public int Suggestion { get; set; } 
+        public List<int> Suggestions { get; set; }
+        public Int64 Count { get; set; }
+        public DictionaryItem(int suggestion, List<int> suggestions, Int64 count)
+        {
+            Suggestion = suggestion;
+            Suggestions = suggestions;
+            Count = count;
+        }
+        public override string ToString()
+        {
+            return "{" + Suggestion + ", " + Suggestions + ", " + Count + "}";
+        }
     }
 
     public class SuggestItem
@@ -79,6 +87,10 @@ public class SymSpell
         {
             return term.GetHashCode();
         }
+        public override string ToString()
+        {
+            return "{" + term + ", " + distance + ", " + count + "}";
+        }
     }
 
     /// <summary>Maximum edit distance for dictionary precalculation.</summary>
@@ -90,109 +102,91 @@ public class SymSpell
     /// <summary>Length of longest word in the dictionary.</summary>
     public int MaxLength { get { return this.maxLength; } }
 
+    /// <summary>Count threshold for a word to be considered a valid word for spelling correction.</summary>
+    public long CountThreshold { get { return this.countThreshold; } }
+    
     /// <summary>Number of unique words in the dictionary.</summary>
     public int WordCount { get { return this.wordlist.Count; } }
 
     /// <summary>Number of words and intermediate word deletes encoded in the dictionary.</summary>
     public int EntryCount { get { return this.dictionary.Count; } }
 
-    public SymSpell(int maxDictionaryEditDistance = defaultMaxEditDistance, int prefixLength = defaultPrefixLength) {
+    public SymSpell(int initialCapacity = defaultInitialCapacity, int maxDictionaryEditDistance = defaultMaxEditDistance
+        , int prefixLength = defaultPrefixLength, int countThreshold = defaultCountThreshold)
+    {
+        this.dictionary = new Dictionary<string, DictionaryItem>(initialCapacity * (1 + Math.Min(4, maxDictionaryEditDistance)/2)); //initialisierung
+        this.wordlist = new List<string>(initialCapacity);
         this.maxDictionaryEditDistance = maxDictionaryEditDistance;
         this.prefixLength = prefixLength;
-    }
-
-    public void Clear()
-    {
-        this.dictionary = new Dictionary<string, Int32>(); //initialisierung
-        this.wordlist = new List<string>();
-        this.itemlist = new List<DictionaryItem>();
-        this.maxLength = 0;
+        this.countThreshold = countThreshold;
     }
 
     //for every word there all deletes with an edit distance of 1..maxEditDistance created and added to the dictionary
     //every delete entry has a suggestions list, which points to the original term(s) it was created from
     //The dictionary may be dynamically updated (word frequency and new words) at any time by calling createDictionaryEntry
-    public bool CreateDictionaryEntry(string key, Int64 count) 
+    public bool CreateDictionaryEntry(string key, Int64 count)
     {
-        //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
-        int countTreshold = 1;
-        Int64 countPrevious = 0;
+        if (count == 0 && this.countThreshold > 0) return false; // no point doing anything if count is zero, as it can't change anything
+
         bool result = false;
-        DictionaryItem value = null;
-        //Int32 valueo;
-        if (dictionary.TryGetValue(key, out int valueo))
-        {           
-            //new word, but identical single delete existed before
-            //+ = single delete = index auf worlist 
-            //- = !single delete (word / word + delete(s) / deletes) = index to dictionaryItem list
-            if (valueo>=0) 
-            {
-                Int32 tmp = valueo; 
-                value = new DictionaryItem();
-                value.suggestions.Add(tmp); 
-                itemlist.Add(value);
-                dictionary[key] = -itemlist.Count;
-            }
-            //existing word (word appears several times)
-            else
-            {
-                value = itemlist[-valueo - 1];
-            }
-
-            countPrevious = value.count;
-            //summarizes multiple frequency entries of a word (prevents overflow)
-            value.count = (Int64.MaxValue - value.count > count) ? value.count + count : Int64.MaxValue;
-        }
-        else 
+        Int64 newCount, countPrevious;
+        countPrevious = -1;
+        DictionaryItem dictItem;
+        if (dictionary.TryGetValue(key, out dictItem))
         {
-            //new word
-            value = new DictionaryItem()
-            { 
-                count = count
-            };
-            itemlist.Add(value); 
-            dictionary[key] = -itemlist.Count;
-
+            //summarizes multiple frequency entries of a word (prevents overflow)
+            countPrevious = dictItem.Count;
+            newCount = (Int64.MaxValue - countPrevious > count) ? countPrevious + count : Int64.MaxValue;
+            dictItem.Count = newCount;
+        }
+        else
+        {
+            newCount = count;
+            dictItem = new DictionaryItem(-1, null, newCount);
+            this.dictionary.Add(key, dictItem);
             if (key.Length > maxLength) maxLength = key.Length;
         }
 
         //edits/suggestions are created only once, no matter how often word occurs
         //edits/suggestions are created only as soon as the word occurs in the corpus, 
         //even if the same term existed before in the dictionary as an edit from another word
-        if ((value.count >=countTreshold) && (countPrevious< countTreshold))
+        if ((newCount >= this.countThreshold) && (countPrevious < this.countThreshold))
         {
             //word2index
             wordlist.Add(key);
             Int32 keyint = (Int32)(wordlist.Count - 1);
-
+            if (dictItem.Suggestion < 0)
+            {
+                dictItem.Suggestion = keyint;
+            }
+            else
+            {
+                if (dictItem.Suggestions == null)
+                {
+                    dictItem.Suggestions = new List<int>(2);
+                    dictItem.Suggestions.Add(dictItem.Suggestion);
+                }
+                dictItem.Suggestions.Add(keyint);
+            }
             result = true;
 
             //create deletes
-            foreach (string delete in EditsPrefix(key)   )
+            foreach (string delete in EditsPrefix(key))
             {
                 //Int32 value2;
                 DictionaryItem di;
-                if (dictionary.TryGetValue(delete, out int value2))
+                if (dictionary.TryGetValue(delete, out di))
                 {
-                    //already exists:
-                    //1. word1==deletes(word2) 
-                    //2. deletes(word1)==deletes(word2) 
-                    //int or dictionaryItem? single delete existed before!
-                    if (value2 >= 0)
+                    if (di.Suggestions == null)
                     {
-                        //transformes int to dictionaryItem
-                        di = new DictionaryItem(); di.suggestions.Add(value2); itemlist.Add(di); dictionary[delete] = -itemlist.Count;
-                        if (!di.suggestions.Contains(keyint)) di.suggestions.Add(keyint);
+                        di.Suggestions = new List<int>(2);
+                        di.Suggestions.Add(di.Suggestion);
                     }
-                    else
-                    {
-                        di = itemlist[-value2 - 1];
-                        if (!di.suggestions.Contains(keyint)) di.suggestions.Add(keyint);
-                    }
+                    di.Suggestions.Add(keyint);
                 }
                 else
                 {
-                    dictionary.Add(delete, keyint);         
+                    dictionary.Add(delete, new DictionaryItem(keyint, null, 0));
                 }
 
             }
@@ -262,7 +256,7 @@ public class SymSpell
         // maxEditDistance used in Lookup can't be bigger than the maxDictionaryEditDistance
         // used to construct the underlying dictionary structure.
         if (maxEditDistance > MaxDictionaryEditDistance) throw new ArgumentOutOfRangeException(nameof(maxEditDistance));
-        
+
         //save some time
         if (input.Length - maxEditDistance > maxLength) return new List<SuggestItem>();
 
@@ -294,13 +288,17 @@ public class SymSpell
             if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (lengthDiff > suggestions[0].distance)) goto sort;
 
             //read candidate entry from dictionary
-            if (dictionary.TryGetValue(candidate, out int valueo))
+            if (dictionary.TryGetValue(candidate, out DictionaryItem dictItem) && dictItem.Suggestion >= 0)
             {
-                DictionaryItem value = new DictionaryItem();
-                if (valueo >= 0) value.suggestions.Add((Int32)valueo); else value = itemlist[-valueo - 1];
+                var dictItemSuggestions = dictItem.Suggestions;
+                if (dictItemSuggestions == null)
+                {
+                    dictItemSuggestions = new List<int>(1);
+                    dictItemSuggestions.Add(dictItem.Suggestion);
+                }
 
                 //if count>0 then candidate entry is correct dictionary term, not only delete item
-                if (value.count > 0)
+                if (dictItem.Count > 0)
                 {
                     int distance = input.Length - candidate.Length;
 
@@ -322,7 +320,7 @@ public class SymSpell
                         SuggestItem si = new SuggestItem()
                         {
                             term = candidate,
-                            count = value.count,
+                            count = dictItem.Count,
                             distance = distance
                         };
                         suggestions.Add(si);
@@ -332,12 +330,12 @@ public class SymSpell
                 }
 
                 //iterate through suggestions (to other correct dictionary items) of delete item and add them to suggestion list
-                foreach (int suggestionint in value.suggestions)
+                foreach (int suggestionint in dictItemSuggestions)
                 {
                     //save some time 
                     //skipping double items early: different deletes of the input term can lead to the same suggestion
                     //index2word
-                    string suggestion = wordlist[suggestionint];
+                    string suggestion = this.wordlist[suggestionint];
 
                     //True Damerau-Levenshtein Edit Distance: adjust distance, if both distances>0
                     //We allow simultaneous edits (deletes) of maxEditDistance on on both the dictionary and the input term. 
@@ -386,12 +384,12 @@ public class SymSpell
                     if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (distance > suggestions[0].distance)) continue;
                     if (distance <= maxEditDistance)
                     {
-                        if (dictionary.TryGetValue(suggestion, out int value2))
+                        if (dictionary.TryGetValue(suggestion, out DictionaryItem dictItem2))
                         {
                             SuggestItem si = new SuggestItem()
                             {
                                 term = suggestion,
-                                count = itemlist[-value2 - 1].count,
+                                count = dictItem2.Count,
                                 distance = distance
                             };
 
@@ -428,7 +426,7 @@ public class SymSpell
         //sort by ascending edit distance, then by descending word frequency
         sort: if (verbosity < Verbosity.All) suggestions.Sort((x, y) => -x.count.CompareTo(y.count)); else suggestions.Sort((x, y) => 2 * x.distance.CompareTo(y.distance) - x.count.CompareTo(y.count));
         if ((verbosity == 0) && (suggestions.Count > 1)) return suggestions.GetRange(0, 1); else return suggestions;
-    }
+    }//end if         
 
     //create a non-unique wordlist from sample text
     //language independent (e.g. works with Chinese characters)

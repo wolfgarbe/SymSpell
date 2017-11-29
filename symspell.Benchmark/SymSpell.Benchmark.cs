@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace symspell.Benchmark
 {
@@ -60,9 +61,13 @@ namespace symspell.Benchmark
         // pre-run to ensure code has executed once before timing benchmarks
         static void WarmUp()
         {
-            SymSpell dict = new SymSpell(2, 7);
+            SymSpell dict = new SymSpell(16, 2, 7);
             dict.LoadDictionary(DictionaryPath[0], 0, 1);
-            var result = dict.Lookup("hockie", SymSpell.Verbosity.All);
+            var result = dict.Lookup("hockie", SymSpell.Verbosity.All, 1);
+
+            Original.SymSpell dictOrig = new Original.SymSpell(2, 7);
+            dictOrig.LoadDictionary(DictionaryPath[0], "", 0, 1);
+            var resultOrig = dictOrig.Lookup("hockie", "", 1, 2);
         }
 
         static void BenchmarkPrecalculationLookup()
@@ -80,15 +85,15 @@ namespace symspell.Benchmark
                     //benchmark dictionary precalculation size and time 
                     //maxEditDistance=1/2/3; prefixLength=5/6/7;  dictionary=30k/82k/500k; class=instantiated/static
                     for (int i=0;i< DictionaryPath.Length;i++)
-                    {                                             
-                        //instantiated dictionary                      
+                    {
+                        //instantiated dictionary        
                         long memSize = GC.GetTotalMemory(true);
                         stopWatch.Restart();
-                        SymSpell dict = new SymSpell(maxEditDistance, prefixLength);
+                        SymSpell dict = new SymSpell(30000, maxEditDistance, prefixLength);
                         dict.LoadDictionary(DictionaryPath[i], 0, 1);
                         stopWatch.Stop();
                         long memDelta = GC.GetTotalMemory(true) - memSize;
-                        Console.WriteLine("Precalculation instance "+stopWatch.Elapsed.TotalSeconds.ToString("N3")+"s "+(memDelta/1024/1024).ToString("N0")+ "MB " + dict.WordCount.ToString("N0") + " words " + dict.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
+                        Console.WriteLine("Precalculation instance "+stopWatch.Elapsed.TotalSeconds.ToString("N3")+"s "+(memDelta/1024/1024.0).ToString("N1")+ "MB " + dict.WordCount.ToString("N0") + " words " + dict.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
 
                         //static dictionary 
                         memSize = GC.GetTotalMemory(true);
@@ -97,7 +102,7 @@ namespace symspell.Benchmark
                         dictOrig.LoadDictionary(DictionaryPath[i], "", 0, 1);
                         stopWatch.Stop();
                         memDelta = GC.GetTotalMemory(true) - memSize;
-                        Console.WriteLine("Precalculation static   " + stopWatch.Elapsed.TotalSeconds.ToString("N3") + "s " + (memDelta / 1024 / 1024).ToString("N0") + "MB " + dict.WordCount.ToString("N0") + " words " + dict.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
+                        Console.WriteLine("Precalculation static   " + stopWatch.Elapsed.TotalSeconds.ToString("N3") + "s " + (memDelta / 1024 / 1024.0).ToString("N1") + "MB " + dict.WordCount.ToString("N0") + " words " + dict.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
 
                         //benchmark lookup result number and time
                         //maxEditDistance=1/2/3; prefixLength=5/6/7; dictionary=30k/82k/500k; verbosity=0/1/2; query=exact/non-exact/mix; class=instantiated/static
