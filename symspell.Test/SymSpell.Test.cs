@@ -9,6 +9,32 @@ namespace symspell.Test
     public class SymSpellTests
     {
         [Test]
+        public void WordsWithSharedPrefixShouldRetainCounts()
+        {
+            var symSpell = new SymSpell(16, 1, 3);
+            symSpell.CreateDictionaryEntry("pipe", 5);
+            symSpell.CreateDictionaryEntry("pips", 10);
+            var result = symSpell.Lookup("pipe", SymSpell.Verbosity.All, 1);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("pipe", result[0].term);
+            Assert.AreEqual(5, result[0].count);
+            Assert.AreEqual("pips", result[1].term);
+            Assert.AreEqual(10, result[1].count);
+            result = symSpell.Lookup("pips", SymSpell.Verbosity.All, 1);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("pips", result[0].term);
+            Assert.AreEqual(10, result[0].count);
+            Assert.AreEqual("pipe", result[1].term);
+            Assert.AreEqual(5, result[1].count);
+            result = symSpell.Lookup("pip", SymSpell.Verbosity.All, 1);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("pips", result[0].term);
+            Assert.AreEqual(10, result[0].count);
+            Assert.AreEqual("pipe", result[1].term);
+            Assert.AreEqual(5, result[1].count);
+        }
+
+        [Test]
         public void AddAdditionalCountsShouldNotAddWordAgain()
         {
             var symSpell = new SymSpell();
@@ -88,6 +114,24 @@ namespace symspell.Test
             Assert.AreEqual("steama", result[0].term);
         }
         [Test]
+        public void LookupShouldNotReturnNonWordDelete()
+        {
+            var symSpell = new SymSpell(16, 2, 7, 10);
+            symSpell.CreateDictionaryEntry("pawn", 10);
+            var result = symSpell.Lookup("paw", SymSpell.Verbosity.Top, 0);
+            Assert.AreEqual(0, result.Count);
+            result = symSpell.Lookup("awn", SymSpell.Verbosity.Top, 0);
+            Assert.AreEqual(0, result.Count);
+        }
+        [Test]
+        public void LookupShouldNotReturnLowCountWord()
+        {
+            var symSpell = new SymSpell(16, 2, 7, 10);
+            symSpell.CreateDictionaryEntry("pawn", 1);
+            var result = symSpell.Lookup("pawn", SymSpell.Verbosity.Top, 0);
+            Assert.AreEqual(0, result.Count);
+        }
+        [Test]
         public void ShouldReplicateNoisyResults()
         {
             var dir = AppDomain.CurrentDomain.BaseDirectory;
@@ -95,7 +139,7 @@ namespace symspell.Test
             const int editDistanceMax = 2;
             const int prefixLength = 7;
             const SymSpell.Verbosity verbosity = SymSpell.Verbosity.Closest;
-            var symSpell = new SymSpell(editDistanceMax, prefixLength);
+            var symSpell = new SymSpell(83000, editDistanceMax, prefixLength);
             string path = dir + "../../../SymSpell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
 
             symSpell.LoadDictionary(path, 0, 1);
