@@ -288,7 +288,7 @@ public class SymSpell
             //early termination
             //suggestion distance=candidate.distance... candidate.distance+maxEditDistance                
             //if canddate distance is already higher than suggestion distance, than there are no better suggestions to be expected
-            if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (lengthDiff > suggestions[0].distance)) goto sort;
+            if ((verbosity < Verbosity.All) && (suggestions.Count >= countThreshold) && (lengthDiff > suggestions[0].distance)) goto sort;
 
             //read candidate entry from dictionary
             if (dictionary.TryGetValue(candidate, out DictionaryItem dictItem) && dictItem.Suggestion >= 0)
@@ -301,7 +301,7 @@ public class SymSpell
                 }
 
                 //if count>0 then candidate entry is correct dictionary term, not only delete item
-                if (dictItem.Count > 0)
+                if (dictItem.Count >= countThreshold)
                 {
                     int distance = input.Length - candidate.Length;
 
