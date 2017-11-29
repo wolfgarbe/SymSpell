@@ -47,8 +47,11 @@ public class SymSpell
     private int prefixLength; //prefix length  5..7
     private Int64 countThreshold; //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
 
+    // Dictionary that contains both the original words and the deletes derived from them. 
+    // A dictionaryItem might be only word, both word and delete from another word, only delete (word if count>0, delete if suggestion>=0).
+    // A dictionaryItem might have no suggestion, a single suggestion, or multiple suggestions. 
     public Dictionary<string, DictionaryItem> dictionary;
-    //List of unique words. By using the suggestions (Int) as index for this list they are translated into the original string.
+    // List of unique words. By using the suggestions (Int) as index for this list they are translated into the original string.
     private List<string> wordlist;
 
     // if item has no suggestions, Suggestion = -1, and Suggestions = null
