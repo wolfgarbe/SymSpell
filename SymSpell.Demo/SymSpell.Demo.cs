@@ -21,9 +21,10 @@ namespace symspell.Demo
             stopWatch.Start();
 
             //set parameters
+            const int initialCapacity = 82765;
             const int maxEditDistance = 2;
             const int prefixLength = 7;
-            var symSpell = new SymSpell(maxEditDistance, prefixLength);
+            var symSpell = new SymSpell(initialCapacity, maxEditDistance, prefixLength);
 
             //Load a frequency dictionary
             //wordfrequency_en.txt  ensures high correction quality by combining two data sources: 
