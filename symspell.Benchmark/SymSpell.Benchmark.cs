@@ -19,6 +19,11 @@ namespace symspell.Benchmark
             "30k",
             "82k",
             "500k" };
+        
+        static readonly int[] DictionarySize = {
+            29159,
+            82765,
+            500000 };
 
         //load 1000 terms with random spelling errors
         static string[] BuildQuery1K()
@@ -89,7 +94,7 @@ namespace symspell.Benchmark
                         //instantiated dictionary        
                         long memSize = GC.GetTotalMemory(true);
                         stopWatch.Restart();
-                        SymSpell dict = new SymSpell(30000, maxEditDistance, prefixLength);
+                        SymSpell dict = new SymSpell(DictionarySize[i], maxEditDistance, prefixLength);
                         dict.LoadDictionary(DictionaryPath[i], 0, 1);
                         stopWatch.Stop();
                         long memDelta = GC.GetTotalMemory(true) - memSize;
