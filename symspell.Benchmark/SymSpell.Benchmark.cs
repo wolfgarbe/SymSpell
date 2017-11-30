@@ -176,13 +176,13 @@ namespace symspell.Benchmark
                     }
                 }
             }
-            Console.WriteLine("Average Precalculation time instance " + (totalLoadTime / totalLoopCount).ToString("N3") + "s");
+            Console.WriteLine("Average Precalculation time instance " + (totalLoadTime / totalLoopCount).ToString("N3") + "s   " + ((totalLoadTime / totalOrigLoadTime) - 1).ToString("P1"));
             Console.WriteLine("Average Precalculation time static   " + (totalOrigLoadTime / totalLoopCount).ToString("N3") + "s");
-            Console.WriteLine("Average Precalculation memory instance " + (totalMem / totalLoopCount).ToString("N1") + "MB");
+            Console.WriteLine("Average Precalculation memory instance " + (totalMem / totalLoopCount).ToString("N1") + "MB " + ((totalMem / totalOrigMem) - 1).ToString("P1"));
             Console.WriteLine("Average Precalculation memory static   " + (totalOrigMem / totalLoopCount).ToString("N1") + "MB");
-            Console.WriteLine("Average Lookup time instance " + (totalLookupTime / totalLoopCount / 3).ToString("N3") + "ms");
+            Console.WriteLine("Average Lookup time instance " + (totalLookupTime / totalLoopCount / 3).ToString("N3") + "ms          " + ((totalLookupTime / totalOrigLookupTime) - 1).ToString("P1"));
             Console.WriteLine("Average Lookup time static   " + (totalOrigLookupTime / totalLoopCount / 3).ToString("N3") + "ms");
-            Console.WriteLine("Total Lookup results instance " + totalMatches.ToString("N0"));
+            Console.WriteLine("Total Lookup results instance " + totalMatches.ToString("N0") + "      " + (totalMatches - totalOrigMatches) + " differences");
             Console.WriteLine("Total Lookup results static   " + totalOrigMatches.ToString("N0"));
         }
     }

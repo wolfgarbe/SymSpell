@@ -53,6 +53,7 @@ public class SymSpell
     public Dictionary<string, DictionaryItem> dictionary;
     // List of unique words. By using the suggestions (Int) as index for this list they are translated into the original string.
     private List<string> wordlist;
+    public Dictionary<string, Int64> belowThresholdWords = new Dictionary<string, long>();
 
     // if item has no suggestions, Suggestion = -1, and Suggestions = null
     // if item has one suggestion, Suggestion = wordList index, and Suggestions = null
@@ -117,6 +118,11 @@ public class SymSpell
     public SymSpell(int initialCapacity = defaultInitialCapacity, int maxDictionaryEditDistance = defaultMaxEditDistance
         , int prefixLength = defaultPrefixLength, int countThreshold = defaultCountThreshold)
     {
+        if (initialCapacity < 0) throw new ArgumentOutOfRangeException(nameof(initialCapacity));
+        if (maxDictionaryEditDistance < 0) throw new ArgumentOutOfRangeException(nameof(maxDictionaryEditDistance));
+        if (prefixLength < 1 || prefixLength <= maxDictionaryEditDistance) throw new ArgumentOutOfRangeException(nameof(prefixLength));
+        if (countThreshold < 0) throw new ArgumentOutOfRangeException(nameof(countThreshold));
+
         this.dictionary = new Dictionary<string, DictionaryItem>(initialCapacity * (1 + Math.Min(4, maxDictionaryEditDistance)/2)); //initialisierung
         this.wordlist = new List<string>(initialCapacity);
         this.maxDictionaryEditDistance = maxDictionaryEditDistance;
@@ -129,72 +135,84 @@ public class SymSpell
     //The dictionary may be dynamically updated (word frequency and new words) at any time by calling createDictionaryEntry
     public bool CreateDictionaryEntry(string key, Int64 count)
     {
-        if (count == 0 && this.countThreshold > 0) return false; // no point doing anything if count is zero, as it can't change anything
-
-        bool result = false;
+        if (count <= 0)
+        {
+            if (this.countThreshold > 0) return false; // no point doing anything if count is zero, as it can't change anything
+            count = 0;
+        }
         Int64 newCount, countPrevious;
         countPrevious = -1;
         DictionaryItem dictItem;
+
+        if (belowThresholdWords.TryGetValue(key, out countPrevious))
+        {
+            // calculate new count for below threshold word
+            count = (Int64.MaxValue - countPrevious > count) ? countPrevious + count : Int64.MaxValue;
+            // has reached threshold - remove from below threshold collection (it will be added to correct words below)
+            if (count >= countThreshold) belowThresholdWords.Remove(key);
+        }
+        if (count < CountThreshold)
+        {
+            // new or existing below threshold word
+            belowThresholdWords[key] = count;
+            return false;
+        }
+
         if (dictionary.TryGetValue(key, out dictItem))
         {
             //summarizes multiple frequency entries of a word (prevents overflow)
             countPrevious = dictItem.Count;
             newCount = (Int64.MaxValue - countPrevious > count) ? countPrevious + count : Int64.MaxValue;
             dictItem.Count = newCount;
+            if (countPrevious > 0) return false;
         }
         else
         {
             newCount = count;
             dictItem = new DictionaryItem(-1, null, newCount);
             this.dictionary.Add(key, dictItem);
-            if (key.Length > maxLength) maxLength = key.Length;
         }
 
         //edits/suggestions are created only once, no matter how often word occurs
         //edits/suggestions are created only as soon as the word occurs in the corpus, 
         //even if the same term existed before in the dictionary as an edit from another word
-        if ((newCount >= this.countThreshold) && (countPrevious < this.countThreshold))
+        if (key.Length > maxLength) maxLength = key.Length;
+        wordlist.Add(key);
+        Int32 keyint = (Int32)(wordlist.Count - 1);
+        if (dictItem.Suggestion < 0)
         {
-            //word2index
-            wordlist.Add(key);
-            Int32 keyint = (Int32)(wordlist.Count - 1);
-            if (dictItem.Suggestion < 0)
+            dictItem.Suggestion = keyint;
+        }
+        else
+        {
+            if (dictItem.Suggestions == null)
             {
-                dictItem.Suggestion = keyint;
+                dictItem.Suggestions = new List<int>(2);
+                dictItem.Suggestions.Add(dictItem.Suggestion);
+            }
+            dictItem.Suggestions.Add(keyint);
+        }
+
+        //create deletes
+        foreach (string delete in EditsPrefix(key))
+        {
+            DictionaryItem di;
+            if (dictionary.TryGetValue(delete, out di))
+            {
+                if (di.Suggestions == null)
+                {
+                    di.Suggestions = new List<int>(2);
+                    di.Suggestions.Add(di.Suggestion);
+                }
+                di.Suggestions.Add(keyint);
             }
             else
             {
-                if (dictItem.Suggestions == null)
-                {
-                    dictItem.Suggestions = new List<int>(2);
-                    dictItem.Suggestions.Add(dictItem.Suggestion);
-                }
-                dictItem.Suggestions.Add(keyint);
+                dictionary.Add(delete, new DictionaryItem(keyint, null, 0));
             }
-            result = true;
 
-            //create deletes
-            foreach (string delete in EditsPrefix(key))
-            {
-                //Int32 value2;
-                DictionaryItem di;
-                if (dictionary.TryGetValue(delete, out di))
-                {
-                    if (di.Suggestions == null)
-                    {
-                        di.Suggestions = new List<int>(2);
-                        di.Suggestions.Add(di.Suggestion);
-                    }
-                    di.Suggestions.Add(keyint);
-                }
-                else
-                {
-                    dictionary.Add(delete, new DictionaryItem(keyint, null, 0));
-                }
-
-            }
         }
-        return result;
+        return true;
     }
 
     //load a frequency dictionary (merges with any dictionary data already loaded)
@@ -288,7 +306,7 @@ public class SymSpell
             //early termination
             //suggestion distance=candidate.distance... candidate.distance+maxEditDistance                
             //if canddate distance is already higher than suggestion distance, than there are no better suggestions to be expected
-            if ((verbosity < Verbosity.All) && (suggestions.Count >= countThreshold) && (lengthDiff > suggestions[0].distance)) goto sort;
+            if ((verbosity != Verbosity.All) && (suggestions.Count > 0) && (lengthDiff > suggestions[0].distance)) goto sort;
 
             //read candidate entry from dictionary
             if (dictionary.TryGetValue(candidate, out DictionaryItem dictItem) && dictItem.Suggestion >= 0)
@@ -301,7 +319,7 @@ public class SymSpell
                 }
 
                 //if count>0 then candidate entry is correct dictionary term, not only delete item
-                if (dictItem.Count >= countThreshold)
+                if (dictItem.Count > 0)
                 {
                     int distance = input.Length - candidate.Length;
 
@@ -317,7 +335,7 @@ public class SymSpell
                         //All of them where deleted later once a suggestion with a lower distance than the first item in the list was later added in the other branch. 
                         //Therefore returned suggestions were not always complete for verbosity<2.
                         //remove all existing suggestions of higher distance, if verbosity<2
-                        if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
+                        if ((verbosity != Verbosity.All) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
 
                         //add correct dictionary term term to suggestion list
                         SuggestItem si = new SuggestItem()
@@ -358,7 +376,8 @@ public class SymSpell
                         else if (candidate.Length == 0)
                         {
                             //suggestions which have no common chars with input (input.length<=maxEditDistance && suggestion.length<=maxEditDistance)
-                            if (!hashset2.Add(suggestion)) continue; distance = Math.Max(input.Length, suggestion.Length);
+                            if (!hashset2.Add(suggestion)) continue;
+                            distance = Math.Max(input.Length, suggestion.Length);
                         }
                         else
                         //number of edits in prefix ==maxediddistance  AND no identic suffix, then editdistance>maxEditDistance and no need for Levenshtein calculation  
@@ -373,7 +392,8 @@ public class SymSpell
                         else if ((input.Length == candidate.Length) && (suggestion.Length <= prefixLength)) { if (!hashset2.Add(suggestion)) continue; distance = suggestion.Length - candidate.Length; }
                         else if (hashset2.Add(suggestion))
                         {
-                            distance = EditDistance.DamerauLevenshteinDistance(input, suggestion, maxEditDistance2); if (distance < 0) distance = maxEditDistance + 1;
+                            distance = EditDistance.DamerauLevenshteinDistance(input, suggestion, maxEditDistance2);
+                            if (distance < 0) distance = maxEditDistance + 1;
                         }
                         else
                         {
@@ -384,7 +404,7 @@ public class SymSpell
 
                     //save some time
                     //do not process higher distances than those already found, if verbosity<2
-                    if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (distance > suggestions[0].distance)) continue;
+                    if ((verbosity != Verbosity.All) && (suggestions.Count > 0) && (distance > suggestions[0].distance)) continue;
                     if (distance <= maxEditDistance)
                     {
                         if (dictionary.TryGetValue(suggestion, out DictionaryItem dictItem2))
@@ -396,11 +416,14 @@ public class SymSpell
                                 distance = distance
                             };
 
-                            //we will calculate DamLev distance only to the smallest found distance sof far
-                            if (verbosity < Verbosity.All) maxEditDistance2 = distance;
+                            if (verbosity != Verbosity.All)
+                            {
+                                //we will calculate DamLev distance only to the smallest found distance so far
+                                maxEditDistance2 = distance;
 
-                            //remove all existing suggestions of higher distance, if verbosity<2
-                            if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
+                                //remove all existing suggestions of higher distance, if verbosity<2
+                                if ((suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
+                            }
                             suggestions.Add(si);
                         }
                     }
@@ -415,7 +438,7 @@ public class SymSpell
             {
                 //save some time
                 //do not create edits with edit distance smaller than suggestions already found
-                if ((verbosity < Verbosity.All) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;
+                if ((verbosity != Verbosity.All) && (suggestions.Count > 0) && (lengthDiff >= suggestions[0].distance)) continue;
 
                 for (int i = 0; i < candidate.Length; i++)
                 {
@@ -427,8 +450,20 @@ public class SymSpell
         }//end while
 
         //sort by ascending edit distance, then by descending word frequency
-        sort: if (verbosity < Verbosity.All) suggestions.Sort((x, y) => -x.count.CompareTo(y.count)); else suggestions.Sort((x, y) => 2 * x.distance.CompareTo(y.distance) - x.count.CompareTo(y.count));
-        if ((verbosity == 0) && (suggestions.Count > 1)) return suggestions.GetRange(0, 1); else return suggestions;
+        sort:
+        if (suggestions.Count > 1)
+        {
+            if (verbosity == Verbosity.All)
+            {
+                suggestions.Sort((x, y) => 2 * x.distance.CompareTo(y.distance) - x.count.CompareTo(y.count));
+            }
+            else
+            {
+                suggestions.Sort((x, y) => -x.count.CompareTo(y.count));
+                if (verbosity == Verbosity.Top) suggestions.RemoveRange(1, suggestions.Count - 1);
+            }
+        }
+        return suggestions;
     }//end if         
 
     //create a non-unique wordlist from sample text
