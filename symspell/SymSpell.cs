@@ -190,7 +190,6 @@ public class SymSpell
                 dictItem.Suggestions = new List<int>(2);
                 dictItem.Suggestions.Add(dictItem.Suggestion);
             }
-            dictItem.Suggestions.Add(keyint);
         }
 
         //create deletes
@@ -202,7 +201,7 @@ public class SymSpell
                 if (di.Suggestions == null)
                 {
                     di.Suggestions = new List<int>(2);
-                    di.Suggestions.Add(di.Suggestion);
+                    if (delete != wordlist[di.Suggestion]) di.Suggestions.Add(di.Suggestion);
                 }
                 di.Suggestions.Add(keyint);
             }
