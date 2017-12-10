@@ -85,6 +85,7 @@ namespace symspell.Benchmark
             long totalOrigMatches = 0;
             double totalLoadTime, totalMem, totalLookupTime, totalOrigLoadTime, totalOrigMem, totalOrigLookupTime;
             totalLoadTime = totalMem = totalLookupTime = totalOrigLoadTime = totalOrigMem = totalOrigLookupTime = 0;
+            long totalRepetitions = 0;
 
             Stopwatch stopWatch = new Stopwatch();
             for (int maxEditDistance = 1; maxEditDistance <= 3; maxEditDistance++)
@@ -118,7 +119,7 @@ namespace symspell.Benchmark
                         memDelta = GC.GetTotalMemory(true) - memSize;
                         totalOrigLoadTime += stopWatch.Elapsed.TotalSeconds;
                         totalOrigMem += memDelta / 1024.0 / 1024.0;
-                        Console.WriteLine("Precalculation static   " + stopWatch.Elapsed.TotalSeconds.ToString("N3") + "s " + (memDelta / 1024 / 1024.0).ToString("N1") + "MB " + dict.WordCount.ToString("N0") + " words " + dict.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
+                        Console.WriteLine("Precalculation static   " + stopWatch.Elapsed.TotalSeconds.ToString("N3") + "s " + (memDelta / 1024 / 1024.0).ToString("N1") + "MB " + dictOrig.Count.ToString("N0") + " words " + dictOrig.EntryCount.ToString("N0") + " entries  MaxEditDistance=" + maxEditDistance.ToString() + " prefixLength=" + prefixLength.ToString() + " dict=" + DictionaryName[i]);
 
                         //benchmark lookup result number and time
                         //maxEditDistance=1/2/3; prefixLength=5/6/7; dictionary=30k/82k/500k; verbosity=0/1/2; query=exact/non-exact/mix; class=instantiated/static
@@ -128,14 +129,14 @@ namespace symspell.Benchmark
                             stopWatch.Restart();
                             for (int round = 0; round < repetitions; round++) resultNumber = dict.Lookup("different", verbosity, maxEditDistance).Count;
                             stopWatch.Stop();
-                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds;
                             totalMatches += resultNumber;
                             Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=exact");
                             //static exact
                             stopWatch.Restart();
                             for (int round = 0; round < repetitions; round++) resultNumber = dictOrig.Lookup("different", "", maxEditDistance, (int)verbosity).Count;
                             stopWatch.Stop();
-                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds;
                             totalOrigMatches += resultNumber;
                             Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=exact");
                             Console.WriteLine();
@@ -144,14 +145,14 @@ namespace symspell.Benchmark
                             stopWatch.Restart();
                             for (int round = 0; round < repetitions; round++) resultNumber = dict.Lookup("hockie", verbosity, maxEditDistance).Count;
                             stopWatch.Stop();
-                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds;
                             totalMatches += resultNumber;
                             Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=non-exact");
                             //static non-exact
                             stopWatch.Restart();
                             for (int round = 0; round < repetitions; round++) resultNumber = dictOrig.Lookup("hockie", "", maxEditDistance, (int)verbosity).Count;
                             stopWatch.Stop();
-                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds;
                             totalOrigMatches += resultNumber;
                             Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=non-exact");
                             Console.WriteLine();
@@ -160,17 +161,19 @@ namespace symspell.Benchmark
                             stopWatch.Restart();
                             resultNumber = 0; foreach (var word in query1k) resultNumber += dict.Lookup(word, verbosity, maxEditDistance).Count;
                             stopWatch.Stop();
-                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalLookupTime += stopWatch.Elapsed.TotalMilliseconds;
                             totalMatches += resultNumber;
                             Console.WriteLine("Lookup instance " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / query1k.Length).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=mix");
                             //static mix                           
                             stopWatch.Restart();
                             resultNumber = 0; foreach (var word in query1k) resultNumber += dictOrig.Lookup(word, "", maxEditDistance, (int)verbosity).Count;
                             stopWatch.Stop();
-                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds / repetitions;
+                            totalOrigLookupTime += stopWatch.Elapsed.TotalMilliseconds;
                             totalOrigMatches += resultNumber;
                             Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / query1k.Length).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=mix");
                             Console.WriteLine();
+
+                            totalRepetitions += (2 * repetitions) + query1k.Length;
                         }
                         Console.WriteLine();
                     }
@@ -180,8 +183,8 @@ namespace symspell.Benchmark
             Console.WriteLine("Average Precalculation time static   " + (totalOrigLoadTime / totalLoopCount).ToString("N3") + "s");
             Console.WriteLine("Average Precalculation memory instance " + (totalMem / totalLoopCount).ToString("N1") + "MB " + ((totalMem / totalOrigMem) - 1).ToString("P1"));
             Console.WriteLine("Average Precalculation memory static   " + (totalOrigMem / totalLoopCount).ToString("N1") + "MB");
-            Console.WriteLine("Average Lookup time instance " + (totalLookupTime / totalLoopCount / 3).ToString("N3") + "ms          " + ((totalLookupTime / totalOrigLookupTime) - 1).ToString("P1"));
-            Console.WriteLine("Average Lookup time static   " + (totalOrigLookupTime / totalLoopCount / 3).ToString("N3") + "ms");
+            Console.WriteLine("Average Lookup time instance " + (totalLookupTime / totalRepetitions).ToString("N3") + "ms          " + ((totalLookupTime / totalOrigLookupTime) - 1).ToString("P1"));
+            Console.WriteLine("Average Lookup time static   " + (totalOrigLookupTime / totalRepetitions).ToString("N3") + "ms");
             Console.WriteLine("Total Lookup results instance " + totalMatches.ToString("N0") + "      " + (totalMatches - totalOrigMatches) + " differences");
             Console.WriteLine("Total Lookup results static   " + totalOrigMatches.ToString("N0"));
         }
