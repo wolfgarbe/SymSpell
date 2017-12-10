@@ -389,7 +389,7 @@ public class SymSpell
                 // skip to next candidate if Verbosity.All, look no further if Verbosity.Top or Closest 
                 // (candidates are ordered by delete distance, so none are closer than current)
                 if (verbosity == Verbosity.All) continue;
-                break; 
+                break;
             }
 
             //read candidate entry from dictionary
@@ -423,11 +423,6 @@ public class SymSpell
                         distance = Math.Max(inputLen, suggestionLen);
                         if (distance > maxEditDistance2 || !hashset2.Add(suggestion)) continue;
                     }
-                    else if (inputLen == 1)
-                    {
-                        if (suggestion.IndexOf(input[0]) < 0) distance = suggestionLen; else distance = suggestionLen - 1;
-                        if (distance > maxEditDistance2 || !hashset2.Add(suggestion)) continue;
-                    }
                     else if (suggestionLen == 1)
                     {
                         if (input.IndexOf(suggestion[0]) < 0) distance = inputLen; else distance = inputLen - 1;
@@ -447,9 +442,8 @@ public class SymSpell
                         continue;
                     }
                     else
-                    { 
-                        if (!DeleteInSuggestionPrefix(candidate, candidateLen, suggestion, suggestionLen) 
-                            || !hashset2.Add(suggestion)) continue;
+                    {
+                        if (!hashset2.Add(suggestion)) continue;
                         distance = distanceComparer.Compare(suggestion, maxEditDistance2);
                         if (distance < 0) continue;
                     }
@@ -460,7 +454,8 @@ public class SymSpell
                     {
                         suggestionCount = words[suggestion];
                         SuggestItem si = new SuggestItem(suggestion, distance, suggestionCount);
-                        if (suggestions.Count > 0) {
+                        if (suggestions.Count > 0)
+                        {
                             switch (verbosity)
                             {
                                 case Verbosity.Closest:
