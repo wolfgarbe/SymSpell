@@ -140,6 +140,7 @@ namespace symspell.Benchmark
                             totalOrigMatches += resultNumber;
                             Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=exact");
                             Console.WriteLine();
+                            totalRepetitions += repetitions;
 
                             //instantiated non-exact
                             stopWatch.Restart();
@@ -156,6 +157,7 @@ namespace symspell.Benchmark
                             totalOrigMatches += resultNumber;
                             Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / repetitions).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=non-exact");
                             Console.WriteLine();
+                            totalRepetitions += repetitions;
 
                             //instantiated mix                           
                             stopWatch.Restart();
@@ -172,8 +174,7 @@ namespace symspell.Benchmark
                             totalOrigMatches += resultNumber;
                             Console.WriteLine("Lookup static   " + resultNumber.ToString("N0") + " results " + (stopWatch.Elapsed.TotalMilliseconds / query1k.Length).ToString("N6") + "ms/op verbosity=" + verbosity.ToString() + " query=mix");
                             Console.WriteLine();
-
-                            totalRepetitions += (2 * repetitions) + query1k.Length;
+                            totalRepetitions += query1k.Length;
                         }
                         Console.WriteLine();
                     }
