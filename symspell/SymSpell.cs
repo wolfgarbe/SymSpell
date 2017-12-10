@@ -82,7 +82,7 @@ public class SymSpell
         }
         public int CompareTo(SuggestItem other)
         {
-            // order by distanc ascending, then by frequency count descending
+            // order by distance ascending, then by frequency count descending
             if (this.distance == other.distance) return other.count.CompareTo(this.count);
             return this.distance.CompareTo(other.distance);
         }
@@ -415,7 +415,7 @@ public class SymSpell
                     //To prevent suggestions of a higher edit distance, we need to calculate the resulting edit distance, if there are simultaneous edits on both sides.
                     //Example: (bank==bnak and bank==bink, but bank!=kanb and bank!=xban and bank!=baxn for maxEditDistance=1)
                     //Two deletes on each side of a pair makes them all equal, but the first two pairs have edit distance=1, the others edit distance=2.
-                    int distance = 0;// maxEditDistance+1;
+                    int distance = 0;
                     int min = 0;
                     if (candidateLen == 0)
                     {
@@ -443,7 +443,9 @@ public class SymSpell
                     }
                     else
                     {
-                        if (!hashset2.Add(suggestion)) continue;
+                        // DeleteInSuggestionPrefix is somewhat expensive, and only pays off when verbosity is Top or Closest.
+                        if ((verbosity != Verbosity.All && !DeleteInSuggestionPrefix(candidate, candidateLen, suggestion, suggestionLen))
+                            || !hashset2.Add(suggestion)) continue;
                         distance = distanceComparer.Compare(suggestion, maxEditDistance2);
                         if (distance < 0) continue;
                     }
