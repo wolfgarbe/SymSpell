@@ -460,33 +460,27 @@ public class SymSpell
                     {
                         suggestionCount = words[suggestion];
                         SuggestItem si = new SuggestItem(suggestion, distance, suggestionCount);
-                        switch(verbosity)
-                        {
-                            case Verbosity.Closest:
-                                { 
-                                    if (distance < maxEditDistance2)
+                        if (suggestions.Count > 0) {
+                            switch (verbosity)
+                            {
+                                case Verbosity.Closest:
                                     {
                                         //we will calculate DamLev distance only to the smallest found distance so far
-                                        maxEditDistance2 = distance;
-                                        suggestions.Clear();
+                                        if (distance < maxEditDistance2) suggestions.Clear();
+                                        break;
                                     }
-                                    break;
-                                }
-                            case Verbosity.Top:
-                                {
-                                    maxEditDistance2 = distance;
-                                    if (suggestions.Count != 0)
+                                case Verbosity.Top:
                                     {
-                                        if (distance < maxEditDistance2
-                                            || suggestionCount > suggestions[0].count)
+                                        if (distance < maxEditDistance2 || suggestionCount > suggestions[0].count)
                                         {
+                                            maxEditDistance2 = distance;
                                             suggestions[0] = si;
                                         }
                                         continue;
                                     }
-                                    break;
-                                }
+                            }
                         }
+                        if (verbosity != Verbosity.All) maxEditDistance2 = distance;
                         suggestions.Add(si);
                     }
                 }//end foreach
