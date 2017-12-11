@@ -49,6 +49,9 @@ namespace symspell.Demo
                 + " in " + stopWatch.Elapsed.TotalMilliseconds.ToString("0.0") + "ms "
                 + (Process.GetCurrentProcess().PrivateMemorySize64 / 1000000).ToString("N0") + " MB");
 
+            //warm up
+            var result = symSpell.Lookup("warmup", SymSpell.Verbosity.All, 1);
+            
             string input;
             while (!string.IsNullOrEmpty(input = (Console.ReadLine() ?? "").Trim()))
             {
