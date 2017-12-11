@@ -136,7 +136,7 @@ https://github.com/Archivus/SymSpell
 #### Changes in v6.0
 
 1. IMPROVEMENT: SymSpell internal dictionary has been refactored by [Steve Hatchett](https://github.com/softwx).<br>
-   2x faster dictionary precalculation and 3x lower memory consumption.
+   2x faster dictionary precalculation and 2x lower memory consumption.
 
 #### Changes in v5.1
 
