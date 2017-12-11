@@ -27,12 +27,12 @@ public class SymSpell
     /// <summary>Controls the closeness/quantity of returned spelling suggestions.</summary>
     public enum Verbosity
     {
-        /// Top suggestion with the highest term frequency of the suggestions of smallest edit distance found.
+        /// <summary>Top suggestion with the highest term frequency of the suggestions of smallest edit distance found.</summary>
         Top,
-        /// All suggestions of smallest edit distance found, suggestions ordered by term frequency.
+        /// <summary>All suggestions of smallest edit distance found, suggestions ordered by term frequency.</summary>
         Closest,
-        /// All suggestions within maxEditDistance, suggestions ordered by edit distance
-        /// , then by term frequency (slower, no early termination).
+        /// <summary>All suggestions within maxEditDistance, suggestions ordered by edit distance
+        /// , then by term frequency (slower, no early termination).</summary>
         All
     };
 
