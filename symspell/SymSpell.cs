@@ -7,7 +7,7 @@
 // Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,000 Unicode Han characters!
 //
 // Copyright (C) 2017 Wolf Garbe
-// Version: 5.1
+// Version: 6.0
 // Author: Wolf Garbe wolf.garbe@faroo.com
 // Maintainer: Wolf Garbe wolf.garbe@faroo.com
 // URL: https://github.com/wolfgarbe/symspell
