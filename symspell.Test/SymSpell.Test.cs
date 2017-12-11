@@ -50,12 +50,12 @@ namespace symspell.Test
             var symSpell = new SymSpell();
             var word = "hello";
             symSpell.CreateDictionaryEntry(word, 11);
-            var result = symSpell.Lookup(word, 0);
+            var result = symSpell.Lookup(word, SymSpell.Verbosity.Top);
             long count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(11, count);
             symSpell.CreateDictionaryEntry(word, 3);
-            result = symSpell.Lookup(word, 0);
+            result = symSpell.Lookup(word, SymSpell.Verbosity.Top);
             count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(11 + 3, count);
@@ -66,12 +66,12 @@ namespace symspell.Test
             var symSpell = new SymSpell();
             var word = "hello";
             symSpell.CreateDictionaryEntry(word, long.MaxValue - 10);
-            var result = symSpell.Lookup(word, 0);
+            var result = symSpell.Lookup(word, SymSpell.Verbosity.Top);
             long count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(long.MaxValue - 10, count);
             symSpell.CreateDictionaryEntry(word, 11);
-            result = symSpell.Lookup(word, 0);
+            result = symSpell.Lookup(word, SymSpell.Verbosity.Top);
             count = 0;
             if (result.Count == 1) count = result[0].count;
             Assert.AreEqual(long.MaxValue, count);
@@ -83,7 +83,7 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steam", 1);
             symSpell.CreateDictionaryEntry("steams", 2);
             symSpell.CreateDictionaryEntry("steem", 3);
-            var result = symSpell.Lookup("steems",0, 2);
+            var result = symSpell.Lookup("steems", SymSpell.Verbosity.Top, 2);
             Assert.AreEqual(1, result.Count);
             result = symSpell.Lookup("steems", SymSpell.Verbosity.Closest, 2);
             Assert.AreEqual(2, result.Count);
@@ -97,7 +97,7 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steama", 4);
             symSpell.CreateDictionaryEntry("steamb", 6);
             symSpell.CreateDictionaryEntry("steamc", 2);
-            var result = symSpell.Lookup("steam", 0, 2);
+            var result = symSpell.Lookup("steam", SymSpell.Verbosity.Top, 2);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("steamb", result[0].term);
             Assert.AreEqual(6, result[0].count);
@@ -109,7 +109,7 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steama", 4);
             symSpell.CreateDictionaryEntry("steamb", 6);
             symSpell.CreateDictionaryEntry("steamc", 2);
-            var result = symSpell.Lookup("steama", 0, 2);
+            var result = symSpell.Lookup("steama", SymSpell.Verbosity.Top, 2);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("steama", result[0].term);
         }
@@ -140,8 +140,28 @@ namespace symspell.Test
             var result = symSpell.Lookup("flam", SymSpell.Verbosity.Top, 0);
             Assert.AreEqual(0, result.Count);
         }
+        //[Test]
+        //public void DeleteInSuggestionPrefixEdgeCases()
+        //{
+        //    var symSpell = new SymSpell();
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("ab", "abcdef", 6));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("ab", "abcdef", 2));
+        //    Assert.IsFalse(symSpell.DeleteInSuggestionPrefix("ab", "abcdef", 1));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("ab", "aaaaab", 6));
+        //    Assert.IsFalse(symSpell.DeleteInSuggestionPrefix("ab", "aaaaab", 5));
+        //    Assert.IsFalse(symSpell.DeleteInSuggestionPrefix("ab", "bacdef", 6));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("adf", "abcdef", 6));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("ef", "abcdef", 6));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("a", "abcdef", 6));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("f", "abcdef", 6));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("a", "a", 1));
+        //    Assert.IsFalse(symSpell.DeleteInSuggestionPrefix("abc", "ab", 2));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("boo", "taboo", 5));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("boo", "broto", 5));
+        //    Assert.IsTrue(symSpell.DeleteInSuggestionPrefix("abba", "cacbcbca", 8));
+        //}
         [Test]
-        public void ShouldReplicateNoisyResults()
+        public void LookupShouldReplicateNoisyResults()
         {
             var dir = AppDomain.CurrentDomain.BaseDirectory;
 

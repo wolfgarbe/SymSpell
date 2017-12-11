@@ -279,6 +279,7 @@ namespace Original
             //add original prefix
             if (input.Length > lp) candidates.Add(input.Substring(0, lp));
 
+            var distanceComparer = new EditDistance(input, EditDistance.DistanceAlgorithm.Damerau);//wolf
             while (candidatePointer < candidates.Count)
             {
                 string candidate = candidates[candidatePointer++];
@@ -313,7 +314,7 @@ namespace Original
                             //All of them where deleted later once a suggestion with a lower distance than the first item in the list was later added in the other branch. 
                             //Therefore returned suggestions were not always complete for verbose<2.
                             //remove all existing suggestions of higher distance, if verbose<2
-                            if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear(); 
+                            if ((verbose < 2) && (suggestions.Count > 0) && (suggestions[0].distance > distance)) suggestions.Clear();
 
                             //add correct dictionary term term to suggestion list
                             SuggestItem si = new SuggestItem()
@@ -369,7 +370,9 @@ namespace Original
                             else if ((input.Length == candidate.Length) && (suggestion.Length <= lp)) { if (!hashset2.Add(suggestion)) continue; distance = suggestion.Length - candidate.Length; }
                             else if (hashset2.Add(suggestion))
                             {
-                                distance = EditDistance.DamerauLevenshteinDistance(input, suggestion, editDistanceMax2); if (distance < 0) distance = editDistanceMax + 1;
+                                //distance = EditDistanceOld.DamerauLevenshteinDistance(input, suggestion, editDistanceMax2);//wolf
+                                distance = distanceComparer.Compare(suggestion, editDistanceMax2);
+                                if (distance < 0) distance = editDistanceMax + 1;
                             }
                             else
                             {

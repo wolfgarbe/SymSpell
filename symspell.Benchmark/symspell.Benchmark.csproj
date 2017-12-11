@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\symspell\DamerauLevenshtein\DamerauLevenshtein.cs">
-      <Link>DamerauLevenshtein.cs</Link>
+    <Compile Include="..\symspell\EditDistance.cs">
+      <Link>EditDistance.cs</Link>
     </Compile>
     <Compile Include="..\symspell\SymSpell.cs">
       <Link>SymSpell.cs</Link>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-public static class EditDistance {
+public class EditDistance {
     /// <summary>
     /// Computes and returns the Damerau-Levenshtein edit distance between two strings, 
     /// i.e. the number of insertion, deletion, sustitution, and transposition edits
@@ -47,19 +47,63 @@ public static class EditDistance {
     ///OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     ///SOFTWARE.
     /// </license>
+
+    //Supported edit distance algorithms.
+    public enum DistanceAlgorithm {
+        Damerau
+    }
+    private string baseString;
+    private DistanceAlgorithm algorithm;
+    private int[] v0;
+    private int[] v2; 
+    /// <summary>Create a new EditDistance object.</summary>
+    /// <param name="baseString">The base string to which other strings will be compared.</param>
+    /// <param name="algorithm">The desired edit distance algorithm.</param>
+    public EditDistance(string baseString, DistanceAlgorithm algorithm)
+    {
+        this.baseString = baseString;
+        this.algorithm = algorithm;
+        if (this.baseString == "")
+        {
+            this.baseString = null;
+            return;
+        }
+        if (algorithm == DistanceAlgorithm.Damerau)
+        {
+            v0 = new int[baseString.Length];
+            v2 = new int[baseString.Length]; // stores one level further back (offset by +1 position)
+        }
+    }
+    /// <summary>Compare a string to the base string to determine the edit distance,
+    /// using the previously selected algorithm.</summary>
+    /// <param name="string2">The string to compare.</param>
+    /// <param name="maxDistance">The maximum distance allowed.</param>
+    /// <returns>The edit distance (or -1 if maxDistance exceeded).</returns>
+    public int Compare(string string2, int maxDistance)
+    {
+        switch (algorithm) {
+            case DistanceAlgorithm.Damerau: return DamerauLevenshteinDistance(string2, maxDistance);
+        }
+        throw new ArgumentException("unknown DistanceAlgorithm");
+    }
+    // stores one level further back (offset by +1 position)
     /// <param name="string1">String being compared for distance.</param>
     /// <param name="string2">String being compared against other string.</param>
     /// <param name="maxDistance">The maximum edit distance of interest.</param>
     /// <returns>int edit distance, >= 0 representing the number of edits required
     /// to transform one string to the other, or -1 if the distance is greater than the specified maxDistance.</returns>
-    public static int DamerauLevenshteinDistance(this string string1, string string2, int maxDistance) {
-        if (String.IsNullOrEmpty(string1)) return (string2 ?? "").Length;
-        if (String.IsNullOrEmpty(string2)) return string1.Length;
+    public int DamerauLevenshteinDistance(string string2, int maxDistance) {
+        if (baseString == null) return (string2 ?? "").Length;
+        if (String.IsNullOrEmpty(string2)) return baseString.Length;
 
         // if strings of different lengths, ensure shorter string is in string1. This can result in a little
         // faster speed by spending more time spinning just the inner loop during the main processing.
-        if (string1.Length > string2.Length) {
-            var temp = string1; string1 = string2; string2 = temp; // swap string1 and string2
+        string string1;
+        if (baseString.Length > string2.Length) {
+            string1 = string2;
+            string2 = baseString;
+        } else {
+            string1 = baseString;
         }
         int sLen = string1.Length; // this is also the minimun length of the two strings
         int tLen = string2.Length;
@@ -85,8 +129,13 @@ public static class EditDistance {
             maxDistance = tLen;
         } else if (lenDiff > maxDistance) return -1;
 
-        var v0 = new int[tLen];
-        var v2 = new int[tLen]; // stores one level further back (offset by +1 position)
+        if (tLen > v0.Length)
+        {
+            v0 = new int[tLen];
+            v2 = new int[tLen];
+        } else {
+            Array.Clear(v2, 0, tLen);
+        }
         int j;
         for (j = 0; j < maxDistance; j++) v0[j] = j + 1;
         for (; j < tLen; j++) v0[j] = maxDistance + 1;
