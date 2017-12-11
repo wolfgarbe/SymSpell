@@ -19,7 +19,7 @@ The speed comes from pre-calculation. An average 5 letter word has about **3 mil
 
 ```
 Copyright (C) 2017 Wolf Garbe
-Version: 5.1
+Version: 6.0
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -132,6 +132,11 @@ https://github.com/semkath/symspell
 https://github.com/Archivus/SymSpell
 
 ---
+
+#### Changes in v6.0
+
+1. IMPROVEMENT: SymSpell internal dictionary has been refactored by [Steve Hatchett](https://github.com/softwx).
+   2x faster dictionary precalculation and 3x lower memory consumption.
 
 #### Changes in v5.1
 
