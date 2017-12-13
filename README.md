@@ -59,6 +59,8 @@ foreach (var suggestion in suggestions)
   Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString());
 }
 ```
+**Enabling the compiler option "Prefer 32-bit" will significantly reduce the size of the precalculated dictionary.**
+
 #### Performance
 
 0.000033 seconds/word (edit distance 2) and 0.000180 seconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
