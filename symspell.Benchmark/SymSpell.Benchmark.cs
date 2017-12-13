@@ -177,6 +177,9 @@ namespace symspell.Benchmark
                             totalRepetitions += query1k.Length;
                         }
                         Console.WriteLine();
+                        
+                        dict = null;
+                        dictOrig = null;
                     }
                 }
             }
