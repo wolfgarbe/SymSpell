@@ -80,7 +80,7 @@ Enabling the compiler option **"Prefer 32-bit"** will significantly **reduce the
 * Automated proofreading.
 
 #### Frequency dictionary
-The [word frequency list](https://github.com/wolfgarbe/symspell/blob/master/symspell/frequency_dictionary_en_82_765.txt) was created by intersecting the two lists mentioned below. By reciprocally filtering only those words which appear in both lists are used. Additional filters were applied and the resulting list truncated to &#8776; 80,000 most frequent words.
+The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/symspell/blob/master/symspell/frequency_dictionary_en_82_765.txt) was created by intersecting the two lists mentioned below. By reciprocally filtering only those words which appear in both lists are used. Additional filters were applied and the resulting list truncated to &#8776; 80,000 most frequent words.
 * [Google Books Ngram data](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)   [(License)](https://creativecommons.org/licenses/by/3.0/) : Provides representative word frequencies
 * [SCOWL - Spell Checker Oriented Word Lists](http://wordlist.aspell.net/)   [(License)](http://wordlist.aspell.net/scowl-readme/) : Ensures genuine English vocabulary    
 
