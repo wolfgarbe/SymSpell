@@ -17,6 +17,7 @@ namespace symspell.Demo
         public static void Main(string[] args)
         {
             Console.Write("Creating dictionary ...");
+            long memSize = GC.GetTotalMemory(true);
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
@@ -44,10 +45,11 @@ namespace symspell.Demo
             //if (!symSpell.CreateDictionary(path)) Console.Error.WriteLine("File not found: " + Path.GetFullPath(path));
 
             stopWatch.Stop();
+            long memDelta = GC.GetTotalMemory(true) - memSize;
             Console.WriteLine("\rDictionary: " + symSpell.WordCount.ToString("N0") + " words, "
                 + symSpell.EntryCount.ToString("N0") + " entries, edit distance=" + symSpell.MaxDictionaryEditDistance.ToString()
                 + " in " + stopWatch.Elapsed.TotalMilliseconds.ToString("0.0") + "ms "
-                + (Process.GetCurrentProcess().PrivateMemorySize64 / 1000000).ToString("N0") + " MB");
+                + (memDelta / 1024 / 1024.0).ToString("N0") + " MB");
 
             //warm up
             var result = symSpell.Lookup("warmup", SymSpell.Verbosity.All, 1);
