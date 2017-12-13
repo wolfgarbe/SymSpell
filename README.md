@@ -145,7 +145,7 @@ https://github.com/Archivus/SymSpell
 3. IMPROVEMENT: Added unit test project.
 4. IMPROVEMENT:	Different maxEditDistance for dictionary precalculation and for Lookup. 
 5. CHANGE: Removed language feature (use separate SymSpell instances instead).
-6. CHANGE: Verbosity parameter changed fom Int to Enum
+6. CHANGE: Verbosity parameter changed from Int to Enum
 7. FIX: Incomplete lookup results, if maxEditDistance=1 AND input.Length>prefixLength.
 8. FIX: count overflow protection fixed.
 
