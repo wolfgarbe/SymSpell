@@ -1,5 +1,5 @@
 SymSpell<br>
-[![NuGet version](https://badge.fury.io/nu/symspell.png)](https://badge.fury.io/nu/symspell)
+[![NuGet version](https://badge.fury.io/nu/symspell.svg)](https://badge.fury.io/nu/symspell)
 ========
 
 Spelling correction & Fuzzy search: **1 million times faster** through Symmetric Delete spelling correction algorithm
