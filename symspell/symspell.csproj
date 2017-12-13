@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>false</Optimize>
+    <Optimize>True</Optimize>
     <DefineConstants>NETSTANDARD1_3</DefineConstants>
   </PropertyGroup>
 
@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Content Include="frequency_dictionary_en_82_765.txt">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
