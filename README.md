@@ -59,7 +59,7 @@ foreach (var suggestion in suggestions)
   Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString());
 }
 ```
-Enabling the **compiler option "Prefer 32-bit"** will significantly reduce the size of the precalculated dictionary.
+Enabling the compiler option **"Prefer 32-bit"** will significantly **reduce the size** of the precalculated dictionary.
 
 #### Performance
 
