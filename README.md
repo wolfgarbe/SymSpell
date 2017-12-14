@@ -69,6 +69,8 @@ Console.ReadKey();
 
 SymSpell targets [.NET Standard v1.3](https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/) and can be used  in NET Framework (Window Forms, WPF, ASP.NET), NET Core (UWP, ASP.NET Core), and XAMARIN (iOS, OS X, Android) projects.
 
+---
+
 #### Performance
 
 0.000033 seconds/word (edit distance 2) and 0.000180 seconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
@@ -100,6 +102,8 @@ The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/symspell/b
 [Sub-millisecond compound aware automatic spelling correction](https://medium.com/@wolfgarbe/symspellcompound-10ec8f467c9b)<br>
 [SymSpell vs. BK-tree: 100x faster fuzzy string search & spell checking](https://medium.com/@wolfgarbe/symspell-vs-bk-tree-100x-faster-fuzzy-string-search-spell-checking-c4f10d80a078)
 <br><br>
+
+---
 
 **C#** (original source code)<br>
 https://github.com/wolfgarbe/symspell
