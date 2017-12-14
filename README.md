@@ -92,9 +92,20 @@ SymSpell targets [.NET Standard v1.3](https://blogs.msdn.microsoft.com/dotnet/20
 * Automated proofreading.
 
 #### Frequency dictionary
+Dictionary quality is paramount for correction quality. In order to achieve this two data sources were combined by intersection: Google Books Ngram data which provides representative word frequencies (but contains many entries with spelling errors) and SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies required for ranking of suggestions within the same edit distance).
+
 The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/symspell/blob/master/symspell/frequency_dictionary_en_82_765.txt) was created by intersecting the two lists mentioned below. By reciprocally filtering only those words which appear in both lists are used. Additional filters were applied and the resulting list truncated to &#8776; 80,000 most frequent words.
 * [Google Books Ngram data](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)   [(License)](https://creativecommons.org/licenses/by/3.0/) : Provides representative word frequencies
 * [SCOWL - Spell Checker Oriented Word Lists](http://wordlist.aspell.net/)   [(License)](http://wordlist.aspell.net/scowl-readme/) : Ensures genuine English vocabulary    
+
+**Dictionary file format**
+Plain text file in UTF-8 encoding.
+Every word-frequency-pair has to be in a separate line. A line is defined as a sequence of characters followed by a line feed ("\n"), a carriage return ("\r"), or a carriage return immediately followed by a line feed ("\r\n").
+The word and the frequency have to be separated by space or tab.
+
+You can build your own frequeny dictionary for your language or your specialized technical domain.
+The SymSpell spelling correction algorithm supports langauges with non-latin characters, e.g Cyrilic, Chinese or Georgian.
+E.g. an [Georgian frequency dictionary](https://github.com/irakli97/Frequency_Dictionary_GE_363_202) with non-latin characters which is compatible with SymSpell. 
 
 #### Blog Posts: Algorithm, Benchmarks, Applications
 [1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)<br>
