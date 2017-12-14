@@ -99,9 +99,9 @@ The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/symspell/b
 * [SCOWL - Spell Checker Oriented Word Lists](http://wordlist.aspell.net/)   [(License)](http://wordlist.aspell.net/scowl-readme/) : Ensures genuine English vocabulary    
 
 #### Dictionary file format
-Plain text file in UTF-8 encoding.
-Every word-frequency-pair has to be in a separate line. A line is defined as a sequence of characters followed by a line feed ("\n"), a carriage return ("\r"), or a carriage return immediately followed by a line feed ("\r\n").
-The word and the frequency have to be separated by space or tab.
+* Plain text file in UTF-8 encoding.
+* The word and the frequency have to be separated by space or tab.
+* Every word-frequency-pair has to be in a separate line. A line is defined as a sequence of characters followed by a line feed ("\n"), a carriage return ("\r"), or a carriage return immediately followed by a line feed ("\r\n").
 
 You can build your own frequeny dictionary for your language or your specialized technical domain.
 The SymSpell spelling correction algorithm supports langauges with non-latin characters, e.g Cyrilic, Chinese or Georgian.
