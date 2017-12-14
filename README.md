@@ -62,12 +62,12 @@ foreach (var suggestion in suggestions)
 //press any key to exit program
 Console.ReadKey();
 ```
-#### 3 ways to add SymSpell to your project:
-1. Add **SymSpell.cs, EditDistance.cs and frequency_dictionary_en_82_765.txt** to your project. All three files are located in the SymSpell folder.
-2. Add **SymSpell NuGet** to your **Net Framework** project: Visual Studio / Tools / NuGet Packager / Manage Nuget packages for solution / Select "Browse tab"/ Search for SymSpell / Select SymSpell / Check your project on the right hand windows / Click install button. The frequency_dictionary_en_82_765.txt is **automatically installed**.
+#### Three ways to add SymSpell to your project:
+1. Add **SymSpell.cs, EditDistance.cs and frequency_dictionary_en_82_765.txt** to your project. All three files are located in the SymSpell folder. Enabling the compiler option **"Prefer 32-bit"** will significantly **reduce the size** of the precalculated dictionary.
+2. Add **SymSpell NuGet** to your **Net Framework** project: Visual Studio / Tools / NuGet Packager / Manage Nuget packages for solution / Select "Browse tab"/ Search for SymSpell / Select SymSpell / Check your project on the right hand windows / Click install button. The frequency_dictionary_en_82_765.txt is **automatically installed**. 
 3. Add **SymSpell NuGet** to your **Net Core** project: Visual Studio / Tools / NuGet Packager / Manage Nuget packages for solution / Select "Browse tab"/ Search for SymSpell / Select SymSpell / Check your project on the right hand windows / Click install button. The frequency_dictionary_en_82_765.txt must be **copied manually** to your project.
 
-Enabling the compiler option **"Prefer 32-bit"** will significantly **reduce the size** of the precalculated dictionary.
+SymSpell targets [.NET Standard v1.3](https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/) and can be used  in NET Framework (Window Forms, WPF, ASP.NET), NET Core (UWP, ASP.NET Core), and XAMARIN (iOS, OS X, Android) projects.
 
 #### Performance
 
