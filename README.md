@@ -45,7 +45,7 @@ var symSpell = new SymSpell(initialCapacity, maxEditDistanceDictionary);
 string dictionaryPath="../../frequency_dictionary_en_82_765.txt";        
 int termIndex = 0; //column of the term in the dictionary text file
 int countIndex = 1; //column of the term frequency in the dictionary text file
-symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex);
+if (!symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex)) Console.WriteLine("File not found!");
 
 //lookup suggestions
 string inputTerm="house";
@@ -58,7 +58,15 @@ foreach (var suggestion in suggestions)
 { 
   Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString());
 }
+
+//press any key to exit program
+Console.ReadKey();
 ```
+How to use  the SymSpell library in your project:
+1. Add SymSpell.cs, EditDistance.cs and frequency_dictionary_en_82_765.txt to your project. All three files are located in the SymSpell folder.
+2. Add SymSpell NuGet to your **Net Framework** project: Visual Studio / Tools / NuGet Packager / Manage Nuget packages for solution / Select "Browse tab"/ Search for SymSpell / Select SymSpell / Check your project on the right hand windows / Click install button. The frequency_dictionary_en_82_765.txt is **automatically installed**.
+3. Add SymSpell NuGet to your **Net Core** project: Visual Studio / Tools / NuGet Packager / Manage Nuget packages for solution / Select "Browse tab"/ Search for SymSpell / Select SymSpell / Check your project on the right hand windows / Click install button. The frequency_dictionary_en_82_765.txt must be  **copied manually** to your project.
+
 Enabling the compiler option **"Prefer 32-bit"** will significantly **reduce the size** of the precalculated dictionary.
 
 #### Performance
