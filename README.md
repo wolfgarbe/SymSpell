@@ -85,7 +85,7 @@ SymSpell targets [.NET Standard v1.3](https://blogs.msdn.microsoft.com/dotnet/20
 
 #### Applications
 
-* Spelling correction
+* Spelling correction,
 * Query correction (10–15% of queries contain misspelled terms),
 * Chatbots,
 * OCR post-processing,
