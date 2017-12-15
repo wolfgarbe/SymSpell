@@ -44,9 +44,8 @@ namespace Original
         //A dictionaryItem is used for word, word/delete, and delete with multiple suggestions. Int is used for deletes with a single suggestion (the majority of entries).
         //A Dictionary with fixed value type (int) requires less memory than a Dictionary with variable value type (object)
         //To support two types with a Dictionary with fixed type (int), positive number point to one list of type 1 (string), and negative numbers point to a secondary list of type 2 (dictionaryEntry)
-        private Dictionary<string, Int32> dictionary = new Dictionary<string, Int32>(); //initialisierung
-                                                                                        //List of unique words. By using the suggestions (Int) as index for this list they are translated into the original string.
-        private List<string> wordlist = new List<string>();
+        private Dictionary<string, Int32> dictionary = new Dictionary<string, Int32>();                                                                                       
+        private List<string> wordlist = new List<string>();  //List of unique words. By using the suggestions (Int) as index for this list they are translated into the original string.
         private List<DictionaryItem> itemlist = new List<DictionaryItem>();
 
         private class DictionaryItem
@@ -279,7 +278,7 @@ namespace Original
             //add original prefix
             if (input.Length > lp) candidates.Add(input.Substring(0, lp));
 
-            var distanceComparer = new EditDistance(input, EditDistance.DistanceAlgorithm.Damerau);//wolf
+            var distanceComparer = new EditDistance(input, EditDistance.DistanceAlgorithm.Damerau);
             while (candidatePointer < candidates.Count)
             {
                 string candidate = candidates[candidatePointer++];
@@ -370,7 +369,6 @@ namespace Original
                             else if ((input.Length == candidate.Length) && (suggestion.Length <= lp)) { if (!hashset2.Add(suggestion)) continue; distance = suggestion.Length - candidate.Length; }
                             else if (hashset2.Add(suggestion))
                             {
-                                //distance = EditDistanceOld.DamerauLevenshteinDistance(input, suggestion, editDistanceMax2);//wolf
                                 distance = distanceComparer.Compare(suggestion, editDistanceMax2);
                                 if (distance < 0) distance = editDistanceMax + 1;
                             }
