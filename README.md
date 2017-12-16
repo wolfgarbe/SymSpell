@@ -100,7 +100,7 @@ The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/symspell/b
 
 #### Dictionary file format
 * Plain text file in UTF-8 encoding.
-* Word and Frequency separated by space or tab. Per default, the term is expected in the first row and the term frequency in the second row. But with the termIndex and countIndex parameters in LoadDictionary() the position and order of the values can be changed and a row can have more than two values. This allows to augment the dictionary with additional information or to adapt to existing dictionaries without reformatting.
+* Word and Word Frequency separated by space or tab. Per default, the word is expected in the first row and the frequency in the second row. But with the termIndex and countIndex parameters in LoadDictionary() the position and order of the values can be changed and a row can have more than two values. This allows to augment the dictionary with additional information or to adapt to existing dictionaries without reformatting.
 * Every word-frequency-pair in a separate line. A line is defined as a sequence of characters followed by a line feed ("\n"), a carriage return ("\r"), or a carriage return immediately followed by a line feed ("\r\n").
 
 You can build your own frequency dictionary for your language or your specialized technical domain.
