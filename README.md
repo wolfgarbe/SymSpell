@@ -39,6 +39,7 @@ http://www.opensource.org/licenses/LGPL-3.0
 * Chatbots,
 * OCR post-processing,
 * Automated proofreading.
+* Fuzzy search & approximate string matching
 
 #### Performance
 
