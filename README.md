@@ -132,6 +132,9 @@ The following third party ports or reimplementations to other programming langua
 **C++** (third party port)<br>
 https://github.com/erhanbaris/SymSpellPlusPlus
 
+**Crystal** (third party port)<br>
+https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
+
 **Go** (third party port)<br>
 https://github.com/heartszhang/symspell<br>
 https://github.com/sajari/fuzzy
