@@ -246,7 +246,7 @@ Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_pr
 2. IMPROVEMENT: symspell.demo.csproj, symspell.demoCompound.csproj, symspell.Benchmark.csproj have been recreated from scratch 
    and target now .Net Core instead of .Net Framework for improved compatibility with other platforms like MacOS and Linux
 3. CHANGE: The testdata directory has been moved from the demo folder into the benchmark folder
-4. CHANGE: License changed from LGPL 3.0 to MIT
+4. CHANGE: License changed from LGPL 3.0 to the more permissive MIT license to allow frictionless commercial usage.
 
 #### Changes in v6.0
 
