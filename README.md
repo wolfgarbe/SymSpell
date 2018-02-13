@@ -237,7 +237,7 @@ https://github.com/Archivus/SymSpell
 
 #### Changes in v6.1
 
-1. IMPROVEMENT: SymSpellCompound has been refactored from static to instantiated class and integrated into SymSpell
+1. IMPROVEMENT: [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound) has been refactored from static to instantiated class and integrated into [SymSpell](https://github.com/wolfgarbe/SymSpell)
    Therefore SymSpellCompound is now also based on the the latest SymSpell version with all fixes and performance improvements
 2. IMPROVEMENT: symspell.demo.csproj, symspell.demoCompound.csproj, symspell.Benchmark.csproj have been recreated from scratch 
    and target now .Net Core instead of .Net Framework for improved compatibility with other platforms like MacOS and Linux
