@@ -126,10 +126,16 @@ int maxEditDistanceDictionary = 2; //maximum edit distance per dictionary precal
 var symSpell = new SymSpell(initialCapacity, maxEditDistanceDictionary);
       
 //load dictionary
-string dictionaryPath="../../frequency_dictionary_en_82_765.txt";        
+string dictionaryPath=AppDomain.CurrentDomain.BaseDirectory+"../../../../SymSpell/frequency_dictionary_en_82_765.txt";
 int termIndex = 0; //column of the term in the dictionary text file
 int countIndex = 1; //column of the term frequency in the dictionary text file
-if (!symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex)) Console.WriteLine("File not found!");
+if (!symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex))
+{
+  Console.WriteLine("File not found!");
+  //press any key to exit program
+  Console.ReadKey();
+  return;
+}
 
 //lookup suggestions for single-word input strings
 string inputTerm="house";
