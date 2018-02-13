@@ -6,18 +6,28 @@
 // Transposes + replaces + inserts of the input term are transformed into deletes of the dictionary term.
 // Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,000 Unicode Han characters!
 //
-// Copyright (C) 2017 Wolf Garbe
-// Version: 6.0
+// SymSpell supports compound splitting / decompounding of multi-word input strings with three cases:
+// 1. mistakenly inserted space into a correct word led to two incorrect terms 
+// 2. mistakenly omitted space between two correct words led to one incorrect combined term
+// 3. multiple independent input terms with/without spelling errors
+
+// Copyright (C) 2018 Wolf Garbe
+// Version: 6.1
 // Author: Wolf Garbe wolf.garbe@faroo.com
 // Maintainer: Wolf Garbe wolf.garbe@faroo.com
 // URL: https://github.com/wolfgarbe/symspell
 // Description: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
 //
-// License:
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License,
-// version 3.0 (LGPL-3.0) as published by the Free Software Foundation.
-// http://www.opensource.org/licenses/LGPL-3.0
+// MIT License
+// Copyright (c) 2018 Wolf Garbe
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+// and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+// https://opensource.org/licenses/MIT
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -74,6 +84,9 @@ public class SymSpell
         /// <param name="term">The suggested word.</param>
         /// <param name="distance">Edit distance from search word.</param>
         /// <param name="count">Frequency of suggestion in dictionary.</param>
+        public SuggestItem()
+        {
+        }
         public SuggestItem(string term, int distance, Int64 count)
         {
             this.term = term;
@@ -98,6 +111,11 @@ public class SymSpell
         public override string ToString()
         {
             return "{" + term + ", " + distance + ", " + count + "}";
+        }
+
+        public SuggestItem ShallowCopy()
+        {
+            return (SuggestItem)MemberwiseClone();
         }
     }
 
@@ -505,6 +523,9 @@ public class SymSpell
         if (suggestions.Count > 1) suggestions.Sort();
         return suggestions;
     }//end if         
+	
+
+    //?????????????????????
 
     /// <summary>An intentionally opacque class used to temporarily stage
     /// dictionary data during the adding of many words. By staging the
@@ -710,4 +731,158 @@ public class SymSpell
         private int Col(int index) { return index & (ChunkSize - 1); } //same as index % ChunkSize
         private int Capacity { get { return Values.Length * ChunkSize; } }
     }
+
+    //######################
+
+    //public bool enableCompoundCheck = true;
+    //false: assumes input string as single term, no compound splitting / decompounding
+    //true:  supports compound splitting / decompounding with three cases:
+    //1. mistakenly inserted space into a correct word led to two incorrect terms 
+    //2. mistakenly omitted space between two correct words led to one incorrect combined term
+    //3. multiple independent input terms with/without spelling errors
+
+    //ALLWAYS use verbose = 0 for LookupCompound
+
+    public List<SuggestItem> LookupCompound(string input)
+    {
+        return LookupCompound(input, this.maxDictionaryEditDistance);
+    }
+
+    public List<SuggestItem> LookupCompound(string input, int editDistanceMax)
+    {
+        //parse input string into single terms
+        string[] termList1 = ParseWords(input);
+
+        List<SuggestItem> suggestionsPreviousTerm;                  //suggestions for a single term
+        List<SuggestItem> suggestions = new List<SuggestItem>();     //suggestions for a single term
+        List<SuggestItem> suggestionParts = new List<SuggestItem>(); //1 line with separate parts
+
+        //translate every term to its best suggestion, otherwise it remains unchanged
+        bool lastCombi = false;
+        for (int i = 0; i < termList1.Length; i++)
+        {
+            suggestionsPreviousTerm = new List<SuggestItem>(suggestions.Count); for (int k = 0; k < suggestions.Count; k++) suggestionsPreviousTerm.Add(suggestions[k].ShallowCopy());
+            suggestions = Lookup(termList1[i], Verbosity.Top, editDistanceMax);
+
+
+            //combi check, always before split
+            if ((i > 0) && !lastCombi)
+            {
+                List<SuggestItem> suggestionsCombi = Lookup(termList1[i - 1] + termList1[i], Verbosity.Top, editDistanceMax);
+
+                if (suggestionsCombi.Count > 0)
+                {
+                    SuggestItem best1 = suggestionParts[suggestionParts.Count - 1];
+                    SuggestItem best2 = new SuggestItem();
+                    if (suggestions.Count > 0)
+                    {
+                        best2 = suggestions[0];
+
+                    }
+                    else
+                    {
+                        best2.term = termList1[i];
+                        best2.distance = editDistanceMax + 1;
+                        best2.count = 0;
+                    }
+                    //if (suggestionsCombi[0].distance + 1 < DamerauLevenshteinDistance(termList1[i - 1] + " " + termList1[i], best1.term + " " + best2.term))
+                    var distanceComparer1 = new EditDistance(termList1[i - 1] + " " + termList1[i], this.distanceAlgorithm);//new
+                    int distance1 = distanceComparer1.Compare(best1.term + " " + best2.term, editDistanceMax);
+                    if ((distance1>=0)&&(suggestionsCombi[0].distance + 1 < distance1))
+                    {
+                        suggestionsCombi[0].distance++;
+                        suggestionParts[suggestionParts.Count - 1] = suggestionsCombi[0];
+                        lastCombi = true;
+                        goto nextTerm;
+                    }
+                }
+            }
+            lastCombi = false;
+
+            //alway split terms without suggestion / never split terms with suggestion ed=0 / never split single char terms
+            if ((suggestions.Count > 0) && ((suggestions[0].distance == 0) || (termList1[i].Length == 1)))
+            {
+                //choose best suggestion
+                suggestionParts.Add(suggestions[0]);
+            }
+            else
+            {
+                //if no perfect suggestion, split word into pairs
+                List<SuggestItem> suggestionsSplit = new List<SuggestItem>();
+
+                //add original term
+                if (suggestions.Count > 0) suggestionsSplit.Add(suggestions[0]);
+
+                if (termList1[i].Length > 1)
+                {
+
+                    for (int j = 1; j < termList1[i].Length; j++)
+                    {
+                        string part1 = termList1[i].Substring(0, j);
+                        string part2 = termList1[i].Substring(j);
+                        SuggestItem suggestionSplit = new SuggestItem();
+                        List<SuggestItem> suggestions1 = Lookup(part1, Verbosity.Top, editDistanceMax);
+                        if (suggestions1.Count > 0)
+                        {
+                            if ((suggestions.Count > 0) && (suggestions[0].term == suggestions1[0].term)) break;//if split correction1 == einzelwort correction
+                            List<SuggestItem> suggestions2 = Lookup(part2, Verbosity.Top, editDistanceMax);
+                            if (suggestions2.Count > 0)
+                            {
+                                if ((suggestions.Count > 0) && (suggestions[0].term == suggestions2[0].term)) break;//if split correction1 == einzelwort correction
+                                //select best suggestion for split pair
+                                suggestionSplit.term = suggestions1[0].term + " " + suggestions2[0].term;
+                                var distanceComparer2 = new EditDistance(termList1[i], this.distanceAlgorithm);//new
+                                int distance2 = distanceComparer2.Compare(suggestions1[0].term + " " + suggestions2[0].term, editDistanceMax);
+                                if (distance2 < 0) distance2 = editDistanceMax + 1;
+                                suggestionSplit.distance = distance2;
+                                suggestionSplit.count = Math.Min(suggestions1[0].count, suggestions2[0].count);
+                                suggestionsSplit.Add(suggestionSplit);
+
+                                //early termination of split
+                                if (suggestionSplit.distance == 1) break;
+                            }
+                        }
+                    }
+
+                    if (suggestionsSplit.Count > 0)
+                    {
+                        //select best suggestion for split pair
+                        suggestionsSplit.Sort((x, y) => 2 * x.distance.CompareTo(y.distance) - x.count.CompareTo(y.count));
+                        suggestionParts.Add(suggestionsSplit[0]);
+                    }
+                    else
+                    {
+                        SuggestItem si = new SuggestItem();
+                        si.term = termList1[i];
+                        si.count = 0;
+                        si.distance = editDistanceMax + 1;
+                        suggestionParts.Add(si);
+                    }
+                }
+                else
+                {
+                    SuggestItem si = new SuggestItem();
+                    si.term = termList1[i];
+                    si.count = 0;
+                    si.distance = editDistanceMax + 1;
+                    suggestionParts.Add(si);
+                }
+            }
+            nextTerm:;
+        }
+
+        SuggestItem suggestion = new SuggestItem();
+        suggestion.count = Int64.MaxValue;
+        string s = ""; foreach (SuggestItem si in suggestionParts) { s += si.term + " "; suggestion.count = Math.Min(suggestion.count, si.count); }//Console.WriteLine(s);
+        suggestion.term = s.TrimEnd();
+        var distanceComparer3 = new EditDistance(suggestion.term, this.distanceAlgorithm);//new
+        suggestion.distance = distanceComparer3.Compare(input,int.MaxValue);
+
+        List<SuggestItem> suggestionsLine = new List<SuggestItem>();
+        suggestionsLine.Add(suggestion);
+        return suggestionsLine;
+    }
+
+    //######################
+
 }

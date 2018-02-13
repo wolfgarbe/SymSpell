@@ -8,12 +8,12 @@ namespace symspell.Benchmark
     class Benchmark
     {
         static readonly string Path = AppDomain.CurrentDomain.BaseDirectory;
-        static readonly string Query1k = Path + "../../../SymSpell.Demo/test_data/noisy_query_en_1000.txt";
+        static readonly string Query1k = Path + "../../../../SymSpell.Benchmark/test_data/noisy_query_en_1000.txt";
 
         static readonly string[] DictionaryPath = {
-            Path+"../../../SymSpell.Demo/test_data/frequency_dictionary_en_30_000.txt",
-            Path+"../../../SymSpell/frequency_dictionary_en_82_765.txt",
-            Path+"../../../SymSpell.Demo/test_data/frequency_dictionary_en_500_000.txt" };
+            Path+"../../../../SymSpell.Benchmark/test_data/frequency_dictionary_en_30_000.txt",
+            Path+"../../../../SymSpell/frequency_dictionary_en_82_765.txt",
+            Path+"../../../../SymSpell.Benchmark/test_data/frequency_dictionary_en_500_000.txt" };
 
         static readonly string[] DictionaryName = {
             "30k",

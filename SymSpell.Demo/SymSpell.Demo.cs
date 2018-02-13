@@ -31,11 +31,10 @@ namespace symspell.Demo
             //wordfrequency_en.txt  ensures high correction quality by combining two data sources: 
             //Google Books Ngram data  provides representative word frequencies (but contains many entries with spelling errors)  
             //SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies)       
-            //string path = "../../../SymSpell.Demo/test_data/frequency_dictionary_en_30_000.txt"; //for benchmark only (contains also non-genuine English words)
-            //string path = "../../../SymSpell.Demo/test_data/frequency_dictionary_en_500_000.txt"; //for benchmark only (contains also non-genuine English words)
-            string path = "../../../SymSpell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
-                                                                                     //string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
-            if (!symSpell.LoadDictionary(path, 0, 1)) Console.Error.WriteLine("File not found: " + Path.GetFullPath(path)); //path when using symspell.cs
+            string path = AppDomain.CurrentDomain.BaseDirectory + "../../../../SymSpell/frequency_dictionary_en_82_765.txt";       //path when targeting .NET Core 2.0  & using symspell.cs
+            //string path = "../../../SymSpell/frequency_dictionary_en_82_765.txt";                                                //path when targeting .NET Framework & using symspell.cs
+            //string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
+            if (!symSpell.LoadDictionary(path, 0, 1)) { Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(path)); Console.ReadKey(); return; }
 
             //Alternatively Create the dictionary from a text corpus (e.g. http://norvig.com/big.txt ) 
             //Make sure the corpus does not contain spelling errors, invalid terms and the word frequency is representative to increase the precision of the spelling correction.

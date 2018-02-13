@@ -12,23 +12,65 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 
 The speed comes from pre-calculation. An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3, but with SymSpell you need to pre-calculate & store **only 25 deletes** to cover them all. Magic!
 
+---
 
-### UPDATE: see also [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound) for compound support (word split & merge)
+__Compound aware automatic spelling correction__
+
+__SymSpell__ now also supports __compound__ aware __automatic__ spelling correction of __multi-word input__ strings. 
+
+__1. Compound splitting & decompounding__
+
+Lookup() assumes every input string as _single term_. LookupCompound also supports _compound splitting / decompounding_ with three cases:
+1. mistakenly __inserted space within a correct word__ led to two incorrect terms 
+2. mistakenly __omitted space between two correct words__ led to one incorrect combined term
+3. __multiple input terms__ with/without spelling errors
+
+Splitting errors, concatenation errors, substitution errors, transposition errors, deletion errors and insertion errors can by mixed within the same word.
+
+__2. Automatic spelling correction__
+
+* Large document collections make manual correction infeasible and require unsupervised, fully-automatic spelling correction. 
+* In conventional spelling correction of a single token, the user is presented with multiple spelling correction suggestions. <br>For automatic spelling correction of long multi-word text the the algorithm itself has to make an educated choice.
+
+__Examples:__
+
+```diff
+- whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixthgrade and ins pired him
++ where is the love he had dated for much of the past who couldn't read in sixth grade and inspired him  (9 edits)
+
+- in te dhird qarter oflast jear he hadlearned ofca sekretplan y iran
++ in the third quarter of last year he had learned of a secret plan by iran  (10 edits)
+
+- the bigjest playrs in te strogsommer film slatew ith plety of funn
++ the biggest players in the strong summer film slate with plenty of fun  (9 edits)
+
+- Can yu readthis messa ge despite thehorible sppelingmsitakes
++ can you read this message despite the horrible spelling mistakes  (9 edits)
+```
 
 <br>
 
 ```
-Copyright (C) 2017 Wolf Garbe
-Version: 6.0
+Copyright (c) 2018 Wolf Garbe
+Version: 6.1
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
 Description: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
-License:
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License, 
-version 3.0 (LGPL-3.0) as published by the Free Software Foundation.
-http://www.opensource.org/licenses/LGPL-3.0
+
+MIT License
+
+Copyright (c) 2018 Wolf Garbe
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+https://opensource.org/licenses/MIT
 ```
 ---
 
@@ -41,14 +83,19 @@ http://www.opensource.org/licenses/LGPL-3.0
 * Automated proofreading.
 * Fuzzy search & approximate string matching
 
-#### Performance
+#### Performance (single term)
 
-0.000033 seconds/word (edit distance 2) and 0.000180 seconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
+0.033 milliseconds/word (edit distance 2) and 0.180 milliseconds/word (edit distance 3) (single core on 2012 Macbook Pro)<br>
 
 ![Benchmark](https://cdn-images-1.medium.com/max/800/1*1l_5pOYU3AhoijKfVD-Qag.png "Benchmark")
 <br><br>
 **1,870 times faster than [BK-tree](https://en.wikipedia.org/wiki/BK-tree)** (see [Benchmark 1](https://medium.com/@wolfgarbe/symspell-vs-bk-tree-100x-faster-fuzzy-string-search-spell-checking-c4f10d80a078): dictionary size=500,000, maximum edit distance=3, query terms with random edit distance = 0...maximum edit distance, verbose=0)<br><br>
 **1 million times faster than [Norvig's algorithm](http://norvig.com/spell-correct.html)** (see [Benchmark 2](http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/): dictionary size=29,157, maximum edit distance=3, query terms with fixed edit distance = maximum edit distance, verbose=0)<br>
+
+#### Performance (compounds)
+
+0.2 milliseconds / word (edit distance 2)
+5000 words / second (single core on 2012 Macbook Pro)
 
 #### Blog Posts: Algorithm, Benchmarks, Applications
 [1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)<br>
@@ -65,6 +112,10 @@ http://www.opensource.org/licenses/LGPL-3.0
 single word + Enter:  Display spelling suggestions<br>
 Enter without input:  Terminate the program
 
+#### Usage SymSpellCompound Demo
+multiple words + Enter: Display spelling suggestions<br>
+Enter without input: Terminate the program
+
 #### Usage SymSpell Library
 ```csharp
 //create object
@@ -78,7 +129,7 @@ int termIndex = 0; //column of the term in the dictionary text file
 int countIndex = 1; //column of the term frequency in the dictionary text file
 if (!symSpell.LoadDictionary(dictionaryPath, termIndex, countIndex)) Console.WriteLine("File not found!");
 
-//lookup suggestions
+//lookup suggestions for single-word input strings
 string inputTerm="house";
 int maxEditDistanceLookup = 1; //max edit distance per lookup (maxEditDistanceLookup<=maxEditDistanceDictionary)
 var suggestionVerbosity = SymSpell.Verbosity.Closest; //Top, Closest, All
@@ -87,7 +138,18 @@ var suggestions = symSpell.Lookup(inputTerm, suggestionVerbosity, maxEditDistanc
 //display suggestions, edit distance and term frequency
 foreach (var suggestion in suggestions)
 { 
-  Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString());
+  Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString("N0"));
+}
+
+//lookup suggestions for multi-word input strings (supports compound splitting & merging)
+inputTerm="whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixtgrade and ins pired him";
+maxEditDistanceLookup = 2; //max edit distance per lookup (per single word, not per whole input string)
+suggestions = symSpell.LookupCompound(inputTerm, maxEditDistanceLookup);
+
+//display suggestions, edit distance and term frequency
+foreach (var suggestion in suggestions)
+{ 
+  Console.WriteLine( suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString("N0"));
 }
 
 //press any key to exit program
@@ -132,6 +194,9 @@ The following third party ports or reimplementations to other programming langua
 **C++** (third party port)<br>
 https://github.com/erhanbaris/SymSpellPlusPlus
 
+**Crystal** (third party port)<br>
+https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
+
 **Go** (third party port)<br>
 https://github.com/heartszhang/symspell<br>
 https://github.com/sajari/fuzzy
@@ -160,6 +225,15 @@ https://github.com/semkath/symspell
 https://github.com/Archivus/SymSpell
 
 ---
+
+#### Changes in v6.1
+
+1. IMPROVEMENT: SymSpellCompound has been refactored from static to instantiated class and integrated into SymSpell
+   Therefore SymSpellCompound is now also based on the the latest SymSpell version with all fixes and performance improvements
+2. IMPROVEMENT: symspell.demo.csproj, symspell.demoCompound.csproj, symspell.Benchmark.csproj have been recreated from scratch 
+   and target now .Net Core instead of .Net Framework for improved compatibility with other platforms like MacOS and Linux
+3. CHANGE: The testdata directory has been moved from the demo folder into the benchmark folder
+4. CHANGE: License changed from LGPL 3.0 to MIT
 
 #### Changes in v6.0
 
