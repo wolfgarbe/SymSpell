@@ -12,6 +12,31 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 
 The speed comes from pre-calculation. An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3, but with SymSpell you need to pre-calculate & store **only 25 deletes** to cover them all. Magic!
 
+<br>
+
+```
+Copyright (c) 2018 Wolf Garbe
+Version: 6.1
+Author: Wolf Garbe <wolf.garbe@faroo.com>
+Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
+URL: https://github.com/wolfgarbe/symspell
+Description: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
+
+MIT License
+
+Copyright (c) 2018 Wolf Garbe
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+https://opensource.org/licenses/MIT
+```
+
 ---
 
 __Compound aware automatic spelling correction__
@@ -48,30 +73,6 @@ __Examples:__
 + can you read this message despite the horrible spelling mistakes  (9 edits)
 ```
 
-<br>
-
-```
-Copyright (c) 2018 Wolf Garbe
-Version: 6.1
-Author: Wolf Garbe <wolf.garbe@faroo.com>
-Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
-URL: https://github.com/wolfgarbe/symspell
-Description: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
-
-MIT License
-
-Copyright (c) 2018 Wolf Garbe
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
-and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-https://opensource.org/licenses/MIT
-```
 ---
 
 #### Applications
