@@ -235,6 +235,10 @@ https://github.com/Archivus/SymSpell
 
 ---
 
+#### Upcoming changes
+
+Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
+
 #### Changes in v6.1
 
 1. IMPROVEMENT: [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound) has been refactored from static to instantiated class and integrated into [SymSpell](https://github.com/wolfgarbe/SymSpell)
