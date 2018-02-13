@@ -140,7 +140,7 @@ var suggestions = symSpell.Lookup(inputTerm, suggestionVerbosity, maxEditDistanc
 //display suggestions, edit distance and term frequency
 foreach (var suggestion in suggestions)
 { 
-  Console.WriteLine(suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString("N0"));
+  Console.WriteLine(suggestion.term +" "+ suggestion.distance.ToString() +" "+ suggestion.count.ToString("N0"));
 }
 
 //lookup suggestions for multi-word input strings (supports compound splitting & merging)
@@ -151,7 +151,7 @@ suggestions = symSpell.LookupCompound(inputTerm, maxEditDistanceLookup);
 //display suggestions, edit distance and term frequency
 foreach (var suggestion in suggestions)
 { 
-  Console.WriteLine(suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString("N0"));
+  Console.WriteLine(suggestion.term +" "+ suggestion.distance.ToString() +" "+ suggestion.count.ToString("N0"));
 }
 
 //press any key to exit program
