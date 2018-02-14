@@ -184,7 +184,7 @@ The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/symspell/b
 * Plain text file in UTF-8 encoding.
 * Word and Word Frequency are separated by space or tab. Per default, the word is expected in the first column and the frequency in the second column. But with the termIndex and countIndex parameters in LoadDictionary() the position and order of the values can be changed and selected from a row with more than two values. This allows to augment the dictionary with additional information or to adapt to existing dictionaries without reformatting.
 * Every word-frequency-pair in a separate line. A line is defined as a sequence of characters followed by a line feed ("\n"), a carriage return ("\r"), or a carriage return immediately followed by a line feed ("\r\n").
-* Both dictionary term and input term are expected to be in **lower case**
+* Both dictionary terms and input term are expected to be in **lower case**.
 
 You can build your own frequency dictionary for your language or your specialized technical domain.
 The SymSpell spelling correction algorithm supports languages with non-latin characters, e.g Cyrillic, Chinese or [Georgian](https://github.com/irakli97/Frequency_Dictionary_GE_363_202).
