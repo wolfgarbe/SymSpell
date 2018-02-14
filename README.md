@@ -212,6 +212,7 @@ https://github.com/heartszhang/symspell<br>
 https://github.com/sajari/fuzzy
 
 **Java** (third party port)<br>
+https://github.com/Lundez/JavaSymSpell
 https://github.com/gpranav88/symspell<br>
 https://github.com/searchhub/preDict
 
