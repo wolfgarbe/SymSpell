@@ -238,7 +238,7 @@ https://github.com/Archivus/SymSpell
 #### Upcoming changes
 
 1. Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
-2. Option to retain case (upper/lower case) of input term.
+2. Option to preserve case (upper/lower case) of input term.
 
 #### Changes in v6.1
 
