@@ -201,38 +201,38 @@ https://www.nuget.org/packages/symspell
 The following third party ports or reimplementations to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. Most of the ports target **SymSpell algorithm version 3.0** or earlier:
 
 
-**C++** (third party port)<br>
+**C++**<br>
 https://github.com/erhanbaris/SymSpellPlusPlus
 
-**Crystal** (third party port)<br>
+**Crystal**<br>
 https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
 
-**Go** (third party port)<br>
+**Go**<br>
 https://github.com/heartszhang/symspell<br>
 https://github.com/sajari/fuzzy
 
-**Java** (third party port)<br>
+**Java**<br>
 https://github.com/Lundez/JavaSymSpell<br>
 https://github.com/gpranav88/symspell<br>
 https://github.com/searchhub/preDict
 
-**Javascript** (third party port)<br>
+**Javascript**<br>
 https://github.com/itslenny/SymSpell.js<br>
 https://github.com/dongyuwei/SymSpell<br>
 https://github.com/IceCreamYou/SymSpell<br>
 https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 
-**Python** (third party port)<br>
+**Python**<br>
 https://github.com/ppgmg/github_public/blob/master/spell/symspell_python.py
 https://github.com/rcourivaud/symspellcompound
 
-**Ruby** (third party port)<br>
+**Ruby**<br>
 https://github.com/PhilT/symspell
 
-**Scala** (third party reimplementation)<br>
+**Scala**<br>
 https://github.com/semkath/symspell
 
-**Swift** (third party port)<br>
+**Swift**<br>
 https://github.com/Archivus/SymSpell
 
 ---
