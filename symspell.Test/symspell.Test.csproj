@@ -49,7 +49,7 @@
     <Compile Include="SymSpell.Test.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\symspell\symspell.csproj">
+    <ProjectReference Include="..\SymSpell\SymSpell.csproj">
       <Project>{e3dbea24-5cbc-46b3-8931-9505145c9809}</Project>
       <Name>symspell</Name>
     </ProjectReference>

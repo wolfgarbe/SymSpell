@@ -525,8 +525,6 @@ public class SymSpell
     }//end if         
 	
 
-    //?????????????????????
-
     /// <summary>An intentionally opacque class used to temporarily stage
     /// dictionary data during the adding of many words. By staging the
     /// data during the building of the dictionary data, significant savings
@@ -882,7 +880,5 @@ public class SymSpell
         suggestionsLine.Add(suggestion);
         return suggestionsLine;
     }
-
-    //######################
 
 }

@@ -2,15 +2,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "symspell.Demo", "symspell.Demo\symspell.Demo.csproj", "{06186930-69C1-4E8F-87BC-97439F08AD6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.Demo", "SymSpell.Demo\SymSpell.Demo.csproj", "{06186930-69C1-4E8F-87BC-97439F08AD6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "symspell.CompoundDemo", "symspell.CompoundDemo\symspell.CompoundDemo.csproj", "{1B5E6BB3-B453-455B-B61C-AFD8A244B274}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.CompoundDemo", "SymSpell.CompoundDemo\SymSpell.CompoundDemo.csproj", "{1B5E6BB3-B453-455B-B61C-AFD8A244B274}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "symspell", "symspell\symspell.csproj", "{E3DBEA24-5CBC-46B3-8931-9505145C9809}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell", "SymSpell\SymSpell.csproj", "{E3DBEA24-5CBC-46B3-8931-9505145C9809}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "symspell.Test", "symspell.Test\symspell.Test.csproj", "{8C183129-D6FF-49E3-AC91-0ABDB378449A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SymSpell.Test", "SymSpell.Test\SymSpell.Test.csproj", "{8C183129-D6FF-49E3-AC91-0ABDB378449A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "symspell.Benchmark", "symspell.Benchmark\symspell.Benchmark.csproj", "{E84E8BF9-0032-4227-89FD-AB9D76F917FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.Benchmark", "SymSpell.Benchmark\SymSpell.Benchmark.csproj", "{E84E8BF9-0032-4227-89FD-AB9D76F917FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
