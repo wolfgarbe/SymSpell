@@ -169,7 +169,9 @@ Console.ReadKey();
 2. Add **[SymSpell NuGet](https://www.nuget.org/packages/symspell)** to your **Net Framework** project: Visual Studio / Tools / NuGet Packager / Manage Nuget packages for solution / Select "Browse tab"/ Search for SymSpell / Select SymSpell / Check your project on the right hand windows / Click install button. The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/SymSpell/blob/master/symspell/frequency_dictionary_en_82_765.txt) is **automatically installed**. 
 3. Add **[SymSpell NuGet](https://www.nuget.org/packages/symspell)** to your **Net Core** project: Visual Studio / Tools / NuGet Packager / Manage Nuget packages for solution / Select "Browse tab"/ Search for SymSpell / Select SymSpell / Check your project on the right hand windows / Click install button. The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/SymSpell/blob/master/symspell/frequency_dictionary_en_82_765.txt) must be **copied manually** to your project.
 
-SymSpell targets [.NET Standard v1.3](https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/) and can be used  in NET Framework (Window Forms, WPF, ASP.NET), NET Core (UWP, ASP.NET Core, Windows, OS X, Linux), and XAMARIN (iOS, OS X, Android) projects.
+SymSpell targets [.NET Standard v1.3](https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/) and can be used  in: 1. NET Framework (**Windows** Forms, WPF, ASP.NET), 
+2. NET Core (UWP, ASP.NET Core, **Windows**, **OS X**, **Linux**),
+3. XAMARIN (**iOS**, **OS X**, **Android**) projects.
 
 ---
 
