@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Authors>Wolf Garbe &lt;wolf.garbe@faroo.com&gt;</Authors>
+    <Company>Wolf Garbe &lt;wolf.garbe@faroo.com&gt;</Company>
+    <Product>SymSpell</Product>
+    <Description>Spelling correction &amp; Fuzzy search: 1 million times faster through Symmetric Delete spelling correction algorithm</Description>
+    <Copyright>Copyright (C) 2018 Wolf Garbe</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/wolfgarbe/symspell</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/wolfgarbe</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>symspell, spelling-correction, spellcheck, spell-check, spelling, fuzzy-search, approximate-string-matching, edit-distance, levenshtein, levenshtein-distance, damerau-levenshtein</PackageTags>
+    <Version>6.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>RELEASE;NETSTANDARD1_3;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+    <DefineConstants>NETSTANDARD1_3</DefineConstants>
+  </PropertyGroup>
+
+ <ItemGroup>
+    <None Remove="frequency_dictionary_en_82_765.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="frequency_dictionary_en_82_765.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
