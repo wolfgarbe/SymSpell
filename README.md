@@ -176,6 +176,8 @@ SymSpell targets [.NET Standard v1.3](https://blogs.msdn.microsoft.com/dotnet/20
 2. NET Core (UWP, ASP.NET Core, **Windows**, **OS X**, **Linux**),
 3. XAMARIN (**iOS**, **OS X**, **Android**) projects.
 
+*The SymSpell, Demo,  DemoCompound and Benchmark projects can be built with the free [Visual Studio Code](https://code.visualstudio.com/), which runs on Windows, MacOS and Linux.*
+
 ---
 
 #### Frequency dictionary
