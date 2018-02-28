@@ -118,6 +118,8 @@ Enter without input:  Terminate the program
 multiple words + Enter: Display spelling suggestions<br>
 Enter without input: Terminate the program
 
+SymSpell.Demo and SymSpell.DemoCompound projects can be built with the free [Visual Studio Code](https://code.visualstudio.com/), which runs on Windows, MacOS and Linux.
+
 #### Usage SymSpell Library
 ```csharp
 //create object
