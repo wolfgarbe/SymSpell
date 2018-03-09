@@ -205,7 +205,9 @@ https://github.com/wolfgarbe/symspell
 https://www.nuget.org/packages/symspell
 
 #### Ports
-The following third party ports or reimplementations to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. Most of the ports target **SymSpell algorithm version 3.0** or earlier:
+The following third party ports or reimplementations to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. 
+
+**Most of the ports target SymSpell algorithm version 3.0 or earlier. v6.1. provides much higher speed & lower memory consumption!**
 
 
 **C++**<br>
