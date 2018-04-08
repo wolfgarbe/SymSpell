@@ -54,6 +54,7 @@ namespace symspell.CompoundDemo
 
 
             string input;
+            Console.WriteLine("Type in a word or phrase and hit enter to get suggestions:");
             while (!string.IsNullOrEmpty(input = (Console.ReadLine() ?? "").Trim()))
             {
                 Correct(input, symSpell);

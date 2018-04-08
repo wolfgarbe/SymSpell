@@ -754,7 +754,7 @@ public class SymSpell
         List<SuggestItem> suggestionsPreviousTerm;                  //suggestions for a single term
         List<SuggestItem> suggestions = new List<SuggestItem>();     //suggestions for a single term
         List<SuggestItem> suggestionParts = new List<SuggestItem>(); //1 line with separate parts
-        var distanceComparer = new EditDistance(EditDistance.DistanceAlgorithm.DamerauOSA);
+        var distanceComparer = new EditDistance(this.distanceAlgorithm);
 
         //translate every term to its best suggestion, otherwise it remains unchanged
         bool lastCombi = false;

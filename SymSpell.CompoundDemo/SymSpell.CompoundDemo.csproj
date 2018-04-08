@@ -12,8 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\SymSpell\SymSpell.cs" Link="SymSpell.cs" />
-	<Compile Include="..\SymSpell\EditDistance.cs" Link="EditDistance.cs" />
+    <ProjectReference Include="..\SymSpell\SymSpell.csproj" />
   </ItemGroup>
 
 </Project>
