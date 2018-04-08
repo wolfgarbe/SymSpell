@@ -26,6 +26,10 @@
     <DefineConstants>NETSTANDARD1_3</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="SoftWx.Match\Distance.cs" />
+  </ItemGroup>
+
  <ItemGroup>
     <None Remove="frequency_dictionary_en_82_765.txt" />
   </ItemGroup>
