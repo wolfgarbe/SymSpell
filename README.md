@@ -17,7 +17,7 @@ The speed comes from pre-calculation. An average 5 letter word has about **3 mil
 
 ```
 Copyright (c) 2018 Wolf Garbe
-Version: 6.1
+Version: 6.2
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -252,6 +252,14 @@ https://github.com/Archivus/SymSpell
 1. Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
 2. Option to preserve case (upper/lower case) of input term.
 3. Open source the code for creating custom frequency dictionaries in any language and size as intersection between Google Books Ngram data (Provides representative word frequencies) and SCOWL Spell Checker Oriented Word Lists (Ensures genuine English vocabulary).
+
+#### Changes in v6.2
+
+1. DamerauOSA edit distance updated, Levenshtein edit distance added (in SoftWx.Match)
+2. Other projects in the SymSpell solution now use references to SymSpell instead of links to the source files.
+3. SymSpell.CommandLine project added. Allows pipes and redirects for Input & Output.
+   Dictionary/Copus file, MaxEditDistance, Verbosity, PrefixLength can be specified via Command Line. 
+   No programming required.
 
 #### Changes in v6.1
 

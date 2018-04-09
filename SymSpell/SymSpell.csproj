@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/wolfgarbe</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>symspell, spelling-correction, spellcheck, spell-check, spelling, fuzzy-search, approximate-string-matching, edit-distance, levenshtein, levenshtein-distance, damerau-levenshtein</PackageTags>
-    <Version>6.1.1</Version>
+    <Version>6.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

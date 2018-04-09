@@ -12,7 +12,7 @@
 // 3. multiple independent input terms with/without spelling errors
 
 // Copyright (C) 2018 Wolf Garbe
-// Version: 6.1
+// Version: 6.2
 // Author: Wolf Garbe wolf.garbe@faroo.com
 // Maintainer: Wolf Garbe wolf.garbe@faroo.com
 // URL: https://github.com/wolfgarbe/symspell
@@ -338,16 +338,29 @@ public class SymSpell
     /// sorted by edit distance, and secondarily by count frequency.</returns>
     public List<SuggestItem> Lookup(string input, Verbosity verbosity)
     {
-        return Lookup(input, verbosity, this.maxDictionaryEditDistance);
+        return Lookup(input, verbosity, this.maxDictionaryEditDistance, false);
     }
-
-    /// <summary>Find suggested spellings for a given input word.</summary>
+	
+	/// <summary>Find suggested spellings for a given input word, using the maximum
+    /// edit distance specified during construction of the SymSpell dictionary.</summary>
     /// <param name="input">The word being spell checked.</param>
     /// <param name="verbosity">The value controlling the quantity/closeness of the retuned suggestions.</param>
     /// <param name="maxEditDistance">The maximum edit distance between input and suggested words.</param>
     /// <returns>A List of SuggestItem object representing suggested correct spellings for the input word, 
     /// sorted by edit distance, and secondarily by count frequency.</returns>
     public List<SuggestItem> Lookup(string input, Verbosity verbosity, int maxEditDistance)
+    {
+        return Lookup(input, verbosity, maxEditDistance, false);
+    }
+
+    /// <summary>Find suggested spellings for a given input word.</summary>
+    /// <param name="input">The word being spell checked.</param>
+    /// <param name="verbosity">The value controlling the quantity/closeness of the retuned suggestions.</param>
+    /// <param name="maxEditDistance">The maximum edit distance between input and suggested words.</param>
+    /// <param name="includeUnknown">Include input word in suggestions, if no words within edit distance found.</param>																													   
+    /// <returns>A List of SuggestItem object representing suggested correct spellings for the input word, 
+    /// sorted by edit distance, and secondarily by count frequency.</returns>
+    public List<SuggestItem> Lookup(string input, Verbosity verbosity, int maxEditDistance, bool includeUnknown)
     {
         //verbosity=Top: the suggestion with the highest term frequency of the suggestions of smallest edit distance found
         //verbosity=Closest: all suggestions of smallest edit distance found, the suggestions are ordered by term frequency 
@@ -360,12 +373,7 @@ public class SymSpell
         List<SuggestItem> suggestions = new List<SuggestItem>();
         int inputLen = input.Length;
         // early exit - word is too big to possibly match any words
-        if (inputLen - maxEditDistance > maxLength) return suggestions;
-
-        // deletes we've considered already
-        HashSet<string> hashset1 = new HashSet<string>();
-        // suggestions we've considered already
-        HashSet<string> hashset2 = new HashSet<string>();
+        if (inputLen - maxEditDistance > maxLength) goto end;
 
         // quick look for exact match
         long suggestionCount = 0;
@@ -373,9 +381,14 @@ public class SymSpell
         {
             suggestions.Add(new SuggestItem(input, 0, suggestionCount));
             // early exit - return exact match, unless caller wants all matches
-            if (verbosity != Verbosity.All) return suggestions;
+            if (verbosity != Verbosity.All) goto end;
         }
-        hashset2.Add(input); // we considered the input already in the word.TryGetValue above
+		// deletes we've considered already
+        HashSet<string> hashset1 = new HashSet<string>();
+        // suggestions we've considered already
+        HashSet<string> hashset2 = new HashSet<string>();		
+		// we considered the input already in the word.TryGetValue above		
+        hashset2.Add(input); 
 
         int maxEditDistance2 = maxEditDistance;
         int candidatePointer = 0;
@@ -521,6 +534,7 @@ public class SymSpell
 
         //sort by ascending edit distance, then by descending word frequency
         if (suggestions.Count > 1) suggestions.Sort();
+		end: if (includeUnknown && (suggestions.Count == 0)) suggestions.Add(new SuggestItem(input, maxEditDistance + 1, 0));																															 
         return suggestions;
     }//end if         
 	
