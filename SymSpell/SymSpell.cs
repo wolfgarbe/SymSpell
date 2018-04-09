@@ -57,7 +57,7 @@ public class SymSpell
     private readonly int prefixLength; //prefix length  5..7
     private readonly Int64 countThreshold; //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
     private readonly uint compactMask;
-    private readonly EditDistance.DistanceAlgorithm distanceAlgorithm = EditDistance.DistanceAlgorithm.Damerau;
+    private readonly EditDistance.DistanceAlgorithm distanceAlgorithm = EditDistance.DistanceAlgorithm.DamerauOSA;
     private int maxLength; //maximum dictionary term length
 
     // Dictionary that contains a mapping of lists of suggested correction words to the hashCodes
@@ -393,7 +393,7 @@ public class SymSpell
         {
             candidates.Add(input);
         }
-        var distanceComparer = new EditDistance(input, this.distanceAlgorithm);
+        var distanceComparer = new EditDistance(this.distanceAlgorithm);
         while (candidatePointer < candidates.Count)
         {
             string candidate = candidates[candidatePointer++];
@@ -464,7 +464,7 @@ public class SymSpell
                         // DeleteInSuggestionPrefix is somewhat expensive, and only pays off when verbosity is Top or Closest.
                         if ((verbosity != Verbosity.All && !DeleteInSuggestionPrefix(candidate, candidateLen, suggestion, suggestionLen))
                             || !hashset2.Add(suggestion)) continue;
-                        distance = distanceComparer.Compare(suggestion, maxEditDistance2);
+                        distance = distanceComparer.Compare(input, suggestion, maxEditDistance2);
                         if (distance < 0) continue;
                     }
 
@@ -754,6 +754,7 @@ public class SymSpell
         List<SuggestItem> suggestionsPreviousTerm;                  //suggestions for a single term
         List<SuggestItem> suggestions = new List<SuggestItem>();     //suggestions for a single term
         List<SuggestItem> suggestionParts = new List<SuggestItem>(); //1 line with separate parts
+        var distanceComparer = new EditDistance(this.distanceAlgorithm);
 
         //translate every term to its best suggestion, otherwise it remains unchanged
         bool lastCombi = false;
@@ -784,8 +785,7 @@ public class SymSpell
                         best2.count = 0;
                     }
                     //if (suggestionsCombi[0].distance + 1 < DamerauLevenshteinDistance(termList1[i - 1] + " " + termList1[i], best1.term + " " + best2.term))
-                    var distanceComparer1 = new EditDistance(termList1[i - 1] + " " + termList1[i], this.distanceAlgorithm);//new
-                    int distance1 = distanceComparer1.Compare(best1.term + " " + best2.term, editDistanceMax);
+                    int distance1 = distanceComparer.Compare(termList1[i - 1] + " " + termList1[i], best1.term + " " + best2.term, editDistanceMax);
                     if ((distance1>=0)&&(suggestionsCombi[0].distance + 1 < distance1))
                     {
                         suggestionsCombi[0].distance++;
@@ -829,8 +829,7 @@ public class SymSpell
                                 if ((suggestions.Count > 0) && (suggestions[0].term == suggestions2[0].term)) break;//if split correction1 == einzelwort correction
                                 //select best suggestion for split pair
                                 suggestionSplit.term = suggestions1[0].term + " " + suggestions2[0].term;
-                                var distanceComparer2 = new EditDistance(termList1[i], this.distanceAlgorithm);//new
-                                int distance2 = distanceComparer2.Compare(suggestions1[0].term + " " + suggestions2[0].term, editDistanceMax);
+                                int distance2 = distanceComparer.Compare(termList1[i], suggestions1[0].term + " " + suggestions2[0].term, editDistanceMax);
                                 if (distance2 < 0) distance2 = editDistanceMax + 1;
                                 suggestionSplit.distance = distance2;
                                 suggestionSplit.count = Math.Min(suggestions1[0].count, suggestions2[0].count);
@@ -873,8 +872,7 @@ public class SymSpell
         suggestion.count = Int64.MaxValue;
         string s = ""; foreach (SuggestItem si in suggestionParts) { s += si.term + " "; suggestion.count = Math.Min(suggestion.count, si.count); }//Console.WriteLine(s);
         suggestion.term = s.TrimEnd();
-        var distanceComparer3 = new EditDistance(suggestion.term, this.distanceAlgorithm);//new
-        suggestion.distance = distanceComparer3.Compare(input,int.MaxValue);
+        suggestion.distance = distanceComparer.Compare(input, suggestion.term, int.MaxValue);
 
         List<SuggestItem> suggestionsLine = new List<SuggestItem>();
         suggestionsLine.Add(suggestion);

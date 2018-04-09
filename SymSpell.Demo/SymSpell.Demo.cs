@@ -54,6 +54,7 @@ namespace symspell.Demo
             var result = symSpell.Lookup("warmup", SymSpell.Verbosity.All, 1);
             
             string input;
+            Console.WriteLine("Type a work and hit enter key to get spelling suggestions:");
             while (!string.IsNullOrEmpty(input = (Console.ReadLine() ?? "").Trim()))
             {
                 Correct(input, symSpell);

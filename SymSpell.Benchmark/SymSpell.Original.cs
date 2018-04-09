@@ -278,7 +278,7 @@ namespace Original
             //add original prefix
             if (input.Length > lp) candidates.Add(input.Substring(0, lp));
 
-            var distanceComparer = new EditDistance(input, EditDistance.DistanceAlgorithm.Damerau);
+            var distanceComparer = new EditDistance(EditDistance.DistanceAlgorithm.DamerauOSA);
             while (candidatePointer < candidates.Count)
             {
                 string candidate = candidates[candidatePointer++];
@@ -369,7 +369,7 @@ namespace Original
                             else if ((input.Length == candidate.Length) && (suggestion.Length <= lp)) { if (!hashset2.Add(suggestion)) continue; distance = suggestion.Length - candidate.Length; }
                             else if (hashset2.Add(suggestion))
                             {
-                                distance = distanceComparer.Compare(suggestion, editDistanceMax2);
+                                distance = distanceComparer.Compare(input, suggestion, editDistanceMax2);
                                 if (distance < 0) distance = editDistanceMax + 1;
                             }
                             else
