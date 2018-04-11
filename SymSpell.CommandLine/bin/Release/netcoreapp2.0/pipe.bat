@@ -3,5 +3,5 @@ REM This Framework-dependent deployment (FDD) relies on an installed .NET Core o
 REM But you can also create a Self-contained deployment (SCD). See:
 REM https://docs.microsoft.com/en-us/dotnet/core/deploying/index#portable-applications
 
-type input.txt | dotnet SymSpell.Commandline.dll load frequency_dictionary_en_82_765.txt > output.txt
+type input.txt | dotnet SymSpell.CommandLine.dll load frequency_dictionary_en_82_765.txt > output.txt
 pause
