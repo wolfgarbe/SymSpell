@@ -256,7 +256,7 @@ https://github.com/Archivus/SymSpell
 
 #### Changes in v6.2
 
-1. DamerauOSA edit distance updated, Levenshtein edit distance added (in SoftWx.Match)
+1. DamerauOSA edit distance updated, Levenshtein edit distance added (in SoftWx.Match by [Steve Hatchett](https://github.com/softwx))
 2. Other projects in the SymSpell solution now use references to SymSpell instead of links to the source files.
 3. SymSpell.CommandLine project added. Allows pipes and redirects for Input & Output.
    Dictionary/Copus file, MaxEditDistance, Verbosity, PrefixLength can be specified via Command Line. 
