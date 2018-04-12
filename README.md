@@ -240,6 +240,9 @@ https://www.kaggle.com/yk1598/symspell-spell-corrector
 **Ruby**<br>
 https://github.com/PhilT/symspell
 
+**Rust**<br>
+https://docs.rs/crate/symspell/
+
 **Scala**<br>
 https://github.com/semkath/symspell
 
