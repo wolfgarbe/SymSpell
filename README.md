@@ -263,7 +263,7 @@ https://github.com/Archivus/SymSpell
    WordSegmentation divides a string into words by inserting missing spaces at the appropriate positions.
    Misspelled words are corrected and do not affect segmentation.
    Existing spaces are allowed and considered for optimum segmentation.
-   SymSpell.WordSegmentation uses dynamic programming *without* recursion
+   SymSpell.WordSegmentation uses dynamic programming **without** recursion
    While each string of length n can be segmentend in **2^n−1** possible [compositions](https://en.wikipedia.org/wiki/Composition_(combinatorics)), 
    SymSpell.WordSegmentation has a **linear runtime O(n)** to find the optimum composition.
 2. New CommandLine parameters:
