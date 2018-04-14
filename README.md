@@ -17,7 +17,7 @@ The speed comes from pre-calculation. An average 5 letter word has about **3 mil
 
 ```
 Copyright (c) 2018 Wolf Garbe
-Version: 6.2
+Version: 6.3
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -256,6 +256,20 @@ https://github.com/Archivus/SymSpell
 1. Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
 2. Option to preserve case (upper/lower case) of input term.
 3. Open source the code for creating custom frequency dictionaries in any language and size as intersection between Google Books Ngram data (Provides representative word frequencies) and SCOWL Spell Checker Oriented Word Lists (Ensures genuine English vocabulary).
+
+#### Changes in v6.3
+
+1. WordSegmentation added:
+   WordSegmentation divides a string into words by inserting missing spaces at the appropriate positions.
+   Misspelled words are corrected and do not affect segmentation
+   Existing spaces are allowed and considered for optimum segmentation
+   SymSpell.WordSegmentation uses dynamic programming *without* recursion
+   While each string of length n can be segmentend in 2^n−1 possible [compositions](https://en.wikipedia.org/wiki/Composition_(combinatorics)), 
+   SymSpell.WordSegmentation has a linear runtime O(n) to find the optimum composition
+2. New CommandLine parameters:
+   LookupType: lookup, lookupcompound, wordsegment
+	  OutputStats: switch to show only corrected string or corrected string, edit distance, word frequency/probability
+3. Lookup with maxEditDistance=0 faster.
 
 #### Changes in v6.2
 
