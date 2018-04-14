@@ -8,13 +8,13 @@
     ".NETCoreApp,Version=v2.0": {
       "SymSpell.CommandLine/1.0.0": {
         "dependencies": {
-          "SymSpell": "6.2.0"
+          "SymSpell": "6.3.0"
         },
         "runtime": {
           "SymSpell.CommandLine.dll": {}
         }
       },
-      "SymSpell/6.2.0": {
+      "SymSpell/6.3.0": {
         "runtime": {
           "SymSpell.dll": {}
         }
@@ -27,7 +27,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "SymSpell/6.2.0": {
+    "SymSpell/6.3.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

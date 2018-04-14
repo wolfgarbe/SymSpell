@@ -12,7 +12,7 @@
 // 3. multiple independent input terms with/without spelling errors
 
 // Copyright (C) 2018 Wolf Garbe
-// Version: 6.2
+// Version: 6.3
 // Author: Wolf Garbe wolf.garbe@faroo.com
 // Maintainer: Wolf Garbe wolf.garbe@faroo.com
 // URL: https://github.com/wolfgarbe/symspell
@@ -58,7 +58,7 @@ public class SymSpell
     private readonly Int64 countThreshold; //a treshold might be specifid, when a term occurs so frequently in the corpus that it is considered a valid word for spelling correction
     private readonly uint compactMask;
     private readonly EditDistance.DistanceAlgorithm distanceAlgorithm = EditDistance.DistanceAlgorithm.DamerauOSA;
-    private int maxLength; //maximum dictionary term length
+    private int maxDictionaryWordLength; //maximum dictionary term length
 
     // Dictionary that contains a mapping of lists of suggested correction words to the hashCodes
     // of the original words and the deletes derived from them. Collisions of hashCodes is tolerated,
@@ -126,7 +126,7 @@ public class SymSpell
     public int PrefixLength { get { return this.prefixLength; } }
 
     /// <summary>Length of longest word in the dictionary.</summary>
-    public int MaxLength { get { return this.maxLength; } }
+    public int MaxLength { get { return this.maxDictionaryWordLength; } }
 
     /// <summary>Count threshold for a word to be considered a valid word for spelling correction.</summary>
     public long CountThreshold { get { return this.countThreshold; } }
@@ -221,7 +221,7 @@ public class SymSpell
         //edits/suggestions are created only once, no matter how often word occurs
         //edits/suggestions are created only as soon as the word occurs in the corpus, 
         //even if the same term existed before in the dictionary as an edit from another word
-        if (key.Length > maxLength) maxLength = key.Length;
+        if (key.Length > maxDictionaryWordLength) maxDictionaryWordLength = key.Length;
 
         //create deletes
         var edits = EditsPrefix(key);
@@ -373,7 +373,7 @@ public class SymSpell
         List<SuggestItem> suggestions = new List<SuggestItem>();
         int inputLen = input.Length;
         // early exit - word is too big to possibly match any words
-        if (inputLen - maxEditDistance > maxLength) goto end;
+        if (inputLen - maxEditDistance > maxDictionaryWordLength) goto end;
 
         // quick look for exact match
         long suggestionCount = 0;
@@ -383,7 +383,11 @@ public class SymSpell
             // early exit - return exact match, unless caller wants all matches
             if (verbosity != Verbosity.All) goto end;
         }
-		// deletes we've considered already
+
+        //early termination, if we only want to check if word in dictionary or get its frequency e.g. for word segmentation
+        if (maxEditDistance == 0) goto end;
+
+        // deletes we've considered already
         HashSet<string> hashset1 = new HashSet<string>();
         // suggestions we've considered already
         HashSet<string> hashset2 = new HashSet<string>();		
@@ -746,20 +750,23 @@ public class SymSpell
 
     //######################
 
-    //public bool enableCompoundCheck = true;
-    //false: assumes input string as single term, no compound splitting / decompounding
-    //true:  supports compound splitting / decompounding with three cases:
+    //LookupCompound supports compound aware automatic spelling correction of multi-word input strings with three cases:
     //1. mistakenly inserted space into a correct word led to two incorrect terms 
     //2. mistakenly omitted space between two correct words led to one incorrect combined term
     //3. multiple independent input terms with/without spelling errors
 
-    //ALLWAYS use verbose = 0 for LookupCompound
-
+    /// <summary>Find suggested spellings for a multi-word input string (supports word splitting/merging).</summary>
+    /// <param name="input">The string being spell checked.</param>																										   
+    /// <returns>A List of SuggestItem object representing suggested correct spellings for the input string.</returns> 
     public List<SuggestItem> LookupCompound(string input)
     {
         return LookupCompound(input, this.maxDictionaryEditDistance);
     }
 
+    /// <summary>Find suggested spellings for a multi-word input string (supports word splitting/merging).</summary>
+    /// <param name="input">The string being spell checked.</param>
+    /// <param name="maxEditDistance">The maximum edit distance between input and suggested words.</param>																											   
+    /// <returns>A List of SuggestItem object representing suggested correct spellings for the input string.</returns> 
     public List<SuggestItem> LookupCompound(string input, int editDistanceMax)
     {
         //parse input string into single terms
@@ -891,6 +898,155 @@ public class SymSpell
         List<SuggestItem> suggestionsLine = new List<SuggestItem>();
         suggestionsLine.Add(suggestion);
         return suggestionsLine;
+    }
+
+
+    //######
+
+    //WordSegmentation divides a string into words by inserting missing spaces at the appropriate positions
+    //misspelled words are corrected and do not affect segmentation
+    //existing spaces are allowed and considered for optimum segmentation
+
+    //SymSpell.WordSegmentation used dynamic programming *without* recursion
+    //While each string of length n can be segmentend in 2^n−1 possible compositions https://en.wikipedia.org/wiki/Composition_(combinatorics)
+    //SymSpell.WordSegmentation has a linear runtime O(n) to find the optimum composition
+
+    //number of all words in the corpus used to generate the frequency dictionary
+    //this is used to calculate the word occurrence probability p from word counts c : p=c/N
+    //N equals the sum of all counts c in the dictionary only if the dictionary is complete, but not if the dictionary is truncated or filtered
+    public static long N = 1024908267229L;
+
+    /// <summary>Composition returned from WordSegmentation.</summary>
+    public class Composition
+    {
+        /// <summary>The suggested correctly spelled word.</summary>
+        public string segmentedString = "";
+        /// <summary>The suggested correctly spelled word.</summary>
+        public string correctedString = "";
+        /// <summary>Edit distance sum between searched for word and suggestion.</summary>
+        public int distanceSum = int.MaxValue;
+        /// <summary>Frequency sum of suggestion in the dictionary (a measure of how common the word is).</summary>
+        public decimal probabilityLogSum = 0;
+    }
+
+
+    /// <summary>Find suggested spellings for a multi-word input string (supports word splitting/merging).</summary>
+    /// <param name="input">The string being spell checked.</param>
+    /// <returns>A List of Composition object representing the suggested word segmented and spelling corrected text.</returns> 
+    public List<Composition> WordSegmentation(string input)
+    {
+        return WordSegmentation(input, this.MaxDictionaryEditDistance, this.maxDictionaryWordLength);
+    }
+
+    /// <summary>Find suggested spellings for a multi-word input string (supports word splitting/merging).</summary>
+    /// <param name="input">The string being spell checked.</param>
+    /// <param name="maxEditDistance">The maximum edit distance between input and corrected words 
+    /// (0=no correction/segmentation only).</param>	
+    /// <returns>A List of Composition object representing the suggested word segmented and spelling corrected text.</returns> 
+    public List<Composition> WordSegmentation(string input, int maxEditDistance)
+    {
+        return WordSegmentation(input, maxEditDistance, this.maxDictionaryWordLength);
+    }
+
+    /// <summary>Find suggested spellings for a multi-word input string (supports word splitting/merging).</summary>
+    /// <param name="input">The string being spell checked.</param>
+    /// <param name="maxSegmentationWordLength">The maximum word length that should be considered.</param>	
+    /// <param name="maxEditDistance">The maximum edit distance between input and corrected words 
+    /// (0=no correction/segmentation only).</param>	
+    /// <returns>A List of Composition object representing the suggested word segmented and spelling corrected text.</returns> 
+    public List<Composition> WordSegmentation(string input, int maxEditDistance, int maxSegmentationWordLength)
+    {
+        Composition[] compositions = new Composition[input.Length];
+        for (int i = 0; i < input.Length; i++) compositions[i] = new Composition();
+
+        //outer loop: left/right
+        for (int j = 0; j < input.Length; j++)
+        {
+            int callingIndex = 0; if (j > 0) callingIndex = j - 1;
+            int remainderLength = input.Length - j;
+
+            //inner loop : top/down (loop becomes shorter as remainder becomes shorter)
+            //generate/test all possible part lengths: part can't be bigger than longest word in dictionary (other than long unknown word)
+            for (int i = 1; i <= Math.Min(remainderLength, maxSegmentationWordLength); i++) 
+            {
+                //destinationIndex = calling length + part1.Length (=i)
+                int destinationIndex = j + i - 1;
+
+                //get top spelling correction/ed for part
+                string part = input.Substring(j, i);
+                int separatorLength = 0;
+                int topEd = 0;
+                decimal topProbabilityLog = 0;
+                string topResult = "";
+
+                if (Char.IsWhiteSpace(part[0]))
+                {
+                    //remove space for levensthein calculation
+                    part = part.Substring(1);
+                }
+                else
+                {
+                    //add ed+1: space did not exist, had to be inserted
+                    separatorLength = 1;
+                }
+
+                //remove space from part1, add number of removed spaces to topEd                
+                topEd += part.Length;
+                //remove space
+                part = part.Replace(" ", ""); //=System.Text.RegularExpressions.Regex.Replace(part1, @"\s+", "");
+                //add number of removed spaces to ed
+                topEd -= part.Length;
+
+                List<SymSpell.SuggestItem> results = this.Lookup(part, SymSpell.Verbosity.Top, maxEditDistance);
+                if (results.Count > 0)
+                {
+                    topResult = results[0].term;
+                    topEd += results[0].distance;
+                    //Naive Bayes Rule
+                    //we assume the word probabilities of two words to be independent
+                    //therefore the resulting probability of the word combination is the product of the two word probabilities
+
+                    //instead of computing the product of probabilities we are computing the sum of the logarithm of probabilities
+                    //because the probabilities of words are about 10^-10, the product of many such small numbers could exceed (underflow) the floating number range and become zero
+                    //log(ab)=log(a)+log(b)
+                    topProbabilityLog = (decimal)Math.Log10((double)results[0].count / (double)N);
+                }
+                else
+                {
+                    topResult = part;
+                    //default, if word not found
+                    //otherwise long input text would win as long unknown word (with ed=edmax+1 ), although there there should many spaces inserted 
+                    topEd += part.Length;
+                    topProbabilityLog = (decimal)Math.Log10(10.0 / (N * Math.Pow(10.0, part.Length)));
+                }
+
+                //set values in first loop
+                if (j == 0)
+                {
+                    compositions[destinationIndex].segmentedString = part;
+                    compositions[destinationIndex].correctedString = topResult;
+                    compositions[destinationIndex].distanceSum = topEd;
+                    compositions[destinationIndex].probabilityLogSum = topProbabilityLog;
+                } 
+                //replace values if better probabilityLogSum, if same edit distance OR one space difference 
+                else if (((compositions[callingIndex].distanceSum + topEd == compositions[destinationIndex].distanceSum) || (compositions[callingIndex].distanceSum + separatorLength + topEd == compositions[destinationIndex].distanceSum)) && (compositions[destinationIndex].probabilityLogSum < compositions[callingIndex].probabilityLogSum + topProbabilityLog))
+                {
+                    compositions[destinationIndex].segmentedString = compositions[callingIndex].segmentedString + " " + part;
+                    compositions[destinationIndex].correctedString = compositions[callingIndex].correctedString + " " + topResult; 
+                    compositions[destinationIndex].distanceSum = compositions[callingIndex].distanceSum + separatorLength + topEd;       
+                    compositions[destinationIndex].probabilityLogSum = compositions[callingIndex].probabilityLogSum + topProbabilityLog; 
+                }
+                //replace values if smaller edit distance  
+                else if (compositions[callingIndex].distanceSum + separatorLength + topEd < compositions[destinationIndex].distanceSum)
+                {
+                    compositions[destinationIndex].segmentedString = compositions[callingIndex].segmentedString + " " + part;
+                    compositions[destinationIndex].correctedString = compositions[callingIndex].correctedString + " " + topResult; 
+                    compositions[destinationIndex].distanceSum = compositions[callingIndex].distanceSum + separatorLength + topEd;       
+                    compositions[destinationIndex].probabilityLogSum = compositions[callingIndex].probabilityLogSum + topProbabilityLog; 
+                }
+            }
+        }
+        return new List<Composition> { compositions[input.Length - 1] };
     }
 
 }

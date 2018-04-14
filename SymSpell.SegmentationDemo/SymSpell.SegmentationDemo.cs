@@ -9,16 +9,15 @@ using System.Diagnostics;
 // Usage: multiple words + Enter:  Display spelling suggestions
 //        Enter without input:  Terminate the program
 
-namespace symspell.CompoundDemo
+namespace symspell.SegmentationDemo
 {
     class Program
     {
-        //Load a frequency dictionary or create a frequency dictionary from a text corpus
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
             //set parameters
             const int initialCapacity = 82765;
-            const int maxEditDistance = 2;
+            const int maxEditDistance = 0;
             const int prefixLength = 7;
             SymSpell symSpell = new SymSpell(initialCapacity, maxEditDistance, prefixLength);
 
@@ -33,7 +32,7 @@ namespace symspell.CompoundDemo
             //SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies)
             string path = AppDomain.CurrentDomain.BaseDirectory + "frequency_dictionary_en_82_765.txt"; //path referencing the SymSpell core project
             //string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
-            if (!symSpell.LoadDictionary(path, 0, 1)) { Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(path)); Console.ReadKey();return; }
+            if (!symSpell.LoadDictionary(path, 0, 1)) { Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(path)); Console.ReadKey(); return; }
 
             //Alternatively Create the dictionary from a text corpus (e.g. http://norvig.com/big.txt ) 
             //Make sure the corpus does not contain spelling errors, invalid terms and the word frequency is representative to increase the precision of the spelling correction.
@@ -52,10 +51,10 @@ namespace symspell.CompoundDemo
                 + (memDelta / 1024 / 1024.0).ToString("N0") + " MB");
 
             //warm up
-            var result = symSpell.LookupCompound("isit");
+            var result = symSpell.WordSegmentation("isit");
 
             string input;
-            Console.WriteLine("Type in a word or phrase and hit enter to get suggestions:");
+            Console.WriteLine("Type in a text and hit enter to get word segmentation and correction:");
             while (!string.IsNullOrEmpty(input = (Console.ReadLine() ?? "").Trim()))
             {
                 Correct(input, symSpell);
@@ -64,15 +63,15 @@ namespace symspell.CompoundDemo
 
         private static void Correct(string input, SymSpell symSpell)
         {
-            List<SymSpell.SuggestItem> suggestions = null;
+            List<SymSpell.Composition> suggestions = null;
 
             //check if input term or similar terms within edit-distance are in dictionary, return results sorted by ascending edit distance, then by descending word frequency     
-            suggestions = symSpell.LookupCompound(input);
+            suggestions = symSpell.WordSegmentation(input);
 
             //display term and frequency
             foreach (var suggestion in suggestions)
             {
-                Console.WriteLine(suggestion.term + " " + suggestion.distance.ToString() + " " + suggestion.count.ToString("N0"));
+                Console.WriteLine(suggestion.correctedString + " " + suggestion.distanceSum.ToString("N0") + " " + suggestion.probabilityLogSum.ToString());
             }
         }
     }

@@ -30,9 +30,8 @@ namespace symspell.Demo
             //Load a frequency dictionary
             //wordfrequency_en.txt  ensures high correction quality by combining two data sources: 
             //Google Books Ngram data  provides representative word frequencies (but contains many entries with spelling errors)  
-            //SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies)       
-            string path = AppDomain.CurrentDomain.BaseDirectory + "../../../../SymSpell/frequency_dictionary_en_82_765.txt";       //path when targeting .NET Core 2.0  & using symspell.cs
-            //string path = "../../../SymSpell/frequency_dictionary_en_82_765.txt";                                                //path when targeting .NET Framework & using symspell.cs
+            //SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies)   
+            string path = AppDomain.CurrentDomain.BaseDirectory + "frequency_dictionary_en_82_765.txt"; //path referencing the SymSpell core project
             //string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
             if (!symSpell.LoadDictionary(path, 0, 1)) { Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(path)); Console.ReadKey(); return; }
 
@@ -51,7 +50,7 @@ namespace symspell.Demo
                 + (memDelta / 1024 / 1024.0).ToString("N0") + " MB");
 
             //warm up
-            var result = symSpell.Lookup("warmup", SymSpell.Verbosity.All, 1);
+            var result = symSpell.Lookup("warmup", SymSpell.Verbosity.All);
             
             string input;
             Console.WriteLine("Type a work and hit enter key to get spelling suggestions:");
