@@ -266,9 +266,9 @@ https://github.com/Archivus/SymSpell
    SymSpell.WordSegmentation uses dynamic programming **without** recursion
    While each string of length n can be segmentend into **2^n−1** possible [compositions](https://en.wikipedia.org/wiki/Composition_(combinatorics)), 
    SymSpell.WordSegmentation has a **linear runtime O(n)** to find the optimum composition.
-2. New CommandLine parameters:
+2. New CommandLine parameters:<br>
    LookupType: lookup, lookupcompound, wordsegment.<br>
-   OutputStats: switch to show only corrected string or corrected string, edit distance, word frequency/probability
+   OutputStats: switch to show only corrected string or corrected string, edit distance, word frequency/probability.
 3. Lookup with maxEditDistance=0 faster.
 
 #### Changes in v6.2
