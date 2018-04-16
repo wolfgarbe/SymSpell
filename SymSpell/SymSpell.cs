@@ -908,6 +908,8 @@ public class SymSpell
     //existing spaces are allowed and considered for optimum segmentation
 
     //SymSpell.WordSegmentation uses a novel approach *without* dynamic programming and recursion.
+    //While Dynamic Programming reduces the time to solve repeating patterns by memoization, 
+    //the SymSpell word segmentation algorithm prevents the generation of repeating problems in the first place.
     //While each string of length n can be segmentend in 2^n−1 possible compositions https://en.wikipedia.org/wiki/Composition_(combinatorics)
     //SymSpell.WordSegmentation has a linear runtime O(n) to find the optimum composition
 
