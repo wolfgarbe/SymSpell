@@ -907,7 +907,7 @@ public class SymSpell
     //misspelled words are corrected and do not affect segmentation
     //existing spaces are allowed and considered for optimum segmentation
 
-    //SymSpell.WordSegmentation used dynamic programming *without* recursion
+    //SymSpell.WordSegmentation uses a novel approach *without* dynamic programming and recursion.
     //While each string of length n can be segmentend in 2^n−1 possible compositions https://en.wikipedia.org/wiki/Composition_(combinatorics)
     //SymSpell.WordSegmentation has a linear runtime O(n) to find the optimum composition
 
