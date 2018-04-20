@@ -1023,7 +1023,7 @@ public class SymSpell
                 }
 
                 //set values in first loop
-                if (j == 0)
+                if ((j == 0) || (i == maxSegmentationWordLength))
                 {
                     compositions[destinationIndex].segmentedString = part;
                     compositions[destinationIndex].correctedString = topResult;
