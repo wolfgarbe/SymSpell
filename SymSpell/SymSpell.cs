@@ -907,9 +907,8 @@ public class SymSpell
     //misspelled words are corrected and do not affect segmentation
     //existing spaces are allowed and considered for optimum segmentation
 
-    //SymSpell.WordSegmentation uses a novel approach *without* dynamic programming and recursion.
-    //While Dynamic Programming reduces the time to solve repeating patterns by memoization, 
-    //the SymSpell word segmentation algorithm prevents the generation of repeating problems in the first place.
+    //SymSpell.WordSegmentation uses a novel approach *without* recursion.
+    //https://medium.com/@wolfgarbe/fast-word-segmentation-for-noisy-text-2c2c41f9e8da
     //While each string of length n can be segmentend in 2^n−1 possible compositions https://en.wikipedia.org/wiki/Composition_(combinatorics)
     //SymSpell.WordSegmentation has a linear runtime O(n) to find the optimum composition
 
@@ -1023,7 +1022,7 @@ public class SymSpell
                 }
 
                 //set values in first loop
-                if ((j == 0) || (i == maxSegmentationWordLength))
+                if (j == 0)
                 {
                     compositions[destinationIndex].segmentedString = part;
                     compositions[destinationIndex].correctedString = topResult;
@@ -1031,7 +1030,7 @@ public class SymSpell
                     compositions[destinationIndex].probabilityLogSum = topProbabilityLog;
                 } 
                 //replace values if better probabilityLogSum, if same edit distance OR one space difference 
-                else if (((compositions[callingIndex].distanceSum + topEd == compositions[destinationIndex].distanceSum) || (compositions[callingIndex].distanceSum + separatorLength + topEd == compositions[destinationIndex].distanceSum)) && (compositions[destinationIndex].probabilityLogSum < compositions[callingIndex].probabilityLogSum + topProbabilityLog))
+                else if ((i == maxSegmentationWordLength) || (((compositions[callingIndex].distanceSum + topEd == compositions[destinationIndex].distanceSum) || (compositions[callingIndex].distanceSum + separatorLength + topEd == compositions[destinationIndex].distanceSum)) && (compositions[destinationIndex].probabilityLogSum < compositions[callingIndex].probabilityLogSum + topProbabilityLog)))
                 {
                     compositions[destinationIndex].segmentedString = compositions[callingIndex].segmentedString + " " + part;
                     compositions[destinationIndex].correctedString = compositions[callingIndex].correctedString + " " + topResult; 
