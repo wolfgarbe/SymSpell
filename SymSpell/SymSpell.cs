@@ -917,24 +917,13 @@ public class SymSpell
     //N equals the sum of all counts c in the dictionary only if the dictionary is complete, but not if the dictionary is truncated or filtered
     public static long N = 1024908267229L;
 
-    /// <summary>Composition returned from WordSegmentation.</summary>
-    public class Composition
-    {
-        /// <summary>The suggested correctly spelled word.</summary>
-        public string segmentedString = "";
-        /// <summary>The suggested correctly spelled word.</summary>
-        public string correctedString = "";
-        /// <summary>Edit distance sum between searched for word and suggestion.</summary>
-        public int distanceSum = int.MaxValue;
-        /// <summary>Frequency sum of suggestion in the dictionary (a measure of how common the word is).</summary>
-        public decimal probabilityLogSum = 0;
-    }
-
-
     /// <summary>Find suggested spellings for a multi-word input string (supports word splitting/merging).</summary>
     /// <param name="input">The string being spell checked.</param>
-    /// <returns>A List of Composition object representing the suggested word segmented and spelling corrected text.</returns> 
-    public List<Composition> WordSegmentation(string input)
+    /// <returns>The word segmented string, 
+    /// the word segmented and spelling corrected string, 
+    /// the Edit distance sum between input string and corrected string, 
+    /// the Sum of word occurence probabilities in log scale (a measure of how common and probable the corrected segmentation is).</returns> 
+    public (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum) WordSegmentation(string input)
     {
         return WordSegmentation(input, this.MaxDictionaryEditDistance, this.maxDictionaryWordLength);
     }
@@ -943,8 +932,11 @@ public class SymSpell
     /// <param name="input">The string being spell checked.</param>
     /// <param name="maxEditDistance">The maximum edit distance between input and corrected words 
     /// (0=no correction/segmentation only).</param>	
-    /// <returns>A List of Composition object representing the suggested word segmented and spelling corrected text.</returns> 
-    public List<Composition> WordSegmentation(string input, int maxEditDistance)
+    /// <returns>The word segmented string, 
+    /// the word segmented and spelling corrected string, 
+    /// the Edit distance sum between input string and corrected string, 
+    /// the Sum of word occurence probabilities in log scale (a measure of how common and probable the corrected segmentation is).</returns> 
+    public (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum) WordSegmentation(string input, int maxEditDistance)
     {
         return WordSegmentation(input, maxEditDistance, this.maxDictionaryWordLength);
     }
@@ -954,25 +946,23 @@ public class SymSpell
     /// <param name="maxSegmentationWordLength">The maximum word length that should be considered.</param>	
     /// <param name="maxEditDistance">The maximum edit distance between input and corrected words 
     /// (0=no correction/segmentation only).</param>	
-    /// <returns>A List of Composition object representing the suggested word segmented and spelling corrected text.</returns> 
-    public List<Composition> WordSegmentation(string input, int maxEditDistance, int maxSegmentationWordLength)
+    /// <returns>The word segmented string, 
+    /// the word segmented and spelling corrected string, 
+    /// the Edit distance sum between input string and corrected string, 
+    /// the Sum of word occurence probabilities in log scale (a measure of how common and probable the corrected segmentation is).</returns> 
+    public (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum) WordSegmentation(string input, int maxEditDistance, int maxSegmentationWordLength)
     {
-        Composition[] compositions = new Composition[input.Length];
-        for (int i = 0; i < input.Length; i++) compositions[i] = new Composition();
+        int arraySize = Math.Min(maxSegmentationWordLength, input.Length);
+        (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[] compositions = new(string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[arraySize];
+        int circularIndex = -1;
 
-        //outer loop: left/right
+        //outer loop (column): all possible part start positions
         for (int j = 0; j < input.Length; j++)
         {
-            int callingIndex = 0; if (j > 0) callingIndex = j - 1;
-            int remainderLength = input.Length - j;
-
-            //inner loop : top/down (loop becomes shorter as remainder becomes shorter)
-            //generate/test all possible part lengths: part can't be bigger than longest word in dictionary (other than long unknown word)
-            for (int i = 1; i <= Math.Min(remainderLength, maxSegmentationWordLength); i++) 
+            //inner loop (row): all possible part lengths (from start position): part can't be bigger than longest word in dictionary (other than long unknown word)
+            int imax = Math.Min(input.Length - j, maxSegmentationWordLength);
+            for (int i = 1; i <= imax; i++)
             {
-                //destinationIndex = calling length + part1.Length (=i)
-                int destinationIndex = j + i - 1;
-
                 //get top spelling correction/ed for part
                 string part = input.Substring(j, i);
                 int separatorLength = 0;
@@ -995,7 +985,7 @@ public class SymSpell
                 topEd += part.Length;
                 //remove space
                 part = part.Replace(" ", ""); //=System.Text.RegularExpressions.Regex.Replace(part1, @"\s+", "");
-                //add number of removed spaces to ed
+                                              //add number of removed spaces to ed
                 topEd -= part.Length;
 
                 List<SymSpell.SuggestItem> results = this.Lookup(part, SymSpell.Verbosity.Top, maxEditDistance);
@@ -1021,33 +1011,30 @@ public class SymSpell
                     topProbabilityLog = (decimal)Math.Log10(10.0 / (N * Math.Pow(10.0, part.Length)));
                 }
 
+                int destinationIndex = ((i + circularIndex) % arraySize);
+
                 //set values in first loop
                 if (j == 0)
                 {
-                    compositions[destinationIndex].segmentedString = part;
-                    compositions[destinationIndex].correctedString = topResult;
-                    compositions[destinationIndex].distanceSum = topEd;
-                    compositions[destinationIndex].probabilityLogSum = topProbabilityLog;
-                } 
-                //replace values if better probabilityLogSum, if same edit distance OR one space difference 
-                else if ((i == maxSegmentationWordLength) || (((compositions[callingIndex].distanceSum + topEd == compositions[destinationIndex].distanceSum) || (compositions[callingIndex].distanceSum + separatorLength + topEd == compositions[destinationIndex].distanceSum)) && (compositions[destinationIndex].probabilityLogSum < compositions[callingIndex].probabilityLogSum + topProbabilityLog)))
-                {
-                    compositions[destinationIndex].segmentedString = compositions[callingIndex].segmentedString + " " + part;
-                    compositions[destinationIndex].correctedString = compositions[callingIndex].correctedString + " " + topResult; 
-                    compositions[destinationIndex].distanceSum = compositions[callingIndex].distanceSum + separatorLength + topEd;       
-                    compositions[destinationIndex].probabilityLogSum = compositions[callingIndex].probabilityLogSum + topProbabilityLog; 
+                    compositions[destinationIndex] = (part, topResult, topEd, topProbabilityLog);
                 }
-                //replace values if smaller edit distance  
-                else if (compositions[callingIndex].distanceSum + separatorLength + topEd < compositions[destinationIndex].distanceSum)
+                else if ((i == maxSegmentationWordLength)
+                    //replace values if better probabilityLogSum, if same edit distance OR one space difference 
+                    || (((compositions[circularIndex].distanceSum + topEd == compositions[destinationIndex].distanceSum) || (compositions[circularIndex].distanceSum + separatorLength + topEd == compositions[destinationIndex].distanceSum)) && (compositions[destinationIndex].probabilityLogSum < compositions[circularIndex].probabilityLogSum + topProbabilityLog))
+                    //replace values if smaller edit distance     
+                    || (compositions[circularIndex].distanceSum + separatorLength + topEd < compositions[destinationIndex].distanceSum))
                 {
-                    compositions[destinationIndex].segmentedString = compositions[callingIndex].segmentedString + " " + part;
-                    compositions[destinationIndex].correctedString = compositions[callingIndex].correctedString + " " + topResult; 
-                    compositions[destinationIndex].distanceSum = compositions[callingIndex].distanceSum + separatorLength + topEd;       
-                    compositions[destinationIndex].probabilityLogSum = compositions[callingIndex].probabilityLogSum + topProbabilityLog; 
+                    compositions[destinationIndex] = (
+                        compositions[circularIndex].segmentedString + " " + part,
+                        compositions[circularIndex].correctedString + " " + topResult,
+                        compositions[circularIndex].distanceSum + separatorLength + topEd,
+                        compositions[circularIndex].probabilityLogSum + topProbabilityLog);
                 }
             }
+            circularIndex++; if (circularIndex == arraySize) circularIndex = 0;
         }
-        return new List<Composition> { compositions[input.Length - 1] };
+        return compositions[circularIndex];
     }
+
 
 }

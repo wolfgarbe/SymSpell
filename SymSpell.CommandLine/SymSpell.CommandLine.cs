@@ -116,13 +116,11 @@ namespace symspell.CommandLine
                             break;
 
                         case "wordsegment":
-                            var suggestions3 = symSpell.WordSegmentation(inputTerm);
+                            var suggestion3 = symSpell.WordSegmentation(inputTerm);
                             //display suggestions, edit distance and term frequency
-                            foreach (var suggestion in suggestions3)
-                            {
-                                if (outputStats) Console.WriteLine(suggestion.correctedString + " " + suggestion.distanceSum.ToString("N0") + " " + suggestion.probabilityLogSum.ToString());
-                                else Console.WriteLine(suggestion.correctedString);
-                            }
+                            if (outputStats) Console.WriteLine(suggestion3.correctedString + " " + suggestion3.distanceSum.ToString("N0") + " " + suggestion3.probabilityLogSum.ToString());
+                            else Console.WriteLine(suggestion3.correctedString);
+                          
                             break;
 
                         default:

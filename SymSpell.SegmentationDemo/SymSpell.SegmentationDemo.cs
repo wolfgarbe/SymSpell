@@ -63,16 +63,11 @@ namespace symspell.SegmentationDemo
 
         private static void Correct(string input, SymSpell symSpell)
         {
-            List<SymSpell.Composition> suggestions = null;
-
             //check if input term or similar terms within edit-distance are in dictionary, return results sorted by ascending edit distance, then by descending word frequency     
-            suggestions = symSpell.WordSegmentation(input);
+            var suggestion = symSpell.WordSegmentation(input);
 
             //display term and frequency
-            foreach (var suggestion in suggestions)
-            {
-                Console.WriteLine(suggestion.correctedString + " " + suggestion.distanceSum.ToString("N0") + " " + suggestion.probabilityLogSum.ToString());
-            }
+            Console.WriteLine(suggestion.correctedString + " " + suggestion.distanceSum.ToString("N0") + " " + suggestion.probabilityLogSum.ToString());
         }
     }
 }
