@@ -110,6 +110,30 @@ __Examples:__
 
 ---
 
+#### Word Segmentation
+
+WordSegmentation divides a string into words by inserting missing spaces at appropriate positions.<br>
+* Misspelled words are corrected and do not prevent segmentation.<br>
+* Existing spaces are allowed and considered for optimum segmentation.<br>
+* SymSpell.WordSegmentation uses a [novel approach to word segmentation **without** recursion](https://medium.com/@wolfgarbe/fast-word-segmentation-for-noisy-text-2c2c41f9e8da).<br>
+* While each string of length n can be segmented into **2^n−1** possible [compositions](https://en.wikipedia.org/wiki/Composition_(combinatorics)),<br> 
+   SymSpell.WordSegmentation has a **linear runtime O(n)** to find the optimum composition.
+
+__Examples:__
+
+```diff
+- thequickbrownfoxjumpsoverthelazydog
++ the quick brown fox jumps over the lazy dog
+
+- iitwasabrightcolddayinaprilandtheclockswerestrikingthirteen
++ it was a bright cold day in april and the clocks were striking thirteen
+
+- itwasthebestoftimesitwastheworstoftimesitwastheageofwisdomitwastheageoffoolishness
++it was the best of times it was the worst of times it was the age of wisdom it was the age of foolishness 
+```
+
+---
+
 #### Usage SymSpell Demo
 single word + Enter:  Display spelling suggestions<br>
 Enter without input:  Terminate the program
