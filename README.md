@@ -76,9 +76,9 @@ https://opensource.org/licenses/MIT
 
 ---
 
-#### Compound aware automatic spelling correction
+## Compound aware automatic spelling correction
 
-__SymSpell__ now also supports __compound__ aware __automatic__ spelling correction of __multi-word input__ strings. 
+__SymSpell__ also supports __compound__ aware __automatic__ spelling correction of __multi-word input__ strings. 
 
 __1. Compound splitting & decompounding__
 
