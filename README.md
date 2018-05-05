@@ -13,7 +13,7 @@ Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,0
 
 The speed comes from the inexpensive **delete-only edit candidate generation** and the **pre-calculation**.<br>
 An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3,<br>
-but with SymSpell you need to generate **only 25 deletes**, both at pre-calculation and at lookup time. Magic!
+but SymSpell needs to generate **only 25 deletes** to cover them all, both at pre-calculation and at lookup time. Magic!
 
 <br>
 
