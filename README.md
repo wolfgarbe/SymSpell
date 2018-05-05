@@ -300,25 +300,25 @@ https://github.com/Archivus/SymSpell
 
 #### Changes in v6.3
 
-1. WordSegmentation added:<br>
+1. IMPROVEMENT: WordSegmentation added:<br>
    WordSegmentation divides a string into words by inserting missing spaces at appropriate positions.<br>
    Misspelled words are corrected and do not prevent segmentation.<br>
    Existing spaces are allowed and considered for optimum segmentation.<br>
    SymSpell.WordSegmentation uses a [novel approach to word segmentation **without** recursion](https://medium.com/@wolfgarbe/fast-word-segmentation-for-noisy-text-2c2c41f9e8da).<br>
    While each string of length n can be segmented into **2^n−1** possible [compositions](https://en.wikipedia.org/wiki/Composition_(combinatorics)),<br> 
    SymSpell.WordSegmentation has a **linear runtime O(n)** to find the optimum composition.
-2. New CommandLine parameters:<br>
+2. IMPROVEMENT: New CommandLine parameters:<br>
    LookupType: lookup, lookupcompound, wordsegment.<br>
    OutputStats: switch to show only corrected string or corrected string, edit distance, word frequency/probability.
-3. Lookup with maxEditDistance=0 faster.
+3. IMPROVEMENT: Lookup with maxEditDistance=0 faster.
 
 #### Changes in v6.2
 
-1. DamerauOSA edit distance updated, Levenshtein edit distance added (in SoftWx.Match by [Steve Hatchett](https://github.com/softwx))
-2. Other projects in the SymSpell solution now use references to SymSpell instead of links to the source files.
-3. SymSpell.CommandLine project added. Allows pipes and redirects for Input & Output.
+1. IMPROVEMENT: SymSpell.CommandLine project added. Allows pipes and redirects for Input & Output.
    Dictionary/Copus file, MaxEditDistance, Verbosity, PrefixLength can be specified via Command Line. 
    No programming required.
+2. IMPROVEMENT: DamerauOSA edit distance updated, Levenshtein edit distance added (in SoftWx.Match by [Steve Hatchett](https://github.com/softwx))
+3. CHANGE: Other projects in the SymSpell solution now use references to SymSpell instead of links to the source files.
 
 #### Changes in v6.1
 
