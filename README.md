@@ -44,7 +44,7 @@ https://opensource.org/licenses/MIT
 
 ## Single word spelling correction
 
-Very fast spelling correction of single words.
+**Lookup** provides a very fast spelling correction of single words.
 * A **Verbosity parameter** allows to control the number of returned results:
 Top: Top suggestion with the highest term frequency of the suggestions of smallest edit distance found.
 Closest: All suggestions of smallest edit distance found, suggestions ordered by term frequency.
@@ -88,7 +88,7 @@ All: All suggestions within maxEditDistance, suggestions ordered by edit distanc
 
 ## Compound aware automatic spelling correction
 
-__SymSpell__ also supports __compound__ aware __automatic__ spelling correction of __multi-word input__ strings. 
+**LookupCompound** supports __compound__ aware __automatic__ spelling correction of __multi-word input__ strings. 
 
 __1. Compound splitting & decompounding__
 
@@ -124,7 +124,7 @@ __Examples:__
 
 ## Word Segmentation of noisy text
 
-WordSegmentation divides a string into words by inserting missing spaces at appropriate positions.<br>
+**WordSegmentation** divides a string into words by inserting missing spaces at appropriate positions.<br>
 * Misspelled words are corrected and do not prevent segmentation.<br>
 * Existing spaces are allowed and considered for optimum segmentation.<br>
 * SymSpell.WordSegmentation uses a [**Triangular Matrix approach**](https://medium.com/@wolfgarbe/fast-word-segmentation-for-noisy-text-2c2c41f9e8da) instead of the conventional Dynamic Programming: It uses an array instead of a dictionary for memoization, loops instead of recursion and incrementally optimizes prefix strings instead of remainder strings.<br>
