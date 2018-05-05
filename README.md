@@ -45,12 +45,12 @@ https://opensource.org/licenses/MIT
 ## Single word spelling correction
 
 Very fast spelling correction of single words.
-* The required **Word frequency dictionary** can either be directly loaded from text files (**LoadDictionary**) or generated from a large text corpus (**CreateDictionary**).
 * A **Verbosity parameter** allows to control the number of returned results:
 Top: Top suggestion with the highest term frequency of the suggestions of smallest edit distance found.
 Closest: All suggestions of smallest edit distance found, suggestions ordered by term frequency.
 All: All suggestions within maxEditDistance, suggestions ordered by edit distance, then by term frequency.
 * The **Maximum edit distance parameter** controls up to which edit distance words from the dictionary should be treated as suggestions.
+* The required **Word frequency dictionary** can either be directly loaded from text files (**LoadDictionary**) or generated from a large text corpus (**CreateDictionary**).
 
 #### Applications
 
