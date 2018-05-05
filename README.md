@@ -12,7 +12,8 @@ Transposes + replaces + inserts of the input term are transformed into deletes o
 Replaces and inserts are expensive and language dependent: e.g. Chinese has 70,000 Unicode Han characters!
 
 The speed comes from the inexpensive **delete-only edit candidate generation** and the **pre-calculation**.<br>
-An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3, but with SymSpell you need to pre-calculate & store **only 25 deletes** to cover them all. Magic!
+An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3,<br>
+but with SymSpell you need to pre-calculate & store **only 25 deletes** to cover them all. Magic!
 
 <br>
 
