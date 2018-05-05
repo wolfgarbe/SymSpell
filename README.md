@@ -115,7 +115,7 @@ __Examples:__
 WordSegmentation divides a string into words by inserting missing spaces at appropriate positions.<br>
 * Misspelled words are corrected and do not prevent segmentation.<br>
 * Existing spaces are allowed and considered for optimum segmentation.<br>
-* SymSpell.WordSegmentation uses an [**Triangular Matrix approach**](https://medium.com/@wolfgarbe/fast-word-segmentation-for-noisy-text-2c2c41f9e8da) instead of the conventional Dynamic Programming: It uses an array instead of a dictionary for memoization, loops instead of recursion and incrementally optimizes prefix strings instead of remainder strings.<br>
+* SymSpell.WordSegmentation uses a [**Triangular Matrix approach**](https://medium.com/@wolfgarbe/fast-word-segmentation-for-noisy-text-2c2c41f9e8da) instead of the conventional Dynamic Programming: It uses an array instead of a dictionary for memoization, loops instead of recursion and incrementally optimizes prefix strings instead of remainder strings.<br>
 * The Triangular Matrix approach is faster than the Dynamic Programming approach. It has a lower memory consumption, better scaling (constant O(1) memory consumption vs. linear O(n)) and is GC friendly.
 * While each string of length n can be segmented into **2^n−1** possible [compositions](https://en.wikipedia.org/wiki/Composition_(combinatorics)),<br> 
    SymSpell.WordSegmentation has a **linear runtime O(n)** to find the optimum composition.
