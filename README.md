@@ -155,7 +155,11 @@ Enter without input:  Terminate the program
 multiple words + Enter: Display spelling suggestions<br>
 Enter without input: Terminate the program
 
-*Demo and DemoCompound projects can be built with the free [Visual Studio Code](https://code.visualstudio.com/), which runs on Windows, MacOS and Linux.*
+#### Usage Segmentation Demo
+string without spaces + Enter: Display word segmented text<br>
+Enter without input: Terminate the program
+
+*Demo, DemoCompound and SegmentationDemo projects can be built with the free [Visual Studio Code](https://code.visualstudio.com/), which runs on Windows, MacOS and Linux.*
 
 #### Usage SymSpell Library
 ```csharp
