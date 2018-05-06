@@ -145,6 +145,25 @@ __Examples:__
 + it was the best of times it was the worst of times it was the age of wisdom it was the age of foolishness 
 ```
 
+__Applications:__
+
+* Word Segmentation for CJK languages for Indexing Spelling correction, Machine translation, Language understanding, Sentiment analysis
+* Normalizing English compound nouns for search & indexing (e.g. ice box = ice-box = icebox; pig sty = pig-sty = pigsty) 
+* Word segmentation für compounds if both original word and split word parts should be indexed.
+* Correction of missing spaces caused by Typing errors.
+* Correction of Conversion errors: spaces between word may get lost e.g. when removing line breaks.
+* Correction of OCR errors: inferior quality of original documents or handwritten text may prevent that all spaces are recognized.
+* Correction of Transmission errors: during the transmission over noisy channels spaces can get lost or spelling errors introduced.
+* Keyword extraction from URL addresses, domain names, table column description or programming variables written without spaces.
+* For password analysis, the extraction of terms from passwords can be required.
+* For Speech recognition, if spaces between words are not properly recognized in spoken language.
+* Automatic CamelCasing of programming variables.
+* Applications beyond Natural Language processing, e.g. segmenting DNA sequence into words
+
+__Performance:__ 
+4 milliseconds for segmenting an 185 char string into 53 words (single core on 2012 Macbook Pro)
+<br>
+
 ---
 
 #### Usage SymSpell Demo
