@@ -86,7 +86,7 @@ All: All suggestions within maxEditDistance, suggestions ordered by edit distanc
 
 ---
 
-## Compound aware automatic spelling correction
+## Compound aware multi-word spelling correction
 
 **LookupCompound** supports __compound__ aware __automatic__ spelling correction of __multi-word input__ strings. 
 
