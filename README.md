@@ -160,7 +160,7 @@ __Applications:__
 * Automatic CamelCasing of programming variables.
 * Applications beyond Natural Language processing, e.g. segmenting DNA sequence into words
 
-__Performance:__ 
+__Performance:__<br>
 4 milliseconds for segmenting an 185 char string into 53 words (single core on 2012 Macbook Pro)
 <br>
 
