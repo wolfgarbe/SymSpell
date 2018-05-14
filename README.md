@@ -23,7 +23,7 @@ Version: 6.3
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
-Description: http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
+Description: https://medium.com/@wolfgarbe/1000x-faster-spelling-correction-algorithm-2012-8701fcd87a5f
 
 MIT License
 
