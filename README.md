@@ -137,7 +137,7 @@ __Examples:__
 - thequickbrownfoxjumpsoverthelazydog
 + the quick brown fox jumps over the lazy dog
 
-- iitwasabrightcolddayinaprilandtheclockswerestrikingthirteen
+- itwasabrightcolddayinaprilandtheclockswerestrikingthirteen
 + it was a bright cold day in april and the clocks were striking thirteen
 
 - itwasthebestoftimesitwastheworstoftimesitwastheageofwisdomitwastheageoffoolishness
