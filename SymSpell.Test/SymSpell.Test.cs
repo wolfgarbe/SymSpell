@@ -1,7 +1,6 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
+using NUnit.Framework;
 
 namespace symspell.Test
 {
@@ -169,14 +168,14 @@ namespace symspell.Test
             const int prefixLength = 7;
             const SymSpell.Verbosity verbosity = SymSpell.Verbosity.Closest;
             var symSpell = new SymSpell(83000, editDistanceMax, prefixLength);
-            string path = dir + "../../../SymSpell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
+            string path = dir + "../../../../SymSpell/frequency_dictionary_en_82_765.txt";    //for spelling correction (genuine English words)
 
             symSpell.LoadDictionary(path, 0, 1); 
 
             //load 1000 terms with random spelling errors
             string[] testList = new string[1000];
             int i = 0;
-            using (StreamReader sr = new StreamReader(File.OpenRead(dir + "../../../SymSpell.Benchmark/test_data/noisy_query_en_1000.txt")))
+            using (StreamReader sr = new StreamReader(File.OpenRead(dir + "../../../../SymSpell.Benchmark/test_data/noisy_query_en_1000.txt")))
             {
                 String line;
                 //process a single line at a time only for memory efficiency
