@@ -14,6 +14,7 @@
     <RepositoryUrl>https://github.com/wolfgarbe</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>symspell, spelling-correction, spellcheck, spell-check, spelling, fuzzy-search, approximate-string-matching, edit-distance, levenshtein, levenshtein-distance, damerau-levenshtein, word segmentation</PackageTags>
+	  <PackageReleaseNotes>WordSegmentation added.\r\nLookupCompound added (SymSpellCompound integrated into SymSpell).\r\nLicense changed from LGPL to MIT</PackageReleaseNotes>
     <Version>6.3</Version>
   </PropertyGroup>
 
