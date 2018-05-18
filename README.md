@@ -153,7 +153,7 @@ __Applications:__
 * Correction of Conversion errors: spaces between word may get lost e.g. when removing line breaks.
 * Correction of OCR errors: inferior quality of original documents or handwritten text may prevent that all spaces are recognized.
 * Correction of Transmission errors: during the transmission over noisy channels spaces can get lost or spelling errors introduced.
-* Keyword extraction from URL addresses, domain names, table column description or programming variables written without spaces.
+* Keyword extraction from URL addresses, domain names, #hashtags, table column descriptions or programming variables written without spaces.
 * For password analysis, the extraction of terms from passwords can be required.
 * For Speech recognition, if spaces between words are not properly recognized in spoken language.
 * Automatic CamelCasing of programming variables.
