@@ -293,6 +293,7 @@ https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 
 **Python**<br>
 https://github.com/ne3x7/pysymspell/ (Version 6.1)<br>
+https://github.com/Ayyuriss/SymSpell<br>
 https://github.com/ppgmg/github_public/blob/master/spell/symspell_python.py<br>
 https://github.com/rcourivaud/symspellcompound<br>
 https://www.kaggle.com/yk1598/symspell-spell-corrector
