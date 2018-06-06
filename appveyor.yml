@@ -2,6 +2,11 @@ version: 6.3.{build}
 image: Visual Studio 2017
 configuration: Release
 before_build:
-- cmd: msbuild /t:restore
+- cmd: dotnet restore
 build:
   verbosity: minimal
+after_test:
+- choco install opencover.portable
+- choco install codecov
+- OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --framework net461 --verbosity q"
+- codecov -f "results.xml" 
