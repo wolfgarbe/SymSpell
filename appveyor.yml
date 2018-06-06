@@ -8,5 +8,5 @@ build:
 after_test:
 - choco install opencover.portable
 - choco install codecov
-- OpenCover.Console.exe -register:user -target:"dotnet" -targetargs:"test --framework net461 --verbosity q"
+- OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --framework net471 --verbosity q"
 - codecov -f "results.xml" 
