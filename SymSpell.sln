@@ -6,15 +6,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.Demo", "SymSpell.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.CompoundDemo", "SymSpell.CompoundDemo\SymSpell.CompoundDemo.csproj", "{1B5E6BB3-B453-455B-B61C-AFD8A244B274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SymSpell.SegmentationDemo", "SymSpell.SegmentationDemo\SymSpell.SegmentationDemo.csproj", "{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.SegmentationDemo", "SymSpell.SegmentationDemo\SymSpell.SegmentationDemo.csproj", "{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell", "SymSpell\SymSpell.csproj", "{E3DBEA24-5CBC-46B3-8931-9505145C9809}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SymSpell.Test", "SymSpell.Test\SymSpell.Test.csproj", "{8C183129-D6FF-49E3-AC91-0ABDB378449A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.Test", "SymSpell.Test\SymSpell.Test.csproj", "{8C183129-D6FF-49E3-AC91-0ABDB378449A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.Benchmark", "SymSpell.Benchmark\SymSpell.Benchmark.csproj", "{E84E8BF9-0032-4227-89FD-AB9D76F917FD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymSpell.CommandLine", "SymSpell.CommandLine\SymSpell.CommandLine.csproj", "{9C78B67B-6782-4F28-B5F7-14C94E2CE017}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "miscs", "miscs", "{B96EF85F-BE30-4AA6-A7A4-50F4725E8D7A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		LICENSE = LICENSE
+		README.md = README.md
+		RunThisFirst_dotnetrestore.bat = RunThisFirst_dotnetrestore.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +39,10 @@ Global
 		{1B5E6BB3-B453-455B-B61C-AFD8A244B274}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B5E6BB3-B453-455B-B61C-AFD8A244B274}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B5E6BB3-B453-455B-B61C-AFD8A244B274}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3DBEA24-5CBC-46B3-8931-9505145C9809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3DBEA24-5CBC-46B3-8931-9505145C9809}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3DBEA24-5CBC-46B3-8931-9505145C9809}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,10 +59,6 @@ Global
 		{9C78B67B-6782-4F28-B5F7-14C94E2CE017}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C78B67B-6782-4F28-B5F7-14C94E2CE017}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C78B67B-6782-4F28-B5F7-14C94E2CE017}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9ACB3CBD-2B6B-4F12-ADBA-1CFBC7B56C91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
