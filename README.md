@@ -284,7 +284,7 @@ https://github.com/sajari/fuzzy
 **Java**<br>
 https://github.com/Lundez/JavaSymSpell (Version 6.1)<br>
 https://github.com/gpranav88/symspell<br>
-https://github.com/searchhub/preDict
+https://github.com/searchhub/preDict<br>
 https://github.com/jpsingarayar/SpellBlaze
 
 **Javascript**<br>
