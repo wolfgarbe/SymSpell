@@ -98,7 +98,7 @@ Splitting errors, concatenation errors, substitution errors, transposition error
 __2. Automatic spelling correction__
 
 * Large document collections make manual correction infeasible and require unsupervised, fully-automatic spelling correction. 
-* In conventional spelling correction of a single token, the user is presented with multiple spelling correction suggestions. <br>For automatic spelling correction of long multi-word text the the algorithm itself has to make an educated choice.
+* In conventional spelling correction of a single token, the user is presented with multiple spelling correction suggestions. <br>For automatic spelling correction of long multi-word text the algorithm itself has to make an educated choice.
 
 __Examples:__
 
@@ -347,7 +347,7 @@ https://github.com/Archivus/SymSpell
 #### Changes in v6.1
 
 1. IMPROVEMENT: [SymSpellCompound](https://github.com/wolfgarbe/SymSpellCompound) has been refactored from static to instantiated class and integrated into [SymSpell](https://github.com/wolfgarbe/SymSpell)
-   Therefore SymSpellCompound is now also based on the the latest SymSpell version with all fixes and performance improvements
+   Therefore SymSpellCompound is now also based on the latest SymSpell version with all fixes and performance improvements
 2. IMPROVEMENT: symspell.demo.csproj, symspell.demoCompound.csproj, symspell.Benchmark.csproj have been recreated from scratch 
    and target now .Net Core instead of .Net Framework for improved compatibility with other platforms like MacOS and Linux
 3. CHANGE: The testdata directory has been moved from the demo folder into the benchmark folder
