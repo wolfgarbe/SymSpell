@@ -293,6 +293,9 @@ https://github.com/dongyuwei/SymSpell<br>
 https://github.com/IceCreamYou/SymSpell<br>
 https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 
+**Objective-C**<br>
+https://github.com/AmitBhavsarIphone/SymSpell (Version 6.3)
+
 **Python**<br>
 https://github.com/mammothb/symspellpy  (Version 6.3)<br>
 https://github.com/ne3x7/pysymspell/ (Version 6.1)<br>
