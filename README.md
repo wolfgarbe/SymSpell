@@ -281,6 +281,9 @@ https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
 https://github.com/heartszhang/symspell<br>
 https://github.com/sajari/fuzzy
 
+**Haskell**<br>
+https://github.com/cbeav/symspell
+
 **Java**<br>
 https://github.com/Lundez/JavaSymSpell (Version 6.1)<br>
 https://github.com/gpranav88/symspell<br>
