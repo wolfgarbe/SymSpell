@@ -262,8 +262,22 @@ public class SymSpell
     public bool LoadDictionary(string corpus, int termIndex, int countIndex)
     {
         if (!File.Exists(corpus)) return false;
+        using (Stream corpusStream = File.OpenRead(corpus))
+        {
+            return LoadDictionary(corpusStream, termIndex, countIndex);
+        }
+    }
+
+    /// <summary>Load multiple dictionary entries from a stream of word/frequency count pairs</summary>
+    /// <remarks>Merges with any dictionary data already loaded.</remarks>
+    /// <param name="corpusStream">The stream containing the word/frequency count pairs.</param>
+    /// <param name="termIndex">The column position of the word.</param>
+    /// <param name="countIndex">The column position of the frequency count.</param>
+    /// <returns>True if stream loads.</returns>
+    public bool LoadDictionary(Stream corpusStream, int termIndex, int countIndex)
+    {
         var staging = new SuggestionStage(16384);
-        using (StreamReader sr = new StreamReader(File.OpenRead(corpus)))
+        using (StreamReader sr = new StreamReader(corpusStream))
         {
             String line;
 
@@ -287,15 +301,27 @@ public class SymSpell
         return true;
     }
 
-    //create a frequency dictionary from a corpus (merges with any dictionary data already loaded) 
     /// <summary>Load multiple dictionary words from a file containing plain text.</summary>
+    /// <remarks>Merges with any dictionary data already loaded.</remarks>
     /// <param name="corpus">The path+filename of the file.</param>
     /// <returns>True if file loaded, or false if file not found.</returns>
     public bool CreateDictionary(string corpus)
     {
         if (!File.Exists(corpus)) return false;
+        using (Stream corpusStream = File.OpenRead(corpus))
+        {
+            return CreateDictionary(corpusStream);
+        }
+    }
+
+    /// <summary>Load multiple dictionary words from a stream containing plain text.</summary>
+    /// <remarks>Merges with any dictionary data already loaded.</remarks>
+    /// <param name="corpusStream">The stream containing the plain text.</param>
+    /// <returns>True if stream loads.</returns>
+    public bool CreateDictionary(Stream corpusStream)
+    {
         var staging = new SuggestionStage(16384);
-        using (StreamReader sr = new StreamReader(File.OpenRead(corpus)))
+        using (StreamReader sr = new StreamReader(corpusStream))
         {
             String line;
             //process a single line at a time only for memory efficiency
