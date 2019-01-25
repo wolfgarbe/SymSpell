@@ -336,7 +336,7 @@ https://github.com/Archivus/SymSpell
 
 #### Changes in v6.4
 
-1.	LoadDictioary(Stream, ...) and CreateDictionary(Stream) methods added (contibution from [ccady](https://github.com/ccady))<br>
+1.	LoadDictioary(Stream, ...) and CreateDictionary(Stream) methods added (contibution by [ccady](https://github.com/ccady))<br>
 	Allows to get dictionaries from network streams, memory streams, and resource streams in addition to previously supported files.
 
 #### Changes in v6.3
