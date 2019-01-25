@@ -257,6 +257,12 @@ The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/SymSpell/b
 You can build your own frequency dictionary for your language or your specialized technical domain.
 The SymSpell spelling correction algorithm supports languages with non-latin characters, e.g Cyrillic, Chinese or [Georgian](https://github.com/irakli97/Frequency_Dictionary_GE_363_202).
 
+#### Frequency dictionaries in other languages
+
+SymSpell includes an English frequency dictionary [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/SymSpell/blob/master/SymSpell/frequency_dictionary_en_82_765.txt) 
+
+Frequency dictionaries in many other languages can be found at the [FrequencyWords repository](https://github.com/hermitdave/FrequencyWords)
+
 ---
 
 **C#** (original source code)<br>
