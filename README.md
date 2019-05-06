@@ -213,6 +213,7 @@ foreach (var suggestion in suggestions)
   Console.WriteLine(suggestion.term +" "+ suggestion.distance.ToString() +" "+ suggestion.count.ToString("N0"));
 }
 
+
 //lookup suggestions for multi-word input strings (supports compound splitting & merging)
 inputTerm="whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixtgrade and ins pired him";
 maxEditDistanceLookup = 2; //max edit distance per lookup (per single word, not per whole input string)
@@ -223,6 +224,16 @@ foreach (var suggestion in suggestions)
 { 
   Console.WriteLine(suggestion.term +" "+ suggestion.distance.ToString() +" "+ suggestion.count.ToString("N0"));
 }
+
+
+//word segmentation and correction for multi-word input strings with/without spaces
+inputTerm="thequickbrownfoxjumpsoverthelazydog";
+maxEditDistance = 0;
+suggestion = symSpell.WordSegmentation(input);
+
+//display term and frequency
+Console.WriteLine(suggestion.correctedString + " " + suggestion.distanceSum.ToString("N0"));
+
 
 //press any key to exit program
 Console.ReadKey();
