@@ -231,7 +231,7 @@ inputTerm="thequickbrownfoxjumpsoverthelazydog";
 maxEditDistance = 0;
 suggestion = symSpell.WordSegmentation(input);
 
-//display term and frequency
+//display term and edit distance
 Console.WriteLine(suggestion.correctedString + " " + suggestion.distanceSum.ToString("N0"));
 
 
