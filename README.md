@@ -149,7 +149,7 @@ __Applications:__
 
 * Word Segmentation for CJK languages for Indexing Spelling correction, Machine translation, Language understanding, Sentiment analysis
 * Normalizing English compound nouns for search & indexing (e.g. ice box = ice-box = icebox; pig sty = pig-sty = pigsty) 
-* Word segmentation für compounds if both original word and split word parts should be indexed.
+* Word segmentation for compounds if both original word and split word parts should be indexed.
 * Correction of missing spaces caused by Typing errors.
 * Correction of Conversion errors: spaces between word may get lost e.g. when removing line breaks.
 * Correction of OCR errors: inferior quality of original documents or handwritten text may prevent that all spaces are recognized.
