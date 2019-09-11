@@ -1,5 +1,5 @@
 SymSpell<br>
-[![NuGet version](https://badge.fury.io/nu/symspell.svg)](https://badge.fury.io/nu/symspell)
+[![NuGet version](https://badge.fury.io/nu/symspell.png)](https://badge.fury.io/nu/symspell)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/wolfgarbe/SymSpell?branch=master&svg=true)](https://ci.appveyor.com/project/wolfgarbe/SymSpell)
 [![codecov](https://codecov.io/gh/wolfgarbe/SymSpell/branch/master/graph/badge.svg)](https://codecov.io/gh/wolfgarbe/SymSpell)
 [![MIT License](https://img.shields.io/github/license/wolfgarbe/symspell.svg)](https://github.com/wolfgarbe/SymSpell/blob/master/LICENSE)
