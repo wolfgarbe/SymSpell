@@ -35,6 +35,9 @@ namespace symspell.CompoundDemo
             //string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
             if (!symSpell.LoadDictionary(path, 0, 1)) { Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(path)); Console.ReadKey();return; }
 
+            string pathBigram = AppDomain.CurrentDomain.BaseDirectory + "frequency_bigramdictionary_en_243_342.txt";
+            if (!symSpell.LoadBigramDictionary(pathBigram, 0, 2)) { Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(pathBigram)); Console.ReadKey(); return; }
+
             //Alternatively Create the dictionary from a text corpus (e.g. http://norvig.com/big.txt ) 
             //Make sure the corpus does not contain spelling errors, invalid terms and the word frequency is representative to increase the precision of the spelling correction.
             //The dictionary may contain vocabulary from different languages. 

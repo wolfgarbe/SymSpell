@@ -12,7 +12,7 @@
 // 3. multiple independent input terms with/without spelling errors
 
 // Copyright (C) 2019 Wolf Garbe
-// Version: 6.4
+// Version: 6.5
 // Author: Wolf Garbe wolf.garbe@faroo.com
 // Maintainer: Wolf Garbe wolf.garbe@faroo.com
 // URL: https://github.com/wolfgarbe/symspell
@@ -249,6 +249,60 @@ public class SymSpell
                 }
                 suggestions[suggestions.Length - 1] = key;
             }
+        }
+        return true;
+    }
+
+    public Dictionary<string, long> bigrams = new Dictionary<string, long>();
+    public long bigramCountMin = long.MaxValue;
+
+    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs</summary>
+    /// <remarks>Merges with any dictionary data already loaded.</remarks>
+    /// <param name="corpus">The path+filename of the file.</param>
+    /// <param name="termIndex">The column position of the word.</param>
+    /// <param name="countIndex">The column position of the frequency count.</param>
+    /// <returns>True if file loaded, or false if file not found.</returns>
+    public bool LoadBigramDictionary(string corpus, int termIndex, int countIndex)
+    {
+        if (!File.Exists(corpus)) return false;
+        using (Stream corpusStream = File.OpenRead(corpus))
+        {
+            return LoadBigrams(corpusStream, termIndex, countIndex);
+        }
+    }
+
+    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs</summary>
+    /// <remarks>Merges with any dictionary data already loaded.</remarks>
+    /// <param name="corpus">The path+filename of the file.</param>
+    /// <param name="termIndex">The column position of the word.</param>
+    /// <param name="countIndex">The column position of the frequency count.</param>
+    /// <returns>True if file loaded, or false if file not found.</returns>
+    public bool LoadBigrams(Stream corpusStream, int termIndex, int countIndex)
+    {
+
+        using (StreamReader sr = new StreamReader(corpusStream, System.Text.Encoding.UTF8, false))
+        {
+            String line;
+
+            //process a single line at a time only for memory efficiency
+            while ((line = sr.ReadLine()) != null)
+            {
+                string[] lineParts = line.Split(null);
+                if (lineParts.Length >= 3)
+                {
+                    string key = lineParts[termIndex] + " " + lineParts[termIndex + 1];
+                    //Int64 count;
+                    if (Int64.TryParse(lineParts[countIndex], out Int64 count))
+                    {
+                        //nur solche combis zulassen, die ich beide auch als einzelworte habe
+                        //Console.WriteLine(key+" : "+ count.ToString());
+                        //count = count * 8;//8
+                        bigrams[key] = count;
+                        if (count < bigramCountMin) bigramCountMin = count;
+                    }
+                }
+            }
+            
         }
         return true;
     }
@@ -798,7 +852,6 @@ public class SymSpell
         //parse input string into single terms
         string[] termList1 = ParseWords(input);
 
-        List<SuggestItem> suggestionsPreviousTerm;                  //suggestions for a single term
         List<SuggestItem> suggestions = new List<SuggestItem>();     //suggestions for a single term
         List<SuggestItem> suggestionParts = new List<SuggestItem>(); //1 line with separate parts
         var distanceComparer = new EditDistance(this.distanceAlgorithm);
@@ -807,9 +860,7 @@ public class SymSpell
         bool lastCombi = false;
         for (int i = 0; i < termList1.Length; i++)
         {
-            suggestionsPreviousTerm = new List<SuggestItem>(suggestions.Count); for (int k = 0; k < suggestions.Count; k++) suggestionsPreviousTerm.Add(suggestions[k].ShallowCopy());
             suggestions = Lookup(termList1[i], Verbosity.Top, editDistanceMax);
-
 
             //combi check, always before split
             if ((i > 0) && !lastCombi)
@@ -823,17 +874,20 @@ public class SymSpell
                     if (suggestions.Count > 0)
                     {
                         best2 = suggestions[0];
-
                     }
                     else
                     {
+                        //unknown word
                         best2.term = termList1[i];
+                        //estimated edit distance
                         best2.distance = editDistanceMax + 1;
-                        best2.count = 0;
+                        //estimated word occurrence probability P=10 / (N * 10^word length l)
+                        best2.count = (long)((double)10 / Math.Pow((double)10, (double)best2.term.Length)); // 0;
                     }
-                    //if (suggestionsCombi[0].distance + 1 < DamerauLevenshteinDistance(termList1[i - 1] + " " + termList1[i], best1.term + " " + best2.term))
-                    int distance1 = distanceComparer.Compare(termList1[i - 1] + " " + termList1[i], best1.term + " " + best2.term, editDistanceMax);
-                    if ((distance1>=0)&&(suggestionsCombi[0].distance + 1 < distance1))
+
+                    //distance1=edit distance between 2 split terms und their best corrections : als comparative value for the combination
+                    int distance1 = best1.distance + best2.distance;
+                    if ((distance1 >= 0) && ((suggestionsCombi[0].distance + 1 < distance1) || ((suggestionsCombi[0].distance + 1 == distance1) && ((double)suggestionsCombi[0].count > (double)best1.count / (double)SymSpell.N * (double)best2.count))))
                     {
                         suggestionsCombi[0].distance++;
                         suggestionParts[suggestionParts.Count - 1] = suggestionsCombi[0];
@@ -853,14 +907,13 @@ public class SymSpell
             else
             {
                 //if no perfect suggestion, split word into pairs
-                List<SuggestItem> suggestionsSplit = new List<SuggestItem>();
+                SuggestItem suggestionSplitBest = null;
 
-                //add original term
-                if (suggestions.Count > 0) suggestionsSplit.Add(suggestions[0]);
+                //add original term 
+                if (suggestions.Count > 0) suggestionSplitBest = suggestions[0];
 
                 if (termList1[i].Length > 1)
                 {
-
                     for (int j = 1; j < termList1[i].Length; j++)
                     {
                         string part1 = termList1[i].Substring(0, j);
@@ -869,36 +922,73 @@ public class SymSpell
                         List<SuggestItem> suggestions1 = Lookup(part1, Verbosity.Top, editDistanceMax);
                         if (suggestions1.Count > 0)
                         {
-                            if ((suggestions.Count > 0) && (suggestions[0].term == suggestions1[0].term)) break;//if split correction1 == einzelwort correction
                             List<SuggestItem> suggestions2 = Lookup(part2, Verbosity.Top, editDistanceMax);
                             if (suggestions2.Count > 0)
                             {
-                                if ((suggestions.Count > 0) && (suggestions[0].term == suggestions2[0].term)) break;//if split correction1 == einzelwort correction
                                 //select best suggestion for split pair
                                 suggestionSplit.term = suggestions1[0].term + " " + suggestions2[0].term;
-                                int distance2 = distanceComparer.Compare(termList1[i], suggestions1[0].term + " " + suggestions2[0].term, editDistanceMax);
-                                if (distance2 < 0) distance2 = editDistanceMax + 1;
-                                suggestionSplit.distance = distance2;
-                                suggestionSplit.count = Math.Min(suggestions1[0].count, suggestions2[0].count);
-                                suggestionsSplit.Add(suggestionSplit);
 
-                                //early termination of split
-                                if (suggestionSplit.distance == 1) break;
+                                int distance2 = distanceComparer.Compare(termList1[i], suggestionSplit.term, editDistanceMax);
+                                if (distance2 < 0) distance2 = editDistanceMax + 1;
+
+                                if (suggestionSplitBest != null)
+                                {
+                                    if (distance2 > suggestionSplitBest.distance) continue;
+                                    if (distance2 < suggestionSplitBest.distance) suggestionSplitBest = null;
+                                }
+
+                                suggestionSplit.distance = distance2;
+                                //if bigram exists in bigram dictionary
+                                if (bigrams.TryGetValue(suggestionSplit.term, out long bigramCount))
+                                {
+                                    suggestionSplit.count = bigramCount;
+
+                                    //increase count, if split.corrections are part of or identical to input  
+                                    //single term correction exists
+                                    if (suggestions.Count > 0)
+                                    {
+                                        //alternatively remove the single term from suggestionsSplit, but then other splittings could win
+                                        if ((suggestions1[0].term + suggestions2[0].term == termList1[i]))
+                                        {
+                                            //make count bigger than count of single term correction
+                                            suggestionSplit.count = Math.Max(suggestionSplit.count, suggestions[0].count + 2);
+                                        }
+                                        else if ((suggestions1[0].term == suggestions[0].term) || (suggestions2[0].term == suggestions[0].term))
+                                        {
+                                            //make count bigger than count of single term correction
+                                            suggestionSplit.count = Math.Max(suggestionSplit.count, suggestions[0].count + 1);
+                                        }
+                                    }
+                                    //no single term correction exists
+                                    else if ((suggestions1[0].term + suggestions2[0].term == termList1[i]))
+                                    {
+                                        suggestionSplit.count = Math.Max(suggestionSplit.count, Math.Max(suggestions1[0].count, suggestions2[0].count) + 2);
+                                    }
+
+                                }
+                                else
+                                {
+                                    //The Naive Bayes probability of the word combination is the product of the two word probabilities: P(AB) = P(A) * P(B)
+                                    //use it to estimate the frequency count of the combination, which then is used to rank/select the best splitting variant  
+                                    suggestionSplit.count = Math.Min(bigramCountMin, (long)((double)suggestions1[0].count / (double)SymSpell.N * (double)suggestions2[0].count));
+                                }
+
+                                if ((suggestionSplitBest == null) || (suggestionSplit.count > suggestionSplitBest.count)) suggestionSplitBest = suggestionSplit;
                             }
                         }
                     }
 
-                    if (suggestionsSplit.Count > 0)
+                    if (suggestionSplitBest != null)
                     {
                         //select best suggestion for split pair
-                        suggestionsSplit.Sort((x, y) => 2 * x.distance.CompareTo(y.distance) - x.count.CompareTo(y.count));
-                        suggestionParts.Add(suggestionsSplit[0]);
+                        suggestionParts.Add(suggestionSplitBest);
                     }
                     else
                     {
                         SuggestItem si = new SuggestItem();
                         si.term = termList1[i];
-                        si.count = 0;
+                        //estimated word occurrence probability P=10 / (N * 10^word length l)
+                        si.count = (long)((double)10 / Math.Pow((double)10, (double)si.term.Length));
                         si.distance = editDistanceMax + 1;
                         suggestionParts.Add(si);
                     }
@@ -907,25 +997,29 @@ public class SymSpell
                 {
                     SuggestItem si = new SuggestItem();
                     si.term = termList1[i];
-                    si.count = 0;
+                    //estimated word occurrence probability P=10 / (N * 10^word length l)
+                    si.count = (long)((double)10 / Math.Pow((double)10, (double)si.term.Length));
                     si.distance = editDistanceMax + 1;
                     suggestionParts.Add(si);
                 }
             }
-            nextTerm:;
+        nextTerm:;
         }
 
         SuggestItem suggestion = new SuggestItem();
-        suggestion.count = Int64.MaxValue;
-        string s = ""; foreach (SuggestItem si in suggestionParts) { s += si.term + " "; suggestion.count = Math.Min(suggestion.count, si.count); }//Console.WriteLine(s);
-        suggestion.term = s.TrimEnd();
+
+        double count = SymSpell.N;
+        System.Text.StringBuilder s = new System.Text.StringBuilder();
+        foreach (SuggestItem si in suggestionParts) { s.Append(si.term + " "); count *= (double)si.count / (double)SymSpell.N; }
+        suggestion.count = (long)count;
+
+        suggestion.term = s.ToString().TrimEnd();
         suggestion.distance = distanceComparer.Compare(input, suggestion.term, int.MaxValue);
 
         List<SuggestItem> suggestionsLine = new List<SuggestItem>();
         suggestionsLine.Add(suggestion);
         return suggestionsLine;
     }
-
 
     //######
 

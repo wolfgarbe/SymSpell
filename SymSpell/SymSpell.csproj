@@ -9,14 +9,14 @@
     <Company>Wolf Garbe &lt;wolf.garbe@faroo.com&gt;</Company>
     <Product>SymSpell</Product>
     <Description>Spelling correction &amp; Fuzzy search: 1 million times faster through Symmetric Delete spelling correction algorithm</Description>
-    <Copyright>Copyright (C) 2018 Wolf Garbe</Copyright>
+    <Copyright>Copyright (C) 2019 Wolf Garbe</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/wolfgarbe/symspell</PackageProjectUrl>
     <RepositoryUrl>https://github.com/wolfgarbe</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>symspell, spelling-correction, spellcheck, spell-check, spelling, fuzzy-search, approximate-string-matching, edit-distance, levenshtein, levenshtein-distance, damerau-levenshtein, word segmentation</PackageTags>
 	  <PackageReleaseNotes>WordSegmentation added.\r\nLookupCompound added (SymSpellCompound integrated into SymSpell).\r\nLicense changed from LGPL to MIT</PackageReleaseNotes>
-    <Version>6.3</Version>
+    <Version>6.5</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -34,10 +34,14 @@
 
  <ItemGroup>
     <None Remove="frequency_dictionary_en_82_765.txt" />
+	<None Remove="frequency_bigramdictionary_en_243_342.txt" />	
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="frequency_dictionary_en_82_765.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+	<Content Include="frequency_bigramdictionary_en_243_342.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

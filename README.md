@@ -21,7 +21,7 @@ but SymSpell needs to generate **only 25 deletes** to cover them all, both at pr
 
 ```
 Copyright (c) 2019 Wolf Garbe
-Version: 6.4
+Version: 6.5
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -214,6 +214,18 @@ foreach (var suggestion in suggestions)
 }
 
 
+//load bigram dictionary
+string dictionaryPath= baseDirectory + "../../../../SymSpell/frequency_bigramdictionary_en_243_342.txt";
+int termIndex = 0; //column of the term in the dictionary text file
+int countIndex = 2; //column of the term frequency in the dictionary text file
+if (!symSpell.LoadBigramDictionary(dictionaryPath, termIndex, countIndex))
+{
+  Console.WriteLine("File not found!");
+  //press any key to exit program
+  Console.ReadKey();
+  return;
+}
+
 //lookup suggestions for multi-word input strings (supports compound splitting & merging)
 inputTerm="whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixtgrade and ins pired him";
 maxEditDistanceLookup = 2; //max edit distance per lookup (per single word, not per whole input string)
@@ -347,6 +359,12 @@ https://github.com/Archivus/SymSpell
 1. Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
 2. Option to preserve case (upper/lower case) of input term.
 3. Open source the code for creating custom frequency dictionaries in any language and size as intersection between Google Books Ngram data (Provides representative word frequencies) and SCOWL Spell Checker Oriented Word Lists (Ensures genuine English vocabulary).
+
+#### Changes in v6.5
+
+1. IMPROVEMENT: Better SymSpell.LookupCompound correction quality with existing single term dictionary by using Naive Bayes probability for selecting best word splitting.<br>
+2. IMPROVEMENT: Even better SymSpell.LookupCompound correction quality, when using the optional bigram dictionary in order to use sentence level context information for selecting best spelling correction.<br>
+3. IMPROVEMENT: English bigram frequency dictionary included
 
 #### Changes in v6.4
 

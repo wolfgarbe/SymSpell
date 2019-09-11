@@ -1,20 +1,20 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    "signature": ""
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.0": {
       "SymSpell.CommandLine/1.0.0": {
         "dependencies": {
-          "SymSpell": "6.3.0"
+          "SymSpell": "6.5.0"
         },
         "runtime": {
           "SymSpell.CommandLine.dll": {}
         }
       },
-      "SymSpell/6.3.0": {
+      "SymSpell/6.5.0": {
         "runtime": {
           "SymSpell.dll": {}
         }
@@ -27,7 +27,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "SymSpell/6.3.0": {
+    "SymSpell/6.5.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
