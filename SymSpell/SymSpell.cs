@@ -51,6 +51,7 @@ public class SymSpell
     const int defaultCountThreshold = 1;
     const int defaultInitialCapacity = 16;
     const int defaultCompactLevel = 5;
+    const char[] defaultSeparatorChars = (char[])null;
 
     private readonly int initialCapacity;
     private readonly int maxDictionaryEditDistance;
@@ -261,13 +262,14 @@ public class SymSpell
     /// <param name="corpus">The path+filename of the file.</param>
     /// <param name="termIndex">The column position of the word.</param>
     /// <param name="countIndex">The column position of the frequency count.</param>
+    /// <param name="separatorChars">Separator characters between term(s) and count.</param>
     /// <returns>True if file loaded, or false if file not found.</returns>
-    public bool LoadBigramDictionary(string corpus, int termIndex, int countIndex)
+    public bool LoadBigramDictionary(string corpus, int termIndex, int countIndex, char[] separatorChars = defaultSeparatorChars)
     {
         if (!File.Exists(corpus)) return false;
         using (Stream corpusStream = File.OpenRead(corpus))
         {
-            return LoadBigrams(corpusStream, termIndex, countIndex);
+            return LoadBigrams(corpusStream, termIndex, countIndex, separatorChars);
         }
     }
 
@@ -276,8 +278,9 @@ public class SymSpell
     /// <param name="corpus">The path+filename of the file.</param>
     /// <param name="termIndex">The column position of the word.</param>
     /// <param name="countIndex">The column position of the frequency count.</param>
+    /// <param name="separatorChars">Separator characters between term(s) and count.</param>
     /// <returns>True if file loaded, or false if file not found.</returns>
-    public bool LoadBigrams(Stream corpusStream, int termIndex, int countIndex)
+    public bool LoadBigrams(Stream corpusStream, int termIndex, int countIndex, char[] separatorChars = defaultSeparatorChars)
     {
 
         using (StreamReader sr = new StreamReader(corpusStream, System.Text.Encoding.UTF8, false))
@@ -287,7 +290,7 @@ public class SymSpell
             //process a single line at a time only for memory efficiency
             while ((line = sr.ReadLine()) != null)
             {
-                string[] lineParts = line.Split(null);
+                string[] lineParts = line.Split(separatorChars);
                 if (lineParts.Length >= 3)
                 {
                     string key = lineParts[termIndex] + " " + lineParts[termIndex + 1];
@@ -312,13 +315,14 @@ public class SymSpell
     /// <param name="corpus">The path+filename of the file.</param>
     /// <param name="termIndex">The column position of the word.</param>
     /// <param name="countIndex">The column position of the frequency count.</param>
+    /// <param name="separatorChars">Separator characters between term(s) and count.</param>
     /// <returns>True if file loaded, or false if file not found.</returns>
-    public bool LoadDictionary(string corpus, int termIndex, int countIndex)
+    public bool LoadDictionary(string corpus, int termIndex, int countIndex, char[] separatorChars = defaultSeparatorChars)
     {
         if (!File.Exists(corpus)) return false;
         using (Stream corpusStream = File.OpenRead(corpus))
         {
-            return LoadDictionary(corpusStream, termIndex, countIndex);
+            return LoadDictionary(corpusStream, termIndex, countIndex, separatorChars);
         }
     }
 
@@ -327,18 +331,18 @@ public class SymSpell
     /// <param name="corpusStream">The stream containing the word/frequency count pairs.</param>
     /// <param name="termIndex">The column position of the word.</param>
     /// <param name="countIndex">The column position of the frequency count.</param>
+    /// <param name="separatorChars">Separator characters between term(s) and count.</param>
     /// <returns>True if stream loads.</returns>
-    public bool LoadDictionary(Stream corpusStream, int termIndex, int countIndex)
+    public bool LoadDictionary(Stream corpusStream, int termIndex, int countIndex, char[] separatorChars = defaultSeparatorChars)
     {
         var staging = new SuggestionStage(16384);
         using (StreamReader sr = new StreamReader(corpusStream))
         {
             String line;
-
             //process a single line at a time only for memory efficiency
             while ((line = sr.ReadLine()) != null)
             {
-                string[] lineParts = line.Split(null);
+                string[] lineParts = line.Split(separatorChars);
                 if (lineParts.Length >= 2)
                 {
                     string key = lineParts[termIndex];
