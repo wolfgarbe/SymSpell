@@ -269,7 +269,7 @@ public class SymSpell
         if (!File.Exists(corpus)) return false;
         using (Stream corpusStream = File.OpenRead(corpus))
         {
-            return LoadBigrams(corpusStream, termIndex, countIndex, separatorChars);
+            return LoadBigramDictionary(corpusStream, termIndex, countIndex, separatorChars);
         }
     }
 
@@ -280,7 +280,7 @@ public class SymSpell
     /// <param name="countIndex">The column position of the frequency count.</param>
     /// <param name="separatorChars">Separator characters between term(s) and count.</param>
     /// <returns>True if file loaded, or false if file not found.</returns>
-    public bool LoadBigrams(Stream corpusStream, int termIndex, int countIndex, char[] separatorChars = defaultSeparatorChars)
+    public bool LoadBigramDictionary(Stream corpusStream, int termIndex, int countIndex, char[] separatorChars = defaultSeparatorChars)
     {
 
         using (StreamReader sr = new StreamReader(corpusStream, System.Text.Encoding.UTF8, false))
@@ -293,7 +293,8 @@ public class SymSpell
                 string[] lineParts = line.Split(separatorChars);
                 if (lineParts.Length >= 3)
                 {
-                    string key = lineParts[termIndex] + " " + lineParts[termIndex + 1];
+                    //if default (whitespace) is defined as separator take 2 term parts, otherwise take only one
+                    string key = (separatorChars == defaultSeparatorChars) ? lineParts[termIndex] + " " + lineParts[termIndex + 1]: lineParts[termIndex];
                     //Int64 count;
                     if (Int64.TryParse(lineParts[countIndex], out Int64 count))
                     {
