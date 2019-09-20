@@ -364,7 +364,7 @@ https://github.com/Archivus/SymSpell
 
 1. IMPROVEMENT: LoadDictionary and LoadBigramDictionary now have an optional separator parameter, which defines the separator characters (e.g. '\t') between term(s) and count. Default is defaultSeparatorChars=null for white space.<br>
 This allows the dictionaries to contain space separated phrases.<br>
-If no separator parameter is stated or defaultSeparatorChars (whitespace) is stated as separator parameter, then take 2 term parts, otherwise take only one (which then itself is a space separated bigram)
+If no separator parameter is stated or defaultSeparatorChars (whitespace) is stated as separator parameter, then take two term parts, otherwise take only one (which then itself is a space separated bigram).
 
 #### Changes in v6.5
 
