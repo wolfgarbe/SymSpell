@@ -363,6 +363,8 @@ https://github.com/Archivus/SymSpell
 #### Changes in v6.5
 
 1. IMPROVEMENT: Better SymSpell.LookupCompound correction quality with existing single term dictionary by using Naive Bayes probability for selecting best word splitting.<br>
+`bycycle` -> `bicycle` (instead of  `by cycle` )<br>
+`inconvient` -> `inconvenient` (instead of `i convent`)<br>
 2. IMPROVEMENT: Even better SymSpell.LookupCompound correction quality, when using the optional bigram dictionary in order to use sentence level context information for selecting best spelling correction.<br>
 3. IMPROVEMENT: English bigram frequency dictionary included
 
