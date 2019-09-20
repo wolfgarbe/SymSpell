@@ -360,6 +360,11 @@ https://github.com/Archivus/SymSpell
 2. Option to preserve case (upper/lower case) of input term.
 3. Open source the code for creating custom frequency dictionaries in any language and size as intersection between Google Books Ngram data (Provides representative word frequencies) and SCOWL Spell Checker Oriented Word Lists (Ensures genuine English vocabulary).
 
+#### Changes in v6.6
+
+1. IMPROVEMENT: LoadDictionary and LoadBigramDictionary now have an optional separator parameter, which defines the separator characters (e.g. '\t') between term(s) and count. Default is null for all white space. This allows the dictionary to contain space separated phrases.<br>
+If no separator parameter is stated or defaultSeparatorChars (whitespace) is stated as separator parameter, then take 2 term parts, otherwise take only one (which then itself is a space separated bigram)
+
 #### Changes in v6.5
 
 1. IMPROVEMENT: Better SymSpell.LookupCompound correction quality with existing single term dictionary by using Naive Bayes probability for selecting best word splitting.<br>
