@@ -317,7 +317,7 @@ https://github.com/eskriett/spell
 https://github.com/cbeav/symspell
 
 **Java**<br>
-https://github.com/Lundez/JavaSymSpell (Version 6.1)<br>
+https://github.com/Lundez/JavaSymSpell (Version 6.4)<br>
 https://github.com/gpranav88/symspell<br>
 https://github.com/searchhub/preDict<br>
 https://github.com/jpsingarayar/SpellBlaze
@@ -332,7 +332,7 @@ https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 https://github.com/AmitBhavsarIphone/SymSpell (Version 6.3)
 
 **Python**<br>
-https://github.com/mammothb/symspellpy  (Version 6.3)<br>
+https://github.com/mammothb/symspellpy  (Version 6.5)<br>
 https://github.com/ne3x7/pysymspell/ (Version 6.1)<br>
 https://github.com/Ayyuriss/SymSpell<br>
 https://github.com/ppgmg/github_public/blob/master/spell/symspell_python.py<br>
