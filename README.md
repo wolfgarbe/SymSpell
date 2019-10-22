@@ -310,7 +310,6 @@ https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
 
 **Go**<br>
 https://github.com/sajari/fuzzy<br>
-https://github.com/heartszhang/symspell<br>
 https://github.com/eskriett/spell
 
 **Haskell**<br>
