@@ -282,25 +282,22 @@ public class SymSpell
     /// <returns>True if file loaded, or false if file not found.</returns>
     public bool LoadBigramDictionary(Stream corpusStream, int termIndex, int countIndex, char[] separatorChars = defaultSeparatorChars)
     {
-
         using (StreamReader sr = new StreamReader(corpusStream, System.Text.Encoding.UTF8, false))
         {
             String line;
-
+            int linePartsLenth = (separatorChars == defaultSeparatorChars) ? 3 : 2;
             //process a single line at a time only for memory efficiency
             while ((line = sr.ReadLine()) != null)
             {
                 string[] lineParts = line.Split(separatorChars);
-                if (lineParts.Length >= 3)
+
+                if (lineParts.Length >= linePartsLenth)
                 {
                     //if default (whitespace) is defined as separator take 2 term parts, otherwise take only one
                     string key = (separatorChars == defaultSeparatorChars) ? lineParts[termIndex] + " " + lineParts[termIndex + 1]: lineParts[termIndex];
                     //Int64 count;
                     if (Int64.TryParse(lineParts[countIndex], out Int64 count))
                     {
-                        //nur solche combis zulassen, die ich beide auch als einzelworte habe
-                        //Console.WriteLine(key+" : "+ count.ToString());
-                        //count = count * 8;//8
                         bigrams[key] = count;
                         if (count < bigramCountMin) bigramCountMin = count;
                     }
