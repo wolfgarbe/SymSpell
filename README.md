@@ -316,6 +316,7 @@ https://github.com/eskriett/spell
 https://github.com/cbeav/symspell
 
 **Java**<br>
+https://github.com/MighTguY/customized-symspell (Version 6.6)<br>
 https://github.com/Lundez/JavaSymSpell (Version 6.4)<br>
 https://github.com/gpranav88/symspell<br>
 https://github.com/searchhub/preDict<br>
