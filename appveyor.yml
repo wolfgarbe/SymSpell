@@ -1,12 +1,23 @@
 version: 6.3.{build}
-image: Visual Studio 2017
+image:
+  - Ubuntu
+  - Visual Studio 2019
 configuration: Release
-before_build:
-- cmd: dotnet restore
-build:
-  verbosity: minimal
-after_test:
-- choco install opencover.portable
-- choco install codecov
-- OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --framework net461 --verbosity q"
-- codecov -f "results.xml" 
+build_script:
+  - dotnet build -c Release
+matrix:
+  fast_finish: true
+for:
+  - matrix:
+      only:
+        - image: Visual Studio 2019
+    after_test:
+      - choco install opencover.portable
+      - choco install codecov
+      - OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --framework net461 --verbosity q"
+      - codecov -f "results.xml"
+  - matrix:
+      only:
+        - image: Ubuntu
+    test_script:
+      - dotnet test -c Release --no-build
