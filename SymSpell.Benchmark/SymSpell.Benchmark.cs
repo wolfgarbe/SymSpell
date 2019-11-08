@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace symspell.Benchmark
 {
@@ -19,7 +19,7 @@ namespace symspell.Benchmark
             "30k",
             "82k",
             "500k" };
-        
+
         static readonly int[] DictionarySize = {
             29159,
             82765,
@@ -49,10 +49,13 @@ namespace symspell.Benchmark
 
         static void Main(string[] args)
         {
-            Console.WindowWidth = Math.Min(160, Console.LargestWindowWidth);
-            Console.WindowHeight = Math.Min(80, Console.LargestWindowHeight);
-            Console.BufferWidth = 800;
-            Console.BufferHeight = 10000;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Console.WindowWidth = Math.Min(160, Console.LargestWindowWidth);
+                Console.WindowHeight = Math.Min(80, Console.LargestWindowHeight);
+                Console.BufferWidth = 800;
+                Console.BufferHeight = 10000;
+            }
 
             WarmUp();
 
@@ -177,7 +180,7 @@ namespace symspell.Benchmark
                             totalRepetitions += query1k.Length;
                         }
                         Console.WriteLine();
-                        
+
                         dict = null;
                         dictOrig = null;
                     }
