@@ -344,7 +344,7 @@ https://www.kaggle.com/yk1598/symspell-spell-corrector
 https://github.com/PhilT/symspell
 
 **Rust**<br>
-https://github.com/reneklacan/symspell
+https://github.com/reneklacan/symspell (Version 6.5 without bigrams support, compiles to WebAssembly)
 
 **Scala**<br>
 https://github.com/semkath/symspell
