@@ -299,6 +299,9 @@ The following third party ports or reimplementations to other programming langua
 
 Most ports target SymSpell **version 3.0**. But **version 6.1.** provides **much higher speed & lower memory consumption!**
 
+**WebAssembly**<br>
+https://github.com/justinwilaby/spellchecker-wasm<br>
+
 **WEB API (Docker)**<br>
 https://github.com/LeonErath/SymSpellAPI (Version 6.3)<br>
 
