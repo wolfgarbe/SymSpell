@@ -327,6 +327,7 @@ https://github.com/searchhub/preDict<br>
 https://github.com/jpsingarayar/SpellBlaze
 
 **Javascript**<br>
+https://github.com/MathieuLoutre/node-symspell (Version 6.6, needs Node.js)<br>
 https://github.com/itslenny/SymSpell.js<br>
 https://github.com/dongyuwei/SymSpell<br>
 https://github.com/IceCreamYou/SymSpell<br>
