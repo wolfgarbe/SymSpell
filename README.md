@@ -306,7 +306,7 @@ https://github.com/justinwilaby/spellchecker-wasm<br>
 https://github.com/LeonErath/SymSpellAPI (Version 6.3)<br>
 
 **C++**<br>
-https://github.com/erhanbaris/SymSpellPlusPlus
+https://github.com/erhanbaris/SymSpellPlusPlus (Version 6.1)
 
 **Crystal**<br>
 https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
