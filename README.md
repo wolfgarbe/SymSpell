@@ -333,6 +333,9 @@ https://github.com/dongyuwei/SymSpell<br>
 https://github.com/IceCreamYou/SymSpell<br>
 https://github.com/Yomguithereal/mnemonist/blob/master/symspell.js
 
+**Julia**<br>
+https://github.com/Arkoniak/SymSpell.jl
+
 **Objective-C**<br>
 https://github.com/AmitBhavsarIphone/SymSpell (Version 6.3)
 
