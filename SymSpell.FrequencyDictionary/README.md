@@ -3,4 +3,4 @@ These dictionaries have both reliable frequency values and correct vocabulary. T
 
 Still, it sometimes might be a good idea to generate your own frequency dictionary which better fits your use-case.
 
-The python script used for donwloading the Ngram dataset, decompressing it and merging it with existing wordlists is also provided.
+The python script used for downloading the Ngram dataset, decompressing it and merging it with existing wordlists is also provided.
