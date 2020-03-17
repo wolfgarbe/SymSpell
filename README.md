@@ -265,11 +265,7 @@ SymSpell targets [.NET Standard v2.0](https://blogs.msdn.microsoft.com/dotnet/20
 ---
 
 #### Frequency dictionary
-Dictionary quality is paramount for correction quality. In order to achieve this two data sources were combined by intersection: Google Books Ngram data which provides representative word frequencies (but contains many entries with spelling errors) and SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies required for ranking of suggestions within the same edit distance).
-
-The [frequency_dictionary_en_82_765.txt](https://github.com/wolfgarbe/SymSpell/blob/master/SymSpell/frequency_dictionary_en_82_765.txt) was created by intersecting the two lists mentioned below. By reciprocally filtering only those words which appear in both lists are used. Additional filters were applied and the resulting list truncated to &#8776; 80,000 most frequent words.
-* [Google Books Ngram data](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)   [(License)](https://creativecommons.org/licenses/by/3.0/) : Provides representative word frequencies
-* [SCOWL - Spell Checker Oriented Word Lists](http://wordlist.aspell.net/)   [(License)](http://wordlist.aspell.net/scowl-readme/) : Ensures genuine English vocabulary    
+Dictionary quality is paramount for correction quality. So sometimes it might be a good idea to generate your own frequency dictionary which better fits your use-case. Having said that, you can find already generated ones in the [SymSpell.FrequencyDictionary/](SymSpell.FrequencyDictionary) folder for Chinese, English, French, German, Hebrew, Italian, Russian and Spanish.  
 
 #### Dictionary file format
 * Plain text file in UTF-8 encoding.
