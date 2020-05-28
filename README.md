@@ -79,6 +79,7 @@ All: All suggestions within maxEditDistance, suggestions ordered by edit distanc
 [Sub-millisecond compound aware automatic spelling correction](https://medium.com/@wolfgarbe/symspellcompound-10ec8f467c9b)<br>
 [SymSpell vs. BK-tree: 100x faster fuzzy string search & spell checking](https://medium.com/@wolfgarbe/symspell-vs-bk-tree-100x-faster-fuzzy-string-search-spell-checking-c4f10d80a078)<br>
 [Fast Word Segmentation for noisy text](https://towardsdatascience.com/fast-word-segmentation-for-noisy-text-2c2c41f9e8da)<br>
+[The Pruning Radix Trie — a Radix trie on steroids](https://medium.com/@wolfgarbe/the-pruning-radix-trie-a-radix-trie-on-steroids-412807f77abc)<br>
 
 ---
 
