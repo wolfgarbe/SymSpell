@@ -309,6 +309,7 @@ https://github.com/justinwilaby/spellchecker-wasm<br>
 https://github.com/LeonErath/SymSpellAPI (Version 6.3)<br>
 
 **C++**<br>
+https://github.com/AtheS21/SymspellCPP (Version 6.5)<br>
 https://github.com/erhanbaris/SymSpellPlusPlus (Version 6.1)
 
 **Crystal**<br>
