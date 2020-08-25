@@ -11,15 +11,15 @@
 // 2. mistakenly omitted space between two correct words led to one incorrect combined term
 // 3. multiple independent input terms with/without spelling errors
 
-// Copyright (C) 2019 Wolf Garbe
-// Version: 6.5
+// Copyright (C) 2020 Wolf Garbe
+// Version: 6.7
 // Author: Wolf Garbe wolf.garbe@faroo.com
 // Maintainer: Wolf Garbe wolf.garbe@faroo.com
 // URL: https://github.com/wolfgarbe/symspell
 // Description: https://medium.com/@wolfgarbe/1000x-faster-spelling-correction-algorithm-2012-8701fcd87a5f
 //
 // MIT License
-// Copyright (c) 2019 Wolf Garbe
+// Copyright (c) 2020 Wolf Garbe
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
 // the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
@@ -1074,6 +1074,12 @@ public class SymSpell
     /// the Sum of word occurence probabilities in log scale (a measure of how common and probable the corrected segmentation is).</returns> 
     public (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum) WordSegmentation(string input, int maxEditDistance, int maxSegmentationWordLength)
     {
+        //v6.7
+        //normalize ligatures: 
+        //"scientific"
+        //"scientiﬁc" "ﬁelds" "ﬁnal"
+        input = input.Normalize(System.Text.NormalizationForm.FormKC).Replace("\u002D", "");//.Replace("\uC2AD","");
+
         int arraySize = Math.Min(maxSegmentationWordLength, input.Length);
         (string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[] compositions = new(string segmentedString, string correctedString, int distanceSum, decimal probabilityLogSum)[arraySize];
         int circularIndex = -1;
@@ -1110,10 +1116,21 @@ public class SymSpell
                                               //add number of removed spaces to ed
                 topEd -= part.Length;
 
-                List<SymSpell.SuggestItem> results = this.Lookup(part, SymSpell.Verbosity.Top, maxEditDistance);
+                //v6.7
+                //Lookup against the lowercase term
+                List<SymSpell.SuggestItem> results = this.Lookup(part.ToLower(), SymSpell.Verbosity.Top, maxEditDistance);
                 if (results.Count > 0)
                 {
                     topResult = results[0].term;
+                    //v6.7
+                    //retain/preserve upper case 
+                    if (Char.IsUpper(part[0]))
+                    {
+                        char[] a = topResult.ToCharArray();
+                        a[0] = char.ToUpper(topResult[0]);
+                        topResult = new string(a);
+                    }
+
                     topEd += results[0].distance;
                     //Naive Bayes Rule
                     //we assume the word probabilities of two words to be independent
@@ -1146,11 +1163,24 @@ public class SymSpell
                     //replace values if smaller edit distance     
                     || (compositions[circularIndex].distanceSum + separatorLength + topEd < compositions[destinationIndex].distanceSum))
                 {
-                    compositions[destinationIndex] = (
+                    //v6.7
+                    //keep punctuation or spostrophe adjacent to previous word
+                    if (((topResult.Length == 1) && char.IsPunctuation(topResult[0])) || ((topResult.Length == 2) && topResult.StartsWith("’")))
+                    {
+                        compositions[destinationIndex] = (
+                        compositions[circularIndex].segmentedString + part,
+                        compositions[circularIndex].correctedString + topResult,
+                        compositions[circularIndex].distanceSum + topEd,
+                        compositions[circularIndex].probabilityLogSum + topProbabilityLog);
+                    }
+                    else
+                    {
+                        compositions[destinationIndex] = (
                         compositions[circularIndex].segmentedString + " " + part,
                         compositions[circularIndex].correctedString + " " + topResult,
                         compositions[circularIndex].distanceSum + separatorLength + topEd,
                         compositions[circularIndex].probabilityLogSum + topProbabilityLog);
+                    }
                 }
             }
             circularIndex++; if (circularIndex == arraySize) circularIndex = 0;

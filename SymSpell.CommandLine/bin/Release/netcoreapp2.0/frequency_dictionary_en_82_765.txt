@@ -787,6 +787,7 @@ adult 97583096
 tickets 97561755
 thing 97451660
 centre 97258243
+center 97258243
 requirements 97233632
 via 97167128
 cheap 97049762
@@ -2588,6 +2589,7 @@ exclusive 29069478
 seat 29066336
 concerns 29065609
 colour 29049269
+color 29049269
 vendor 29029083
 originally 29016923
 intel 28995654
@@ -4465,6 +4467,7 @@ athletic 14193383
 thermal 14186960
 essays 14183871
 behaviour 14175567
+behavior 14175567
 vital 14166642
 telling 14160780
 fairly 14154477
@@ -4654,6 +4657,7 @@ sight 13360499
 laid 13359320
 clay 13357683
 defence 13356231
+defense 13356231
 patches 13354086
 weak 13347842
 refund 13340961
@@ -8970,6 +8974,7 @@ wagon 5198530
 barbie 5198277
 dat 5197825
 favour 5196953
+favor 5196953
 knock 5196013
 urge 5195810
 generates 5193442
@@ -9046,6 +9051,7 @@ johnston 5136263
 terminology 5134603
 gentleman 5134582
 fibre 5134463
+fiber 5134463
 reproduce 5134246
 convicted 5133903
 shades 5133522
@@ -12821,6 +12827,7 @@ haul 2825285
 acupuncture 2825171
 workload 2824856
 acknowledgement 2823891
+acknowledgment 2823891
 highlighting 2823564
 duly 2823211
 roasted 2822882
@@ -14738,6 +14745,7 @@ admire 2196307
 westerns 2196151
 dodgers 2195501
 litre 2195204
+liter 2195204
 poured 2195144
 usefulness 2194801
 unsolicited 2194503
@@ -15209,6 +15217,7 @@ nguyen 2070173
 meteorological 2070017
 spit 2069895
 labelled 2069889
+labeled 2069889
 darker 2069829
 horsepower 2068922
 globes 2068693
@@ -16554,6 +16563,7 @@ articulate 1767860
 ecstasy 1767792
 sweetheart 1767766
 fulfil 1767616
+fulfill 1767616
 calcutta 1767575
 thursdays 1767458
 tenerife 1767294
@@ -16798,6 +16808,7 @@ weymouth 1721736
 spherical 1721397
 intracellular 1721340
 favourable 1721108
+favorable 1721108
 informs 1720738
 dramas 1720511
 cher 1720213
@@ -17216,6 +17227,7 @@ sanction 1645521
 dyer 1645507
 effected 1645475
 signalling 1645433
+signaling 1645433
 daycare 1645407
 tubular 1645135
 merriam 1644972
@@ -21970,6 +21982,7 @@ guilds 1013989
 blatant 1013927
 floss 1013783
 favoured 1013666
+favored 1013666
 sarge 1013607
 endnote 1013592
 ridges 1013404
@@ -23528,6 +23541,7 @@ simulating 878491
 coughing 878491
 hiatus 878386
 enrol 878274
+enroll 878274
 upholstered 878180
 evangelist 878138
 louvre 878086
@@ -37237,6 +37251,7 @@ betas 306327
 brothels 306278
 intraocular 306273
 skilful 306269
+skillful 306269
 sprockets 306229
 futurist 306200
 invocations 306188
@@ -38311,6 +38326,7 @@ timbuktu 284407
 nonnegative 284402
 awakens 284351
 amoeba 284346
+ameba 284346
 sonoran 284327
 accentuate 284301
 duvets 284281

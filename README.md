@@ -20,8 +20,8 @@ but SymSpell needs to generate **only 25 deletes** to cover them all, both at pr
 <br>
 
 ```
-Copyright (c) 2019 Wolf Garbe
-Version: 6.5
+Copyright (c) 2020 Wolf Garbe
+Version: 6.7
 Author: Wolf Garbe <wolf.garbe@faroo.com>
 Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -29,7 +29,7 @@ Description: https://medium.com/@wolfgarbe/1000x-faster-spelling-correction-algo
 
 MIT License
 
-Copyright (c) 2019 Wolf Garbe
+Copyright (c) 2020 Wolf Garbe
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -373,6 +373,15 @@ https://github.com/Archivus/SymSpell
 1. Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
 2. Option to preserve case (upper/lower case) of input term.
 3. Open source the code for creating custom frequency dictionaries in any language and size as intersection between Google Books Ngram data (Provides representative word frequencies) and SCOWL Spell Checker Oriented Word Lists (Ensures genuine English vocabulary).
+
+#### Changes in v6.7
+
+1. WordSegmentation did not work correctly if input string contained words in uppercase.<br>
+2. WordSegmentation now retains/preserves case.<br>
+3. WordSegmentation now keeps punctuation or apostrophe adjacent to previous word.<br>
+4. WordSegmentation now normalizes ligatures: "scientiﬁc" -> "scientific".<br>
+5. WordSegmentation now removes hyphens prior to word segmentation (as they might be caused by syllabification).<br>
+6. American English word forms added to dictionary in addition to British English e.g. favourable -> favorable.<br>
 
 #### Changes in v6.6
 

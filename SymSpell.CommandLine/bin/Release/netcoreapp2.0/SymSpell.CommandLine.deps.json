@@ -8,13 +8,17 @@
     ".NETCoreApp,Version=v2.0": {
       "SymSpell.CommandLine/1.0.0": {
         "dependencies": {
-          "SymSpell": "6.5.0"
+          "Microsoft.NETFramework.ReferenceAssemblies": "1.0.0-preview.2",
+          "Microsoft.Net.Compilers.Toolset": "3.3.1",
+          "SymSpell": "6.7.0"
         },
         "runtime": {
           "SymSpell.CommandLine.dll": {}
         }
       },
-      "SymSpell/6.5.0": {
+      "Microsoft.Net.Compilers.Toolset/3.3.1": {},
+      "Microsoft.NETFramework.ReferenceAssemblies/1.0.0-preview.2": {},
+      "SymSpell/6.7.0": {
         "runtime": {
           "SymSpell.dll": {}
         }
@@ -27,7 +31,21 @@
       "serviceable": false,
       "sha512": ""
     },
-    "SymSpell/6.5.0": {
+    "Microsoft.Net.Compilers.Toolset/3.3.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2AjN0WJfTnazrp9iTDhZjcEao5+4/HkKQ3PqM/gaQyWd+zXW9bub8B7NDTLfXllYBl+pICODo2C2peNTtBLPag==",
+      "path": "microsoft.net.compilers.toolset/3.3.1",
+      "hashPath": "microsoft.net.compilers.toolset.3.3.1.nupkg.sha512"
+    },
+    "Microsoft.NETFramework.ReferenceAssemblies/1.0.0-preview.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-m+pJPEO7HyXvrOna5Sr3s77ewXonjYWJTNL6drh8xACnMNxnlqUDKx9HfGeSE9wmfY0lQwppaeZpFTPGaH7kZg==",
+      "path": "microsoft.netframework.referenceassemblies/1.0.0-preview.2",
+      "hashPath": "microsoft.netframework.referenceassemblies.1.0.0-preview.2.nupkg.sha512"
+    },
+    "SymSpell/6.7.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
