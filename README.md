@@ -475,6 +475,6 @@ If in LoadBigramDictionary no separator parameter is stated or defaultSeparatorC
    Google Books Ngram data which provides representative word frequencies (but contains many entries with spelling errors) and SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies required for ranking of suggestions within the same edit distance).
 6. dictionaryItem.count was changed from Int32 to Int64 for compatibility with dictionaries derived from Google Ngram data.
 
-=========
+========
 
 **SymSpell** is contributed by [**SeekStorm** - the high performance Search & Crawler as a Service](https:/seekstorm.com)
