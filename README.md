@@ -477,4 +477,4 @@ If in LoadBigramDictionary no separator parameter is stated or defaultSeparatorC
 
 ---
 
-**SymSpell** is contributed by [**SeekStorm** - the high performance Search & Crawler as a Service](https://seekstorm.com)
+**SymSpell** is contributed by [**SeekStorm** - the high performance Search as a Service & search API](https://seekstorm.com)
