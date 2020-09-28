@@ -286,7 +286,7 @@ The SymSpell spelling correction algorithm supports languages with non-latin cha
 SymSpell includes an [English frequency dictionary](https://github.com/wolfgarbe/SymSpell/blob/master/SymSpell/frequency_dictionary_en_82_765.txt) 
 
 Dictionaries for Chinese, English, French, German, Hebrew, Italian, Russian and Spanish are located here:<br>
-[SymSpell.FrequencyDictionary/](SymSpell.FrequencyDictionary).  
+[SymSpell.FrequencyDictionary](SymSpell.FrequencyDictionary).  
 
 Frequency dictionaries in many other languages can be found here:<br>
 [FrequencyWords repository](https://github.com/hermitdave/FrequencyWords)<br>
