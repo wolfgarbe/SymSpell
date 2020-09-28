@@ -287,7 +287,9 @@ SymSpell includes an [English frequency dictionary](https://github.com/wolfgarbe
 
 Dictionaries for Chinese, English, French, German, Hebrew, Italian, Russian and Spanish are located here: [SymSpell.FrequencyDictionary/](SymSpell.FrequencyDictionary).  
 
-Frequency dictionaries in many other languages can be found at the [FrequencyWords repository](https://github.com/hermitdave/FrequencyWords)
+Frequency dictionaries in many other languages can be found here:<br>
+[FrequencyWords repository](https://github.com/hermitdave/FrequencyWords)
+[Frequency dictionaries](https://github.com/dataiku/dss-plugin-nlp-preparation/tree/master/resource/dictionaries)
 
 ---
 
