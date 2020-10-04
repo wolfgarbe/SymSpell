@@ -350,6 +350,7 @@ https://github.com/AmitBhavsarIphone/SymSpell (Version 6.3)
 **Python**<br>
 https://github.com/mammothb/symspellpy  (Version 6.7)<br>
 https://github.com/viig99/SymSpellCppPy  (Version 6.5)<br>
+https://github.com/zoho-labs/symspell (Python bindings of Rust version)<br>
 https://github.com/ne3x7/pysymspell/ (Version 6.1)<br>
 https://github.com/Ayyuriss/SymSpell<br>
 https://github.com/ppgmg/github_public/blob/master/spell/symspell_python.py<br>
@@ -361,8 +362,7 @@ https://www.kaggle.com/yk1598/symspell-spell-corrector
 https://github.com/PhilT/symspell
 
 **Rust**<br>
-https://github.com/reneklacan/symspell (Version 6.6, compiles to WebAssembly)<br>
-https://github.com/zoho-labs/symspell
+https://github.com/reneklacan/symspell (Version 6.6, compiles to WebAssembly)
 
 **Scala**<br>
 https://github.com/semkath/symspell
