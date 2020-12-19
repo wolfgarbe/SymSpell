@@ -21,8 +21,8 @@ but SymSpell needs to generate **only 25 deletes** to cover them all, both at pr
 ```
 Copyright (c) 2020 Wolf Garbe
 Version: 6.7
-Author: Wolf Garbe <wolf.garbe@faroo.com>
-Maintainer: Wolf Garbe <wolf.garbe@faroo.com>
+Author: Wolf Garbe <wolf.garbe@seekstorm.com>
+Maintainer: Wolf Garbe <wolf.garbe@seekstorm.com>
 URL: https://github.com/wolfgarbe/symspell
 Description: https://medium.com/@wolfgarbe/1000x-faster-spelling-correction-algorithm-2012-8701fcd87a5f
 
