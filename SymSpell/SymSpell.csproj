@@ -5,8 +5,8 @@
     <DebugType>pdbonly</DebugType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Authors>Wolf Garbe &lt;wolf.garbe@faroo.com&gt;</Authors>
-    <Company>Wolf Garbe &lt;wolf.garbe@faroo.com&gt;</Company>
+    <Authors>Wolf Garbe &lt;wolf.garbe@seekstorm.com&gt;</Authors>
+    <Company>Wolf Garbe &lt;wolf.garbe@seekstorm.com&gt;</Company>
     <Product>SymSpell</Product>
     <Description>Spelling correction &amp; Fuzzy search: 1 million times faster through Symmetric Delete spelling correction algorithm</Description>
     <Copyright>Copyright (C) 2020 Wolf Garbe</Copyright>
@@ -14,7 +14,9 @@
     <RepositoryUrl>https://github.com/wolfgarbe</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>symspell, spelling-correction, spellcheck, spell-check, spelling, fuzzy-search, approximate-string-matching, edit-distance, levenshtein, levenshtein-distance, damerau-levenshtein, word segmentation</PackageTags>
-	  <PackageReleaseNotes>Better correction quality for LookupCompound with existing single term dictionary by using Naive Bayes probability for selecting best word splitting AND even better correction quality, when using the optional bigram dictionary in order to use sentence level context information for selecting best spelling correction. \r\nEnglish bigram frequency dictionary is included in the release.</PackageReleaseNotes>
+	  <PackageReleaseNotes>WordSegmentation improved for uppercase, punctuation, apostrophe and ligatures. \r\n
+American English word forms added to dictionary. \r\n
+LoadDictionary and LoadBigramDictionary now have an optional separator parameter, which defines the separator characters (e.g. '\t') between term(s) and count. Default is defaultSeparatorChars=null for white space. This allows the dictionaries to contain space separated phrases.</PackageReleaseNotes>
     <Version>6.7</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
