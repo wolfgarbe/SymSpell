@@ -289,7 +289,8 @@ Dictionaries for Chinese, English, French, German, Hebrew, Italian, Russian and 
 
 Frequency dictionaries in many other languages can be found here:<br>
 [FrequencyWords repository](https://github.com/hermitdave/FrequencyWords)<br>
-[Frequency dictionaries](https://github.com/dataiku/dss-plugin-nlp-preparation/tree/master/resource/dictionaries)
+[Frequency dictionaries](https://github.com/dataiku/dss-plugin-nlp-preparation/tree/master/resource/dictionaries)<br>
+[Frequency dictionaries](https://github.com/LuminosoInsight/wordfreq/tree/master/wordfreq/data)
 
 ---
 
