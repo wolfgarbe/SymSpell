@@ -10,7 +10,7 @@
         "dependencies": {
           "Microsoft.NETFramework.ReferenceAssemblies": "1.0.0-preview.2",
           "Microsoft.Net.Compilers.Toolset": "3.3.1",
-          "SymSpell": "6.7.0"
+          "SymSpell": "6.7.1"
         },
         "runtime": {
           "SymSpell.CommandLine.dll": {}
@@ -18,7 +18,7 @@
       },
       "Microsoft.Net.Compilers.Toolset/3.3.1": {},
       "Microsoft.NETFramework.ReferenceAssemblies/1.0.0-preview.2": {},
-      "SymSpell/6.7.0": {
+      "SymSpell/6.7.1": {
         "runtime": {
           "SymSpell.dll": {}
         }
@@ -45,7 +45,7 @@
       "path": "microsoft.netframework.referenceassemblies/1.0.0-preview.2",
       "hashPath": "microsoft.netframework.referenceassemblies.1.0.0-preview.2.nupkg.sha512"
     },
-    "SymSpell/6.7.0": {
+    "SymSpell/6.7.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
