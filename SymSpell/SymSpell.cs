@@ -11,8 +11,8 @@
 // 2. mistakenly omitted space between two correct words led to one incorrect combined term
 // 3. multiple independent input terms with/without spelling errors
 
-// Copyright (C) 2020 Wolf Garbe
-// Version: 6.7
+// Copyright (C) 2021 Wolf Garbe
+// Version: 6.7.1
 // Author: Wolf Garbe wolf.garbe@faroo.com
 // Maintainer: Wolf Garbe wolf.garbe@faroo.com
 // URL: https://github.com/wolfgarbe/symspell

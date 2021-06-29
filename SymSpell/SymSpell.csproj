@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;net472;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;net47;netcoreapp3.0</TargetFrameworks>
     <DebugType>pdbonly</DebugType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -9,15 +9,15 @@
     <Company>Wolf Garbe &lt;wolf.garbe@seekstorm.com&gt;</Company>
     <Product>SymSpell</Product>
     <Description>Spelling correction &amp; Fuzzy search: 1 million times faster through Symmetric Delete spelling correction algorithm</Description>
-    <Copyright>Copyright (C) 2020 Wolf Garbe</Copyright>
+    <Copyright>Copyright (C) 2021 Wolf Garbe</Copyright>
     <PackageProjectUrl>https://github.com/wolfgarbe/symspell</PackageProjectUrl>
     <RepositoryUrl>https://github.com/wolfgarbe</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>symspell, spelling-correction, spellcheck, spell-check, spelling, fuzzy-search, approximate-string-matching, edit-distance, levenshtein, levenshtein-distance, damerau-levenshtein, word segmentation</PackageTags>
-	  <PackageReleaseNotes>WordSegmentation improved for uppercase, punctuation, apostrophe and ligatures. \r\n
-American English word forms added to dictionary. \r\n
-LoadDictionary and LoadBigramDictionary now have an optional separator parameter, which defines the separator characters (e.g. '\t') between term(s) and count. Default is defaultSeparatorChars=null for white space. This allows the dictionaries to contain space separated phrases.</PackageReleaseNotes>
-    <Version>6.7</Version>
+	  <PackageReleaseNotes>framework target changed from net472 to net47 \r\n
+framework target added netcoreapp3.0 \r\n
+more common contractions added to frequency_dictionary_en_82_765.txt</PackageReleaseNotes>
+    <Version>6.7.1</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
