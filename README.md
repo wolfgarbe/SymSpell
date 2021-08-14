@@ -361,7 +361,8 @@ https://www.kaggle.com/yk1598/symspell-spell-corrector
 https://github.com/PhilT/symspell
 
 **Rust**<br>
-https://github.com/reneklacan/symspell (Version 6.6, compiles to WebAssembly)
+https://github.com/reneklacan/symspell (Version 6.6, compiles to WebAssembly)<br>
+https://github.com/luketpeterson/fuzzy_rocks (persistent datastore backed by RocksDB)
 
 **Scala**<br>
 https://github.com/semkath/symspell
