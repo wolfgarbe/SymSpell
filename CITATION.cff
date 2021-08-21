@@ -1,0 +1,15 @@
+# YAML 1.2
+---
+abstract: "Spelling correction & Fuzzy search: 1 million times faster through Symmetric Delete spelling correction algorithm"
+authors: 
+  -
+    affiliation: "SeekStorm.com"
+    family-names: Garbe
+    given-names: Wolf
+cff-version: "1.1.0"
+date-released: 2012-06-07
+license: MIT
+message: "If you use this software, please cite it using these metadata."
+repository-code: "hhttps://github.com/wolfgarbe/SymSpell"
+title: SymSpell
+...
