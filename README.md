@@ -76,7 +76,7 @@ All: All suggestions within maxEditDistance, suggestions ordered by edit distanc
 [Very fast Data cleaning of product names, company names & street names](https://medium.com/@wolfgarbe/very-fast-data-cleaning-of-product-names-company-names-street-names-2015-691982ea1798)<br>
 [Sub-millisecond compound aware automatic spelling correction](https://medium.com/@wolfgarbe/symspellcompound-10ec8f467c9b)<br>
 [SymSpell vs. BK-tree: 100x faster fuzzy string search & spell checking](https://seekstorm.com/blog/symspell-vs-bk-tree/)<br>
-[Fast Word Segmentation for noisy text](https://towardsdatascience.com/fast-word-segmentation-for-noisy-text-2c2c41f9e8da)<br>
+[Fast Word Segmentation for noisy text](https://seekstorm.com/blog/fast-word-segmentation-noisy-text/)<br>
 [The Pruning Radix Trie — a Radix trie on steroids](https://seekstorm.com/blog/pruning-radix-trie/)<br>
 
 ---
