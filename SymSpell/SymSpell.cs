@@ -13,10 +13,10 @@
 
 // Copyright (C) 2021 Wolf Garbe
 // Version: 6.7.1
-// Author: Wolf Garbe wolf.garbe@faroo.com
-// Maintainer: Wolf Garbe wolf.garbe@faroo.com
+// Author: Wolf Garbe wolf.garbe@seekstorm.com
+// Maintainer: Wolf Garbe wolf.garbe@seekstorm.com
 // URL: https://github.com/wolfgarbe/symspell
-// Description: https://medium.com/@wolfgarbe/1000x-faster-spelling-correction-algorithm-2012-8701fcd87a5f
+// Description: https://seekstorm.com/blog/1000x-spelling-correction/
 //
 // MIT License
 // Copyright (c) 2020 Wolf Garbe
