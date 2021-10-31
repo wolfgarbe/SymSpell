@@ -72,8 +72,8 @@ All: All suggestions within maxEditDistance, suggestions ordered by edit distanc
 
 #### Blog Posts: Algorithm, Benchmarks, Applications
 [1000x Faster Spelling Correction algorithm](https://seekstorm.com/blog/1000x-spelling-correction/)<br>
-[Fast approximate string matching with large edit distances in Big Data](https://medium.com/@wolfgarbe/fast-approximate-string-matching-with-large-edit-distances-in-big-data-2015-9174a0968c0b)<br> 
-[Very fast Data cleaning of product names, company names & street names](https://medium.com/@wolfgarbe/very-fast-data-cleaning-of-product-names-company-names-street-names-2015-691982ea1798)<br>
+[Fast approximate string matching with large edit distances in Big Data](https://seekstorm.com/blog/fast-approximate-string-matching/)<br> 
+[Very fast Data cleaning of product names, company names & street names](https://seekstorm.com/blog/very-data-cleaning-of-product-names-company-names-street-names/)<br>
 [Sub-millisecond compound aware automatic spelling correction](https://seekstorm.com/blog/sub-millisecond-compound-aware-automatic.spelling-correction/)<br>
 [SymSpell vs. BK-tree: 100x faster fuzzy string search & spell checking](https://seekstorm.com/blog/symspell-vs-bk-tree/)<br>
 [Fast Word Segmentation for noisy text](https://seekstorm.com/blog/fast-word-segmentation-noisy-text/)<br>
