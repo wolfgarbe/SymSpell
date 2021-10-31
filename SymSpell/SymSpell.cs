@@ -1030,7 +1030,7 @@ public class SymSpell
     //existing spaces are allowed and considered for optimum segmentation
 
     //SymSpell.WordSegmentation uses a novel approach *without* recursion.
-    //https://medium.com/@wolfgarbe/fast-word-segmentation-for-noisy-text-2c2c41f9e8da
+    //https://seekstorm.com/blog/fast-word-segmentation-noisy-text/
     //While each string of length n can be segmentend in 2^n−1 possible compositions https://en.wikipedia.org/wiki/Composition_(combinatorics)
     //SymSpell.WordSegmentation has a linear runtime O(n) to find the optimum composition
 
