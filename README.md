@@ -418,7 +418,7 @@ If in LoadBigramDictionary no separator parameter is stated or defaultSeparatorC
    WordSegmentation divides a string into words by inserting missing spaces at appropriate positions.<br>
    Misspelled words are corrected and do not prevent segmentation.<br>
    Existing spaces are allowed and considered for optimum segmentation.<br>
-   SymSpell.WordSegmentation uses a [novel approach to word segmentation **without** recursion](https://medium.com/@wolfgarbe/fast-word-segmentation-for-noisy-text-2c2c41f9e8da).<br>
+   SymSpell.WordSegmentation uses a [novel approach to word segmentation **without** recursion](https://seekstorm.com/blog/fast-word-segmentation-noisy-text/).<br>
    While each string of length n can be segmented into **2^n−1** possible [compositions](https://en.wikipedia.org/wiki/Composition_(combinatorics)),<br> 
    SymSpell.WordSegmentation has a **linear runtime O(n)** to find the optimum composition.
 2. IMPROVEMENT: New CommandLine parameters:<br>
