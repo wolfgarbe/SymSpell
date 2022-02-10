@@ -1124,7 +1124,7 @@ public class SymSpell
                     topResult = results[0].term;
                     //v6.7
                     //retain/preserve upper case 
-                    if (Char.IsUpper(part[0]))
+                    if (part.Any() && Char.IsUpper(part[0]))
                     {
                         char[] a = topResult.ToCharArray();
                         a[0] = char.ToUpper(topResult[0]);
