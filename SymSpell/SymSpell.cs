@@ -11,15 +11,15 @@
 // 2. mistakenly omitted space between two correct words led to one incorrect combined term
 // 3. multiple independent input terms with/without spelling errors
 
-// Copyright (C) 2021 Wolf Garbe
-// Version: 6.7.1
+// Copyright (C) 2022 Wolf Garbe
+// Version: 6.7.2
 // Author: Wolf Garbe wolf.garbe@seekstorm.com
 // Maintainer: Wolf Garbe wolf.garbe@seekstorm.com
 // URL: https://github.com/wolfgarbe/symspell
 // Description: https://seekstorm.com/blog/1000x-spelling-correction/
 //
 // MIT License
-// Copyright (c) 2020 Wolf Garbe
+// Copyright (c) 2022 Wolf Garbe
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
 // the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 

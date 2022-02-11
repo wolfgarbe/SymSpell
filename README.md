@@ -18,8 +18,8 @@ but SymSpell needs to generate **only 25 deletes** to cover them all, both at pr
 <br>
 
 ```
-Copyright (c) 2021 Wolf Garbe
-Version: 6.7.1
+Copyright (c) 2022 Wolf Garbe
+Version: 6.7.2
 Author: Wolf Garbe <wolf.garbe@seekstorm.com>
 Maintainer: Wolf Garbe <wolf.garbe@seekstorm.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -27,7 +27,7 @@ Description: https://seekstorm.com/blog/1000x-spelling-correction/
 
 MIT License
 
-Copyright (c) 2021 Wolf Garbe
+Copyright (c) 2022 Wolf Garbe
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -377,6 +377,11 @@ https://github.com/Archivus/SymSpell
 1. Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
 2. Option to preserve case (upper/lower case) of input term.
 3. Open source the code for creating custom frequency dictionaries in any language and size as intersection between Google Books Ngram data (Provides representative word frequencies) and SCOWL Spell Checker Oriented Word Lists (Ensures genuine English vocabulary).
+
+#### Changes in v6.7.2
+
+1. Exception fixed in WordSegmentation
+2. Platform changed from netcore 2.1 to netcore 3.0
 
 #### Changes in v6.7.1
 
