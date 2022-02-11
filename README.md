@@ -1,5 +1,5 @@
 SymSpell<br>
-[![NuGet version](https://badge.fury.io/nu/symspell.png)](https://badge.fury.io/nu/symspell)
+[![NuGet version](https://badge.fury.io/nu/symspell.svg)](https://badge.fury.io/nu/symspell)
 [![MIT License](https://img.shields.io/github/license/wolfgarbe/symspell.svg)](https://github.com/wolfgarbe/SymSpell/blob/master/LICENSE)
 ========
 
