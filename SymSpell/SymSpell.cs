@@ -257,7 +257,7 @@ public class SymSpell
     public Dictionary<string, long> bigrams = new Dictionary<string, long>();
     public long bigramCountMin = long.MaxValue;
 
-    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs</summary>
+    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs.</summary>
     /// <remarks>Merges with any dictionary data already loaded.</remarks>
     /// <param name="corpus">The path+filename of the file.</param>
     /// <param name="termIndex">The column position of the word.</param>
@@ -273,7 +273,7 @@ public class SymSpell
         }
     }
 
-    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs</summary>
+    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs.</summary>
     /// <remarks>Merges with any dictionary data already loaded.</remarks>
     /// <param name="corpus">The path+filename of the file.</param>
     /// <param name="termIndex">The column position of the word.</param>
@@ -308,7 +308,7 @@ public class SymSpell
         return true;
     }
 
-    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs</summary>
+    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs.</summary>
     /// <remarks>Merges with any dictionary data already loaded.</remarks>
     /// <param name="corpus">The path+filename of the file.</param>
     /// <param name="termIndex">The column position of the word.</param>
@@ -324,7 +324,7 @@ public class SymSpell
         }
     }
 
-    /// <summary>Load multiple dictionary entries from a stream of word/frequency count pairs</summary>
+    /// <summary>Load multiple dictionary entries from a stream of word/frequency count pairs.</summary>
     /// <remarks>Merges with any dictionary data already loaded.</remarks>
     /// <param name="corpusStream">The stream containing the word/frequency count pairs.</param>
     /// <param name="termIndex">The column position of the word.</param>
