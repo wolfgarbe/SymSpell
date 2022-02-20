@@ -144,7 +144,7 @@ public class SymSpell
     /// data restructuring as the size grows.</remarks>
     /// <param name="initialCapacity">The expected number of words in dictionary.</param>
     /// <param name="maxDictionaryEditDistance">Maximum edit distance for doing lookups.</param>
-    /// <param name="prefixLength">The length of word prefixes used for spell checking..</param>
+    /// <param name="prefixLength">The length of word prefixes used for spell checking.</param>
     /// <param name="countThreshold">The minimum frequency count for dictionary words to be considered correct spellings.</param>
     /// <param name="compactLevel">Degree of favoring lower memory use over speed (0=fastest,most memory, 16=slowest,least memory).</param>
     public SymSpell(int initialCapacity = defaultInitialCapacity, int maxDictionaryEditDistance = defaultMaxEditDistance
