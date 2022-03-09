@@ -224,7 +224,9 @@ public class SymSpell
         //even if the same term existed before in the dictionary as an edit from another word
         if (key.Length > maxDictionaryWordLength) maxDictionaryWordLength = key.Length;
 
-        //create deletes
+	if (deletes == null) this.deletes = new Dictionary<int, string[]>(initialCapacity); //initialisierung
+
+	//create deletes
         var edits = EditsPrefix(key);
         // if not staging suggestions, put directly into main data structure
         if (staging != null)
@@ -233,7 +235,6 @@ public class SymSpell
         }
         else
         {
-            if (deletes == null) this.deletes = new Dictionary<int, string[]>(initialCapacity); //initialisierung
             foreach (string delete in edits)
             {
                 int deleteHash = GetStringHash(delete);
