@@ -194,7 +194,7 @@ namespace symspell.Test
             {
                 resultSum += symSpell.Lookup(testList[i], verbosity, symSpell.MaxDictionaryEditDistance ).Count;
             }
-            Assert.AreEqual( 4945 , resultSum);
+            Assert.AreEqual( 4955 , resultSum);
         }
     }
 }
