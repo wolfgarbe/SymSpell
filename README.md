@@ -380,17 +380,37 @@ Contextual Multilingual Spellchecker for User Queries<br>
 Sanat Sharma, Josep Valls-Vargas, Tracy Holloway King, Francois Guerin, Chirag Arora (Adobe)<br>
 https://arxiv.org/abs/2305.01082
 
+A context sensitive real-time Spell Checker with language adaptability<br>
+Prabhakar Gupta (Amazon)<br>
+https://arxiv.org/abs/1910.11242
+
 An Extended Sequence Tagging Vocabulary for Grammatical Error Correction<br>
 Stuart Mesham, Christopher Bryant, Marek Rei, Zheng Yuan<br>
 https://arxiv.org/abs/2302.05913
 
 German Parliamentary Corpus (GERPARCOR)<br>
-Giuseppe Abrami, Mevlüt Bagci, Leon Hammerla, Alexander Mehler
+Giuseppe Abrami, Mevlüt Bagci, Leon Hammerla, Alexander Mehler<br>
 https://arxiv.org/abs/2204.10422
 
-A context sensitive real-time Spell Checker with language adaptability<br>
-Prabhakar Gupta (Amazon)
-https://arxiv.org/abs/1910.11242
+iOCR: Informed Optical Character Recognition for Election Ballot Tallies<br>
+Kenneth U. Oyibo, Jean D. Louis, Juan E. Gilbert<br>
+https://arxiv.org/abs/2208.00865
+
+SymSpell and LSTM based Spell- Checkers for Tamil<br>
+Selvakumar MuruganTamil Arasan BakthavatchalamTamil Arasan BakthavatchalamMalaikannan Sankarasubbu<br>
+https://www.researchgate.net/publication/349924975_SymSpell_and_LSTM_based_Spell-_Checkers_for_Tamil
+
+SymSpell4Burmese: Symmetric Delete Spelling Correction Algorithm (SymSpell) for Burmese Spelling Checking<br>
+Ei Phyu Phyu Mon; Ye Kyaw Thu; Than Than Yu; Aye Wai Oo<br>
+https://ieeexplore.ieee.org/document/9678171
+
+Spell Check Indonesia menggunakan Norvig dan SymSpell<br>
+Yasir Abdur Rohman<br>
+https://medium.com/@yasirabd/spell-check-indonesia-menggunakan-norvig-dan-symspell-4fa583d62c24
+
+Symspell을 이용한 한글 맞춤법 교정<br>
+김희규<br>
+https://heegyukim.medium.com/symspell%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%95%9C%EA%B8%80-%EB%A7%9E%EC%B6%A4%EB%B2%95-%EA%B5%90%EC%A0%95-3def9ca00805
 
 ---
 
