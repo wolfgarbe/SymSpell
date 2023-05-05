@@ -372,23 +372,27 @@ https://github.com/semkath/symspell
 **Swift**<br>
 https://github.com/Archivus/SymSpell
 
+---
+
 ### Citations
 
-Contextual Multilingual Spellchecker for User Queries
-Sanat Sharma, Josep Valls-Vargas, Tracy Holloway King, Francois Guerin, Chirag Arora (Adobe)
+Contextual Multilingual Spellchecker for User Queries<br>
+Sanat Sharma, Josep Valls-Vargas, Tracy Holloway King, Francois Guerin, Chirag Arora (Adobe)<br>
 https://arxiv.org/abs/2305.01082
 
-An Extended Sequence Tagging Vocabulary for Grammatical Error Correction
-Stuart Mesham, Christopher Bryant, Marek Rei, Zheng Yuan
+An Extended Sequence Tagging Vocabulary for Grammatical Error Correction<br>
+Stuart Mesham, Christopher Bryant, Marek Rei, Zheng Yuan<br>
 https://arxiv.org/abs/2302.05913
 
-German Parliamentary Corpus (GERPARCOR)
+German Parliamentary Corpus (GERPARCOR)<br>
 Giuseppe Abrami, Mevlüt Bagci, Leon Hammerla, Alexander Mehler
 https://arxiv.org/abs/2204.10422
 
-A context sensitive real-time Spell Checker with language adaptability
+A context sensitive real-time Spell Checker with language adaptability<br>
 Prabhakar Gupta (Amazon)
 https://arxiv.org/abs/1910.11242
+
+---
 
 ### Upcoming changes
 
