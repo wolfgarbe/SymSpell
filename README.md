@@ -412,6 +412,14 @@ Symspell을 이용한 한글 맞춤법 교정<br>
 김희규<br>
 https://heegyukim.medium.com/symspell%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%95%9C%EA%B8%80-%EB%A7%9E%EC%B6%A4%EB%B2%95-%EA%B5%90%EC%A0%95-3def9ca00805
 
+Mending Fractured Texts. A heuristic procedure for correcting OCR data<br>
+Jens Bjerring-Hansen, Ross Deans Kristensen-McLachla2, Philip Diderichsen and Dorte Haltrup Hansen<br>
+https://ceur-ws.org/Vol-3232/paper14.pdf
+
+Towards the Natural Language Processing as Spelling Correction for Offline Handwritten Text Recognition Systems<br>
+Arthur Flor de Sousa Neto; Byron Leite Dantas Bezerra; and Alejandro Héctor Toselli<br>
+https://www.mdpi.com/2076-3417/10/21/7711
+
 ---
 
 ### Upcoming changes
