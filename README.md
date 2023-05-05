@@ -300,7 +300,8 @@ https://github.com/wolfgarbe/symspell
 **.NET** (NuGet package)<br>
 https://www.nuget.org/packages/symspell
 
-#### Ports
+### Ports
+
 The following third party ports or reimplementations to other programming languages have not been tested by myself whether they are an exact port, error free, provide identical results or are as fast as the original algorithm. 
 
 Most ports target SymSpell **version 3.0**. But **version 6.1.** provides **much higher speed & lower memory consumption!**
@@ -371,9 +372,25 @@ https://github.com/semkath/symspell
 **Swift**<br>
 https://github.com/Archivus/SymSpell
 
----
+### Citations
 
-#### Upcoming changes
+Contextual Multilingual Spellchecker for User Queries
+Sanat Sharma, Josep Valls-Vargas, Tracy Holloway King, Francois Guerin, Chirag Arora (Adobe)
+https://arxiv.org/abs/2305.01082
+
+An Extended Sequence Tagging Vocabulary for Grammatical Error Correction
+Stuart Mesham, Christopher Bryant, Marek Rei, Zheng Yuan
+https://arxiv.org/abs/2302.05913
+
+German Parliamentary Corpus (GERPARCOR)
+Giuseppe Abrami, Mevlüt Bagci, Leon Hammerla, Alexander Mehler
+https://arxiv.org/abs/2204.10422
+
+A context sensitive real-time Spell Checker with language adaptability
+Prabhakar Gupta (Amazon)
+https://arxiv.org/abs/1910.11242
+
+### Upcoming changes
 
 1. Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
 2. Option to preserve case (upper/lower case) of input term.
