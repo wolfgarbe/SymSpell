@@ -416,6 +416,10 @@ Analisis Perbandingan Metode Burkhard Keller Tree dan SymSpell dalam Spell Corre
 Muhammad Hafizh Ferdiansyah, I Kadek Dwi Nuryana<br>
 https://ejournal.unesa.ac.id/index.php/jinacs/article/download/50989/41739
 
+Improving Document Retrieval with Spelling Correction for Weak and Fabricated Indonesian-Translated Hadith<br>
+Muhammad zaky ramadhanKemas M LhaksmanaKemas M Lhaksmana<br>
+https://www.researchgate.net/publication/342390145_Improving_Document_Retrieval_with_Spelling_Correction_for_Weak_and_Fabricated_Indonesian-Translated_Hadith
+
 Symspell을 이용한 한글 맞춤법 교정<br>
 김희규<br>
 https://heegyukim.medium.com/symspell%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%95%9C%EA%B8%80-%EB%A7%9E%EC%B6%A4%EB%B2%95-%EA%B5%90%EC%A0%95-3def9ca00805
@@ -441,6 +445,13 @@ Malgorzata Anna Ulasik, Manuela Hurlimann, Bogumila Dubel, Yves Kaufmann,<br>
 Silas Rudolf, Jan Deriu, Katsiaryna Mlynchyk, Hans-Peter Hutter, and Mark Cieliebak<br>
 https://ceur-ws.org/Vol-2957/sg_paper3.pdf
 
+Cyrillic Word Error Program Based on Machine Learning<br>
+Battumur, K., Dulamragchaa, U., Enkhbat, S., Altanhuyag, L., & Tumurbaatar, P.<br>
+https://mongoliajol.info/index.php/JIMDT/article/view/2661
+
+Fast Approximate String Search for Wikification<br>
+Szymon Olewniczak, Julian Szymanski<br>
+https://www.iccs-meeting.org/archive/iccs2021/papers/127440334.pdf
 
 ---
 
