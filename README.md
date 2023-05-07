@@ -396,6 +396,10 @@ iOCR: Informed Optical Character Recognition for Election Ballot Tallies<br>
 Kenneth U. Oyibo, Jean D. Louis, Juan E. Gilbert<br>
 https://arxiv.org/abs/2208.00865
 
+Amazigh spell checker using Damerau-Levenshtein algorithm and N-gram<br>
+Youness Chaabi, Fadoua Ataa Allah<br>
+https://www.sciencedirect.com/science/article/pii/S1319157821001828
+
 SymSpell and LSTM based Spell- Checkers for Tamil<br>
 Selvakumar MuruganTamil Arasan BakthavatchalamTamil Arasan BakthavatchalamMalaikannan Sankarasubbu<br>
 https://www.researchgate.net/publication/349924975_SymSpell_and_LSTM_based_Spell-_Checkers_for_Tamil
@@ -408,6 +412,10 @@ Spell Check Indonesia menggunakan Norvig dan SymSpell<br>
 Yasir Abdur Rohman<br>
 https://medium.com/@yasirabd/spell-check-indonesia-menggunakan-norvig-dan-symspell-4fa583d62c24
 
+Analisis Perbandingan Metode Burkhard Keller Tree dan SymSpell dalam Spell Correction Bahasa Indonesia<br>
+Muhammad Hafizh Ferdiansyah, I Kadek Dwi Nuryana<br>
+https://ejournal.unesa.ac.id/index.php/jinacs/article/download/50989/41739
+
 Symspell을 이용한 한글 맞춤법 교정<br>
 김희규<br>
 https://heegyukim.medium.com/symspell%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%95%9C%EA%B8%80-%EB%A7%9E%EC%B6%A4%EB%B2%95-%EA%B5%90%EC%A0%95-3def9ca00805
@@ -419,6 +427,20 @@ https://ceur-ws.org/Vol-3232/paper14.pdf
 Towards the Natural Language Processing as Spelling Correction for Offline Handwritten Text Recognition Systems<br>
 Arthur Flor de Sousa Neto; Byron Leite Dantas Bezerra; and Alejandro Héctor Toselli<br>
 https://www.mdpi.com/2076-3417/10/21/7711
+
+When to Use OCR Post-correction for Named Entity Recognition?<br>
+Vinh-Nam Huynh, Ahmed Hamdi, Antoine Doucet<br>
+https://hal.science/hal-03034484v1/
+
+Automatic error Correction: Evaluating Performance of Spell Checker Tools<br>
+A. Tolegenova<br>
+https://journals.sdu.edu.kz/index.php/nts/article/view/690
+
+ZHAW-CAI: Ensemble Method for Swiss German Speech to Standard German Text<br>
+Malgorzata Anna Ulasik, Manuela Hurlimann, Bogumila Dubel, Yves Kaufmann,<br>
+Silas Rudolf, Jan Deriu, Katsiaryna Mlynchyk, Hans-Peter Hutter, and Mark Cieliebak<br>
+https://ceur-ws.org/Vol-2957/sg_paper3.pdf
+
 
 ---
 
