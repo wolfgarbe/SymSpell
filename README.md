@@ -452,6 +452,10 @@ Fast Approximate String Search for Wikification<br>
 Szymon Olewniczak, Julian Szymanski<br>
 https://www.iccs-meeting.org/archive/iccs2021/papers/127440334.pdf
 
+RuMedSpellchecker: Correcting Spelling Errors for Natural Russian Language in Electronic Health Records Using Machine Learning Techniques<br>
+Dmitrii Pogrebnoi, Anastasia Funkner, Sergey Kovalchuk<br>
+https://link.springer.com/chapter/10.1007/978-3-031-36024-4_16
+
 ---
 
 ### Upcoming changes
