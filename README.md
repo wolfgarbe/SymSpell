@@ -399,6 +399,10 @@ Amazigh spell checker using Damerau-Levenshtein algorithm and N-gram<br>
 Youness Chaabi, Fadoua Ataa Allah<br>
 https://www.sciencedirect.com/science/article/pii/S1319157821001828
 
+Survey of Query correction for Thai business-oriented information retrieval<br>
+Phongsathorn Kittiworapanya, Nuttapong Saelek, Anuruth Lertpiya, Tawunrat Chalothorn<br>
+https://ieeexplore.ieee.org/document/9376809
+
 SymSpell and LSTM based Spell- Checkers for Tamil<br>
 Selvakumar MuruganTamil Arasan BakthavatchalamTamil Arasan BakthavatchalamMalaikannan Sankarasubbu<br>
 https://www.researchgate.net/publication/349924975_SymSpell_and_LSTM_based_Spell-_Checkers_for_Tamil
