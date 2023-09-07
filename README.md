@@ -460,6 +460,10 @@ RuMedSpellchecker: Correcting Spelling Errors for Natural Russian Language in El
 Dmitrii Pogrebnoi, Anastasia Funkner, Sergey Kovalchuk<br>
 https://link.springer.com/chapter/10.1007/978-3-031-36024-4_16
 
+An Extended Sequence Tagging Vocabulary for Grammatical Error Correction<br>
+Stuart Mesham, Christopher Bryant, Marek Rei, Zheng Yuan<br>
+https://aclanthology.org/2023.findings-eacl.119.pdf
+
 ---
 
 ### Upcoming changes
