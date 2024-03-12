@@ -15,7 +15,7 @@ The speed comes from the inexpensive **delete-only edit candidate generation** a
 An average 5 letter word has about **3 million possible spelling errors** within a maximum edit distance of 3,<br>
 but SymSpell needs to generate **only 25 deletes** to cover them all, both at pre-calculation and at lookup time. Magic!
 
-If you like SymSpell try also [**SeekStorm**](https://github.com/SeekStorm/SeekStorm) - sub-millisecond full-text search library & multi-tenancy server in Rust.
+If you like SymSpell try also [**SeekStorm**](https://github.com/SeekStorm/SeekStorm) - sub-millisecond full-text search library & multi-tenancy server in Rust (Open Source).
 
 <br>
 
