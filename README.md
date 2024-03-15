@@ -471,7 +471,7 @@ https://aclanthology.org/2023.findings-eacl.119.pdf
 
 Lightning-fast adaptive immune receptor similarity search by symmetric deletion lookup<br>
 Touchchai Chotisorayuth, Andreas Tiffeau-Mayer<br>
-https://arxiv.org/pdf/2403.09010.pdf
+https://arxiv.org/html/2403.09010v1
 
 ---
 
