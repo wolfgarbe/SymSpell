@@ -469,6 +469,10 @@ An Extended Sequence Tagging Vocabulary for Grammatical Error Correction<br>
 Stuart Mesham, Christopher Bryant, Marek Rei, Zheng Yuan<br>
 https://aclanthology.org/2023.findings-eacl.119.pdf
 
+Lightning-fast adaptive immune receptor similarity search by symmetric deletion lookup<br>
+Touchchai Chotisorayuth, Andreas Tiffeau-Mayer<br>
+https://arxiv.org/pdf/2403.09010.pdf
+
 ---
 
 ### Upcoming changes
