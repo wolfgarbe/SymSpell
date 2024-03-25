@@ -58,13 +58,15 @@ namespace symspell.Test
             Assert.AreEqual("visit our offices of a", result[0].term);
         }
 
-        [Test]
-        public void SkipDigitWords_ReturnsDigits()
+        [TestCase("visit our offices 24/7", "visit our offices 24 7")]
+        [TestCase("th rd", "third")]
+        [TestCase("th 3 rd", "the 3 of")]
+        public void SkipDigitWords_ReturnsDigits(string source, string expected)
         {
             var digitRegex = new Regex("^\\d+$", RegexOptions.Compiled);
-            var result = _symSpell.LookupCompound("visit our offices 24/7", 2, digitRegex.IsMatch);
+            var result = _symSpell.LookupCompound(source, 2, digitRegex.IsMatch);
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("visit our offices 24 7", result[0].term);
+            Assert.AreEqual(expected, result[0].term);
         }
 
         [Test]
