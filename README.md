@@ -473,6 +473,10 @@ Lightning-fast adaptive immune receptor similarity search by symmetric deletion 
 Touchchai Chotisorayuth, Andreas Tiffeau-Mayer<br>
 https://arxiv.org/html/2403.09010v1
 
+Unveiling Disguised Toxicity: A Novel Pre-processing Module for Enhanced Content Moderation<br>
+Johnny Chan, Yuming Li<br>
+https://www.sciencedirect.com/science/article/pii/S2215016124001225
+
 ---
 
 ### Upcoming changes
