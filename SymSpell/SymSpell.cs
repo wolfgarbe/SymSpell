@@ -848,9 +848,10 @@ public class SymSpell
 
     /// <summary>Find suggested spellings for a multi-word input string (supports word splitting/merging).</summary>
     /// <param name="input">The string being spell checked.</param>
-    /// <param name="maxEditDistance">The maximum edit distance between input and suggested words.</param>																											   
+    /// <param name="editDistanceMax">The maximum edit distance between input and suggested words.</param>
+    /// <param name="skipSpellcheck">The function to check if a term should remain unchanged.</param>
     /// <returns>A List of SuggestItem object representing suggested correct spellings for the input string.</returns> 
-    public List<SuggestItem> LookupCompound(string input, int editDistanceMax)
+    public List<SuggestItem> LookupCompound(string input, int editDistanceMax, Func<string,bool> skipSpellcheck = null)
     {
         //parse input string into single terms
         string[] termList1 = ParseWords(input);
@@ -858,22 +859,31 @@ public class SymSpell
         List<SuggestItem> suggestions = new List<SuggestItem>();     //suggestions for a single term
         List<SuggestItem> suggestionParts = new List<SuggestItem>(); //1 line with separate parts
         var distanceComparer = new EditDistance(this.distanceAlgorithm);
+        var termsToSkip = new HashSet<string>();
 
         //translate every term to its best suggestion, otherwise it remains unchanged
         bool lastCombi = false;
         for (int i = 0; i < termList1.Length; i++)
         {
+            // if skipSpellcheck returns true for term, leave it unchanged 
+            if (skipSpellcheck != null && skipSpellcheck(termList1[i]))
+            {
+                termsToSkip.Add(termList1[i]);
+                suggestionParts.Add(CreateTermSuggestItem(termList1[i], editDistanceMax));
+                goto nextTerm;
+            }
+
             suggestions = Lookup(termList1[i], Verbosity.Top, editDistanceMax);
 
             //combi check, always before split
-            if ((i > 0) && !lastCombi)
+            if ((i > 0) && !lastCombi && !termsToSkip.Contains(termList1[i - 1]))
             {
                 List<SuggestItem> suggestionsCombi = Lookup(termList1[i - 1] + termList1[i], Verbosity.Top, editDistanceMax);
 
                 if (suggestionsCombi.Count > 0)
                 {
                     SuggestItem best1 = suggestionParts[suggestionParts.Count - 1];
-                    SuggestItem best2 = new SuggestItem();
+                    SuggestItem best2;
                     if (suggestions.Count > 0)
                     {
                         best2 = suggestions[0];
@@ -881,11 +891,7 @@ public class SymSpell
                     else
                     {
                         //unknown word
-                        best2.term = termList1[i];
-                        //estimated edit distance
-                        best2.distance = editDistanceMax + 1;
-                        //estimated word occurrence probability P=10 / (N * 10^word length l)
-                        best2.count = (long)((double)10 / Math.Pow((double)10, (double)best2.term.Length)); // 0;
+                        best2 = CreateTermSuggestItem(termList1[i], editDistanceMax);
                     }
 
                     //distance1=edit distance between 2 split terms und their best corrections : als comparative value for the combination
@@ -988,22 +994,12 @@ public class SymSpell
                     }
                     else
                     {
-                        SuggestItem si = new SuggestItem();
-                        si.term = termList1[i];
-                        //estimated word occurrence probability P=10 / (N * 10^word length l)
-                        si.count = (long)((double)10 / Math.Pow((double)10, (double)si.term.Length));
-                        si.distance = editDistanceMax + 1;
-                        suggestionParts.Add(si);
+                        suggestionParts.Add(CreateTermSuggestItem(termList1[i], editDistanceMax));
                     }
                 }
                 else
                 {
-                    SuggestItem si = new SuggestItem();
-                    si.term = termList1[i];
-                    //estimated word occurrence probability P=10 / (N * 10^word length l)
-                    si.count = (long)((double)10 / Math.Pow((double)10, (double)si.term.Length));
-                    si.distance = editDistanceMax + 1;
-                    suggestionParts.Add(si);
+                    suggestionParts.Add(CreateTermSuggestItem(termList1[i], editDistanceMax));
                 }
             }
         nextTerm:;
@@ -1022,6 +1018,17 @@ public class SymSpell
         List<SuggestItem> suggestionsLine = new List<SuggestItem>();
         suggestionsLine.Add(suggestion);
         return suggestionsLine;
+    }
+
+    private static SuggestItem CreateTermSuggestItem(string term, int editDistanceMax)
+    {
+        return new SuggestItem()
+        {
+            term = term,
+            //estimated word occurrence probability P=10 / (N * 10^word length l)
+            count = (long)((double)10 / Math.Pow((double)10, (double)term.Length)),
+            distance = editDistanceMax + 1
+        };
     }
 
     //######
