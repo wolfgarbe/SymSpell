@@ -374,7 +374,7 @@ https://github.com/luketpeterson/fuzzy_rocks (persistent datastore backed by Roc
 https://github.com/semkath/symspell
 
 **Swift**<br>
-https://github.com/Archivus/SymSpell
+https://github.com/gdetari/SymSpellSwift
 
 ---
 
