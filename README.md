@@ -388,6 +388,10 @@ A context sensitive real-time Spell Checker with language adaptability<br>
 Prabhakar Gupta (Amazon)<br>
 https://arxiv.org/abs/1910.11242
 
+SpeakGer: A meta-data enriched speech corpus of German state and federal parliaments<br>
+Kai-Robin Lange and Carsten Jentsch<br>
+https://arxiv.org/pdf/2410.17886
+
 An Extended Sequence Tagging Vocabulary for Grammatical Error Correction<br>
 Stuart Mesham, Christopher Bryant, Marek Rei, Zheng Yuan<br>
 https://arxiv.org/abs/2302.05913
