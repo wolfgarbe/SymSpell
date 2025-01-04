@@ -14,23 +14,23 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("pipe", 5);
             symSpell.CreateDictionaryEntry("pips", 10);
             var result = symSpell.Lookup("pipe", SymSpell.Verbosity.All, 1);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("pipe", result[0].term);
-            Assert.AreEqual(5, result[0].count);
-            Assert.AreEqual("pips", result[1].term);
-            Assert.AreEqual(10, result[1].count);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result[0].term, Is.EqualTo("pipe"));
+            Assert.That(result[0].count, Is.EqualTo(5));
+            Assert.That(result[1].term, Is.EqualTo("pips"));
+            Assert.That(result[1].count, Is.EqualTo(10));
             result = symSpell.Lookup("pips", SymSpell.Verbosity.All, 1);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("pips", result[0].term);
-            Assert.AreEqual(10, result[0].count);
-            Assert.AreEqual("pipe", result[1].term);
-            Assert.AreEqual(5, result[1].count);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result[0].term, Is.EqualTo("pips"));
+            Assert.That(result[0].count, Is.EqualTo(10));
+            Assert.That(result[1].term, Is.EqualTo("pipe"));
+            Assert.That(result[1].count, Is.EqualTo(5));
             result = symSpell.Lookup("pip", SymSpell.Verbosity.All, 1);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("pips", result[0].term);
-            Assert.AreEqual(10, result[0].count);
-            Assert.AreEqual("pipe", result[1].term);
-            Assert.AreEqual(5, result[1].count);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result[0].term, Is.EqualTo("pips"));
+            Assert.That(result[0].count, Is.EqualTo(10));
+            Assert.That(result[1].term, Is.EqualTo("pipe"));
+            Assert.That(result[1].count, Is.EqualTo(5));
         }
 
         [Test]
@@ -39,9 +39,9 @@ namespace symspell.Test
             var symSpell = new SymSpell();
             var word = "hello";
             symSpell.CreateDictionaryEntry(word, 11);
-            Assert.AreEqual(1, symSpell.WordCount);
+            Assert.That(symSpell.WordCount, Is.EqualTo(1));
             symSpell.CreateDictionaryEntry(word, 3);
-            Assert.AreEqual(1, symSpell.WordCount);
+            Assert.That(symSpell.WordCount, Is.EqualTo(1));
         }
         [Test]
         public void AddAdditionalCountsShouldIncreaseCount()
@@ -52,12 +52,12 @@ namespace symspell.Test
             var result = symSpell.Lookup(word, SymSpell.Verbosity.Top);
             long count = 0;
             if (result.Count == 1) count = result[0].count;
-            Assert.AreEqual(11, count);
+            Assert.That(count, Is.EqualTo(11));
             symSpell.CreateDictionaryEntry(word, 3);
             result = symSpell.Lookup(word, SymSpell.Verbosity.Top);
             count = 0;
             if (result.Count == 1) count = result[0].count;
-            Assert.AreEqual(11 + 3, count);
+            Assert.That(count, Is.EqualTo(11+3));
         }
         [Test]
         public void AddAdditionalCountsShouldNotOverflow()
@@ -68,12 +68,12 @@ namespace symspell.Test
             var result = symSpell.Lookup(word, SymSpell.Verbosity.Top);
             long count = 0;
             if (result.Count == 1) count = result[0].count;
-            Assert.AreEqual(long.MaxValue - 10, count);
+            Assert.That(count, Is.EqualTo(long.MaxValue - 10));
             symSpell.CreateDictionaryEntry(word, 11);
             result = symSpell.Lookup(word, SymSpell.Verbosity.Top);
             count = 0;
             if (result.Count == 1) count = result[0].count;
-            Assert.AreEqual(long.MaxValue, count);
+            Assert.That(count, Is.EqualTo(long.MaxValue));
         }
         [Test]
         public void VerbosityShouldControlLookupResults()
@@ -83,11 +83,11 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steams", 2);
             symSpell.CreateDictionaryEntry("steem", 3);
             var result = symSpell.Lookup("steems", SymSpell.Verbosity.Top, 2);
-            Assert.AreEqual(1, result.Count);
+            Assert.That(result.Count, Is.EqualTo(1));
             result = symSpell.Lookup("steems", SymSpell.Verbosity.Closest, 2);
-            Assert.AreEqual(2, result.Count);
+            Assert.That(result.Count, Is.EqualTo(2));
             result = symSpell.Lookup("steems", SymSpell.Verbosity.All, 2);
-            Assert.AreEqual(3, result.Count);
+            Assert.That(result.Count, Is.EqualTo(3));
         }
         [Test]
         public void LookupShouldReturnMostFrequent()
@@ -97,9 +97,9 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steamb", 6);
             symSpell.CreateDictionaryEntry("steamc", 2);
             var result = symSpell.Lookup("steam", SymSpell.Verbosity.Top, 2);
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("steamb", result[0].term);
-            Assert.AreEqual(6, result[0].count);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[0].term, Is.EqualTo("steamb"));
+            Assert.That(result[0].count, Is.EqualTo(6));
         }
         [Test]
         public void LookupShouldFindExactMatch()
@@ -109,8 +109,8 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("steamb", 6);
             symSpell.CreateDictionaryEntry("steamc", 2);
             var result = symSpell.Lookup("steama", SymSpell.Verbosity.Top, 2);
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("steama", result[0].term);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[0].term, Is.EqualTo("steama"));
         }
         [Test]
         public void LookupShouldNotReturnNonWordDelete()
@@ -118,9 +118,9 @@ namespace symspell.Test
             var symSpell = new SymSpell(16, 2, 7, 10);
             symSpell.CreateDictionaryEntry("pawn", 10);
             var result = symSpell.Lookup("paw", SymSpell.Verbosity.Top, 0);
-            Assert.AreEqual(0, result.Count);
+            Assert.That(result.Count, Is.EqualTo(0));
             result = symSpell.Lookup("awn", SymSpell.Verbosity.Top, 0);
-            Assert.AreEqual(0, result.Count);
+             Assert.That(result.Count, Is.EqualTo(0));
         }
         [Test]
         public void LookupShouldNotReturnLowCountWord()
@@ -128,7 +128,7 @@ namespace symspell.Test
             var symSpell = new SymSpell(16, 2, 7, 10);
             symSpell.CreateDictionaryEntry("pawn", 1);
             var result = symSpell.Lookup("pawn", SymSpell.Verbosity.Top, 0);
-            Assert.AreEqual(0, result.Count);
+             Assert.That(result.Count, Is.EqualTo(0));
         }
         [Test]
         public void LookupShouldNotReturnLowCountWordThatsAlsoDeleteWord()
@@ -137,7 +137,7 @@ namespace symspell.Test
             symSpell.CreateDictionaryEntry("flame", 20);
             symSpell.CreateDictionaryEntry("flam", 1);
             var result = symSpell.Lookup("flam", SymSpell.Verbosity.Top, 0);
-            Assert.AreEqual(0, result.Count);
+            Assert.That(result.Count, Is.EqualTo(0));
         }
         //[Test]
         //public void DeleteInSuggestionPrefixEdgeCases()
@@ -194,7 +194,7 @@ namespace symspell.Test
             {
                 resultSum += symSpell.Lookup(testList[i], verbosity, symSpell.MaxDictionaryEditDistance ).Count;
             }
-            Assert.AreEqual( 4955 , resultSum);
+            Assert.That(resultSum, Is.EqualTo(4955));
         }
     }
 }

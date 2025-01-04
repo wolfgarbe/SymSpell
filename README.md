@@ -20,8 +20,8 @@ If you like SymSpell, try [**SeekStorm**](https://github.com/SeekStorm/SeekStorm
 <br>
 
 ```
-Copyright (c) 2022 Wolf Garbe
-Version: 6.7.2
+Copyright (c) 2025 Wolf Garbe
+Version: 6.7.3
 Author: Wolf Garbe <wolf.garbe@seekstorm.com>
 Maintainer: Wolf Garbe <wolf.garbe@seekstorm.com>
 URL: https://github.com/wolfgarbe/symspell
@@ -29,7 +29,7 @@ Description: https://seekstorm.com/blog/1000x-spelling-correction/
 
 MIT License
 
-Copyright (c) 2022 Wolf Garbe
+Copyright (c) 2025 Wolf Garbe
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -488,6 +488,13 @@ https://www.sciencedirect.com/science/article/pii/S2215016124001225
 1. Utilizing the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) by partitioning both query and dictionary terms will result in 5x less memory consumption and 3x faster precalculation time. 
 2. Option to preserve case (upper/lower case) of input term.
 3. Open source the code for creating custom frequency dictionaries in any language and size as intersection between Google Books Ngram data (Provides representative word frequencies) and SCOWL Spell Checker Oriented Word Lists (Ensures genuine English vocabulary).
+
+#### Changes in v6.7.3
+
+- TargetFrameworks changed from `netstandard2.0;net461;net47;netcoreapp3.0` to `netstandard2.0;net9.0`.
+- PackageReferences updated.
+- In SymSpell.Test all Assert.AreEqual changed to Assert.That
+- Incorporates PR #126 that fixes null reference exception in CommitStaged (#139).
 
 #### Changes in v6.7.2
 

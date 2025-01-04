@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;net47;netcoreapp3.0</TargetFrameworks>
+    <LangVersion>preview</LangVersion>
+    <TargetFrameworks>netstandard2.0;net9.0</TargetFrameworks>
     <DebugType>pdbonly</DebugType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -9,13 +10,13 @@
     <Company>Wolf Garbe &lt;wolf.garbe@seekstorm.com&gt;</Company>
     <Product>SymSpell</Product>
     <Description>Spelling correction &amp; Fuzzy search: 1 million times faster through Symmetric Delete spelling correction algorithm</Description>
-    <Copyright>Copyright (C) 2022 Wolf Garbe</Copyright>
+    <Copyright>Copyright (C) 2025 Wolf Garbe</Copyright>
     <PackageProjectUrl>https://github.com/wolfgarbe/symspell</PackageProjectUrl>
     <RepositoryUrl>https://github.com/wolfgarbe</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>symspell, spelling-correction, spellcheck, spell-check, spelling, fuzzy-search, approximate-string-matching, edit-distance, levenshtein, levenshtein-distance, damerau-levenshtein, word segmentation</PackageTags>
 	  <PackageReleaseNotes>Exception fixed in WordSegmentation</PackageReleaseNotes>
-    <Version>6.7.2</Version>
+    <Version>6.7.3</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
@@ -48,6 +49,11 @@
 
   <ItemGroup>
     <PackageReference Include="System.ValueTuple" Version="4.4.0" Condition="'$(TargetFramework)' == 'net461'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset" Version="4.12.0" />
+    <PackageReference Update="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" />
   </ItemGroup>
 
 </Project>

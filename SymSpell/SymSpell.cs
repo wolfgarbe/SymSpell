@@ -11,15 +11,15 @@
 // 2. mistakenly omitted space between two correct words led to one incorrect combined term
 // 3. multiple independent input terms with/without spelling errors
 
-// Copyright (C) 2022 Wolf Garbe
-// Version: 6.7.2
+// Copyright (C) 2025 Wolf Garbe
+// Version: 6.7.3
 // Author: Wolf Garbe wolf.garbe@seekstorm.com
 // Maintainer: Wolf Garbe wolf.garbe@seekstorm.com
 // URL: https://github.com/wolfgarbe/symspell
 // Description: https://seekstorm.com/blog/1000x-spelling-correction/
 //
 // MIT License
-// Copyright (c) 2022 Wolf Garbe
+// Copyright (c) 2025 Wolf Garbe
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
 // the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
@@ -224,9 +224,9 @@ public class SymSpell
         //even if the same term existed before in the dictionary as an edit from another word
         if (key.Length > maxDictionaryWordLength) maxDictionaryWordLength = key.Length;
 
-	if (deletes == null) this.deletes = new Dictionary<int, string[]>(initialCapacity); //initialisierung
+        if (deletes == null) deletes = new Dictionary<int, string[]>(initialCapacity); //initialisierung
 
-	//create deletes
+        //create deletes
         var edits = EditsPrefix(key);
         // if not staging suggestions, put directly into main data structure
         if (staging != null)
@@ -353,7 +353,6 @@ public class SymSpell
                 }
             }
         }
-        if (this.deletes == null) this.deletes = new Dictionary<int, string[]>(staging.DeleteCount);
         CommitStaged(staging);
         return true;
     }
@@ -390,7 +389,6 @@ public class SymSpell
                 }
             }
         }
-        if (this.deletes == null) this.deletes = new Dictionary<int, string[]>(staging.DeleteCount);
         CommitStaged(staging);
         return true;
     }
@@ -410,6 +408,7 @@ public class SymSpell
     /// <param name="staging">The SuggestionStage object storing the staged data.</param>
     public void CommitStaged(SuggestionStage staging)
     {
+        if (deletes == null) deletes = new Dictionary<int, string[]>(staging.DeleteCount);
         staging.CommitTo(deletes);
     }
 
