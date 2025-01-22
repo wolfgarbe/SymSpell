@@ -18,6 +18,7 @@
 	  <PackageReleaseNotes>Exception fixed in WordSegmentation</PackageReleaseNotes>
     <Version>6.7.3</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -36,6 +37,7 @@
  <ItemGroup>
     <None Remove="frequency_dictionary_en_82_765.txt" />
 	<None Remove="frequency_bigramdictionary_en_243_342.txt" />	
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <ItemGroup>
