@@ -293,6 +293,10 @@ Frequency dictionaries in many other languages can be found here:<br>
 [Frequency dictionaries](https://github.com/dataiku/dss-plugin-nlp-preparation/tree/master/resource/dictionaries)<br>
 [Frequency dictionaries](https://github.com/LuminosoInsight/wordfreq/tree/master/wordfreq/data)
 
+N-Gram Generator by repetitio:<br>
+This repository contains a script to generate unigrams and bigrams from Wikipedias dataset from HuggingFace for the use with the SymSpell.<br>
+https://gitlab.com/repetitio/utils/ngram-frequencies/-/tree/main?ref_type=heads
+
 ---
 
 **C#** (original source code)<br>
