@@ -486,6 +486,10 @@ Unveiling Disguised Toxicity: A Novel Pre-processing Module for Enhanced Content
 Johnny Chan, Yuming Li<br>
 https://www.sciencedirect.com/science/article/pii/S2215016124001225
 
+Beyond the dictionary attack: Enhancing password cracking efficiency through machine learning-induced mangling rules<br>
+Radek Hranický, Lucia Šírová, Viktor Rucký<br>
+https://www.sciencedirect.com/science/article/pii/S2666281725000046
+
 ---
 
 ### Upcoming changes
