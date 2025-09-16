@@ -381,6 +381,9 @@ https://github.com/semkath/symspell
 **Swift**<br>
 https://github.com/gdetari/SymSpellSwift
 
+**Zig**<br>
+https://github.com/alim-zanibekov/miara?tab=readme-ov-file#symspell
+
 ---
 
 ### Citations
