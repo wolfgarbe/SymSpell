@@ -376,7 +376,8 @@ https://github.com/PhilT/symspell
 
 **Rust**<br>
 https://github.com/reneklacan/symspell (Version 6.6, compiles to WebAssembly)<br>
-https://github.com/luketpeterson/fuzzy_rocks (persistent datastore backed by RocksDB)
+https://github.com/luketpeterson/fuzzy_rocks (persistent datastore backed by RocksDB)<br>
+https://github.com/daibo83/fast_symspell
 
 **Scala**<br>
 https://github.com/semkath/symspell
