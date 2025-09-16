@@ -357,6 +357,9 @@ https://github.com/Wavesonics/SymSpellKt
 **Objective-C**<br>
 https://github.com/AmitBhavsarIphone/SymSpell (Version 6.3)
 
+**PHP**<br>
+https://github.com/Jakhotiya/symspell-php
+
 **Python**<br>
 https://github.com/mammothb/symspellpy  (Version 6.7)<br>
 https://github.com/viig99/SymSpellCppPy  (Version 6.5)<br>
