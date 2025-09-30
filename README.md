@@ -372,7 +372,8 @@ https://github.com/Esukhia/sympound-python<br>
 https://www.kaggle.com/yk1598/symspell-spell-corrector
 
 **Ruby**<br>
-https://github.com/PhilT/symspell
+https://github.com/PhilT/symspell<br>
+https://github.com/scientist-labs/spellkit
 
 **Rust**<br>
 https://github.com/reneklacan/symspell (Version 6.6, compiles to WebAssembly)<br>
