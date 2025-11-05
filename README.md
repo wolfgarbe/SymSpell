@@ -334,6 +334,9 @@ https://github.com/sumanpokhrel-11/symspell-c99<br>
 https://github.com/AtheS21/SymspellCPP (Version 6.5)<br>
 https://github.com/erhanbaris/SymSpellPlusPlus (Version 6.1)
 
+**C#**<br>
+https://github.com/wolfgarbe/symspell
+
 **Crystal**<br>
 https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
 
@@ -390,7 +393,7 @@ https://github.com/PhilT/symspell<br>
 https://github.com/scientist-labs/spellkit
 
 **Rust**<br>
-https://github.com/wolfgarbe/symspell_rs (Version 6.7.3)
+https://github.com/wolfgarbe/symspell_rs (Version 6.7.3)<br>
 https://github.com/reneklacan/symspell (Version 6.6, compiles to WebAssembly)<br>
 https://github.com/luketpeterson/fuzzy_rocks (persistent datastore backed by RocksDB)<br>
 https://github.com/daibo83/fast_symspell<br>
