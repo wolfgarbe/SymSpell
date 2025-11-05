@@ -330,7 +330,8 @@ https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
 **Go**<br>
 https://github.com/snapp-incubator/go-symspell<br>
 https://github.com/sajari/fuzzy<br>
-https://github.com/eskriett/spell
+https://github.com/eskriett/spell<br>
+https://github.com/Trendyol/go-symspell
 
 **Haskell**<br>
 https://github.com/cbeav/symspell
