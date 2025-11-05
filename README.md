@@ -299,11 +299,21 @@ https://gitlab.com/repetitio/utils/ngram-frequencies/-/tree/main?ref_type=heads
 
 ---
 
-**C#** (original source code)<br>
+### Official implementations
+
+**C#**<br>
 https://github.com/wolfgarbe/symspell
 
-**.NET** (NuGet package)<br>
+**NuGet package**<br>
 https://www.nuget.org/packages/symspell
+
+
+**Rust**<br>
+https://github.com/wolfgarbe/symspell_rs
+
+**Crates.io**<br>
+https://crates.io/crates/symspell_rs
+
 
 ### Ports
 
@@ -330,7 +340,8 @@ https://github.com/chenkovsky/aha/blob/master/src/aha/sym_spell.cr
 **Go**<br>
 https://github.com/snapp-incubator/go-symspell<br>
 https://github.com/sajari/fuzzy<br>
-https://github.com/eskriett/spell
+https://github.com/eskriett/spell<br>
+https://github.com/Trendyol/go-symspell
 
 **Haskell**<br>
 https://github.com/cbeav/symspell
