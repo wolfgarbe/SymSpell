@@ -10,6 +10,6 @@ cff-version: "1.1.0"
 date-released: 2012-06-07
 license: MIT
 message: "If you use this software, please cite it using these metadata."
-repository-code: "hhttps://github.com/wolfgarbe/SymSpell"
+repository-code: "https://github.com/wolfgarbe/SymSpell"
 title: SymSpell
 ...
