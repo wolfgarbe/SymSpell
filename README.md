@@ -331,6 +331,7 @@ https://github.com/LeonErath/SymSpellAPI (Version 6.3)<br>
 https://github.com/sumanpokhrel-11/symspell-c99<br>
 
 **C++**<br>
+https://github.com/trvon/yams-symspell<br>
 https://github.com/AtheS21/SymspellCPP (Version 6.5)<br>
 https://github.com/erhanbaris/SymSpellPlusPlus (Version 6.1)
 
@@ -353,7 +354,6 @@ https://github.com/cbeav/symspell
 https://github.com/MighTguY/customized-symspell (Version 6.6)<br>
 https://github.com/rxp90/jsymspell (Version 6.6)<br>
 https://github.com/Lundez/JavaSymSpell (Version 6.4)<br>
-https://github.com/rxp90/jsymspell<br>
 https://github.com/gpranav88/symspell<br>
 https://github.com/searchhub/preDict<br>
 https://github.com/jpsingarayar/SpellBlaze

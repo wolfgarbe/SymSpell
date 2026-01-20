@@ -295,7 +295,7 @@ public class SymSpell
                 if (lineParts.Length >= linePartsLenth)
                 {
                     //if default (whitespace) is defined as separator take 2 term parts, otherwise take only one
-                    string key = (separatorChars == defaultSeparatorChars) ? lineParts[termIndex] + " " + lineParts[termIndex + 1]: lineParts[termIndex];
+                    string key = (separatorChars == defaultSeparatorChars) ? lineParts[termIndex] + " " + lineParts[termIndex + 1] : lineParts[termIndex];
                     //Int64 count;
                     if (Int64.TryParse(lineParts[countIndex], out Int64 count))
                     {
@@ -887,7 +887,7 @@ public class SymSpell
                         best2.count = (long)((double)10 / Math.Pow((double)10, (double)best2.term.Length)); // 0;
                     }
 
-                    //distance1=edit distance between 2 split terms und their best corrections : als comparative value for the combination
+                    //distance1=edit distance between 2 split terms und their best corrections : as comparative value for the combination
                     int distance1 = best1.distance + best2.distance;
                     if ((distance1 >= 0) && ((suggestionsCombi[0].distance + 1 < distance1) || ((suggestionsCombi[0].distance + 1 == distance1) && ((double)suggestionsCombi[0].count > (double)best1.count / (double)SymSpell.N * (double)best2.count))))
                     {
@@ -1164,7 +1164,7 @@ public class SymSpell
                     || (compositions[circularIndex].distanceSum + separatorLength + topEd < compositions[destinationIndex].distanceSum))
                 {
                     //v6.7
-                    //keep punctuation or spostrophe adjacent to previous word
+                    //keep punctuation or apostrophe adjacent to previous word
                     if (((topResult.Length == 1) && char.IsPunctuation(topResult[0])) || ((topResult.Length == 2) && topResult.StartsWith("’")))
                     {
                         compositions[destinationIndex] = (
