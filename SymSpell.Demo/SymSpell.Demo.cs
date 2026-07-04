@@ -68,7 +68,7 @@ namespace symspell.Demo
             stopWatch.Start();
 
             //check if input term or similar terms within edit-distance are in dictionary, return results sorted by ascending edit distance, then by descending word frequency     
-            const SymSpell.Verbosity verbosity = SymSpell.Verbosity.Closest;
+            const SymSpell.Verbosity verbosity = SymSpell.Verbosity.All;
             suggestions = symSpell.Lookup(input, verbosity);
 
             stopWatch.Stop();
