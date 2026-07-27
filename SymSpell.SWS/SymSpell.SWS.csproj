@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SymSpell\SymSpell.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Assumes frequency_dictionary_en_82_765.txt is in the SymSpell folder -->
+    <Content Include="..\SymSpell\frequency_dictionary_en_82_765.txt" Link="frequency_dictionary_en_82_765.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
