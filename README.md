@@ -372,6 +372,12 @@ https://github.com/Arkoniak/SymSpell.jl
 **Kotlin**<br>
 https://github.com/Wavesonics/SymSpellKt
 
+**Mojo**<br>
+https://github.com/meequz/symspell.mojo
+
+**MoonBit**<br>
+https://github.com/albertoforni/symspell.mbt
+
 **Objective-C**<br>
 https://github.com/AmitBhavsarIphone/SymSpell (Version 6.3)
 
