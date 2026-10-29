@@ -73,6 +73,7 @@ All: All suggestions within maxEditDistance, suggestions ordered by edit distanc
 **1 million times faster than [Norvig's algorithm](http://norvig.com/spell-correct.html)** (see [Benchmark 2](http://blog.faroo.com/2015/03/24/fast-approximate-string-matching-with-large-edit-distances/): dictionary size=29,157, maximum edit distance=3, query terms with fixed edit distance = maximum edit distance, verbose=0)<br>
 
 #### Blog Posts: Algorithm, Benchmarks, Applications
+[symspell_rs v7 - 3x faster lookup, 40% less memory consumption, 11x faster Damerau-Levenshtein edit distance](https://seekstorm.com/blog/symspell_rs-3x-faster-lookup-40-less-memory-11x-faster-levenshtein/)<br>
 [1000x Faster Spelling Correction algorithm](https://seekstorm.com/blog/1000x-spelling-correction/)<br>
 [Fast approximate string matching with large edit distances in Big Data](https://seekstorm.com/blog/fast-approximate-string-matching/)<br> 
 [Very fast Data cleaning of product names, company names & street names](https://seekstorm.com/blog/very-data-cleaning-of-product-names-company-names-street-names/)<br>
